@@ -1,6 +1,15 @@
 # REPRENEZ LE CONTRÔLE A L'AIDE DE LINUX
 ## 1ère Partie
-### Mais c'est quoi, Linux
+### Mais c'est quoi, Linux ?
+#### Un système d'exploitation
+#### La naissance de Linux
+#### Les distributions de Linux
+#### Résumé personnalisé
+On a un aperçu de ce qu'est Linux (un OS) et de comment il démarre sur l'ordinateur (Boot Loader, GRUB) dans le 1er chapitre.
+
+Dans le second chapitre, on traite du projet GNU (Richard STALLMANN 1984, création des programmes), de la création du noyau par Linus TORVALDS (1991), UNIX duquel découle GNU/Linux ainsi que Mac OS.
+
+Les distributions sont abordées dans le 3e chapitre (Slackware, Mandriva, Red Hat, SuSE, Debian...). Debian est la seule distro éditée par des particuliers bénévoles. Un des gros avantages de Debian est son gestionnaire de paquets **apt-get**. Ubuntu est une distribution de Debian. 
 ### Téléchargez Linux c'est gratuit
 ### Tester et installer Ubuntu
 ### Partitionner son disque
