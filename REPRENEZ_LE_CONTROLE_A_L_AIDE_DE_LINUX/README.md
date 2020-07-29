@@ -119,6 +119,63 @@ On peut alors installer Ubuntu, sans avoir besoin de créer des partitions sur s
 
 Les additions invité sont des pilotes spéciaux améliorant les performances de la machine virtuelle, comme de meilleures performances graphiques, une plus grande fluidité des animations et des déplacements des fenêtres; un meilleur suivi de la souris; le partage du presse-papier entre Linux et Windows ainsi que le partage des répertoires (ce qu'on ne peut pas faire en dur, si on n'a pas de partition prévue pour les documents). On se rend dans le menu de la machine virtuelle, une fois démarrée, **Périphériques --> Installer les Additions invité**. Cela provoque l'insertion d'un CD virtuel dans la machine. pour accéder à son contenu, on ouvre le menu **Raccourcis** d'Ubuntu, une fenêtre affichant les fichiers du CD apparaît, cliquer sur **autorun.sh** et **Lancer dans un terminal** lorsqu'on nous demande quoi en faire. Une console s'ouvre et les additions s'installent. Comme d'habitude, il faut relancer Ubuntu pour que les modifications soient prises en compte. Maintenant, on peut partager des fichiers entre WIndows et Ubuntu, toujours dans le menu **Périphériques --> Dossiers Partagés**.
 ### Quiz 1
+#### Compétences évaluées
+Décrire le fonctionnement d'un système d'exploitation Linux
+#### Question 1
+**Comment s'appelle l'outil qui permet de sélectionner le système d'exploitation qu'on souhaite lancer au démarrage ?**
+* Le booter
+* Le Boot Loader
+* L'OS Downloader
+* Le rebouteur
+#### Question 2
+**Vrai ou Faux ? Windows et Linux peuvent cohabiter sur un même ordinateur.**
+* Vrai
+* Faux
+#### Question 3
+**Comment s'appelle le fondateur du projet GNU ?**
+* Richard Stallman
+* Roberto Benigni
+* Steve Jobs
+* Bill Gates
+#### Question 4
+**Quel est l'ancêtre commun de Mac OS X et Linux ?**
+* Lunix
+* Unix
+* MS-DOS
+* Windows
+#### Question 5
+**Lequel de ces éléments est une distribution Linux ?**
+* Debian
+* Grub
+* KDE
+* Gnome
+#### Question 6
+**Comment s'appelle l'interface graphique par défaut d'Ubuntu ?**
+* Ubuntux
+* KDE
+* LXDE
+* Gnome, Unity, puis Gnome de nouveau selon les versions
+#### Question 7
+**Qu'est-ce qu'un Live CD ?**
+* Un CD qui donne accès à Internet même dans les régions reculées
+* Un CD contenant Linux qui apprend de nos habitudes
+* Un CD permettant de tester Linux sans l'installer
+* Un CD qui s'autodétruit au bout de quelques minutes
+#### Question 8
+**Quand Linux est installé dans une machine virtuelle qui tourne sous Windows...**
+* Une partition spéciale Linux est créée sur son disque dur de façon permanente
+* Une partition spéciale Linux est créée sur son disque dur de façon temporaire
+* Aucune partition n'est créée
+#### Question 9
+**Comment s'appelle l'élément logiciel de base sur lequel s'appuient Gnome, XFCE, KDE et Unity pour afficher une interface graphique ?**
+* Le GRUB
+* Le serveur X
+* Le partitionneur graphique
+#### Question 10
+**Quel est le rôle de la partition swap ?**
+* Stocker les outils nécessaires au démarrage de Linux
+* Stocker les fichiers téléchargés depuis Internet
+* Stocker des données quand la mémoire vive est pleine
 ## Partie 2
 ### La console, ça se mange ?
 ### Entrer une commande
