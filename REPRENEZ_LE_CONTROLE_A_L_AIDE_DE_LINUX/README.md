@@ -35,6 +35,7 @@ Il faut toujours faire une sauvegarde de ses fichiers avant d'installer Linux, c
 #### Défragmentez votre disque
 #### Qu'est-ce que le partitionnement
 #### Prêts ? Partitionnez !
+#### La fin de l'installation
 #### Résumé personnalisé
 Partitionner son disque consiste à découper son disque virtuellement en plusieurs parties afin de ne pas mélanger les différents OS se trouvant sur la machine. Il est délicat de faire marche arrière une fois le partitionnement réalisé, il faut donc être attentif à ce qui est décrit dans cette partie du cours. Mais avant il faut défragmenter son disque.
 
@@ -71,8 +72,20 @@ L'installation s'effectue, enfin, en tâche de fond pendant que l'on finalise le
 Comme partout, on redémarre pour finaliser l'installation. Juste avant l'extinction du PC, il faudra retirer le CD du PC comme demander puis appuyer sur <CR>. C'est pour s'assurer qu'Ubuntu démarrera bien du disque dur et non du CD.
 
 Au prochain démarrage, GRUB demander quel OS utiliser. Pour faire un test mémoire, au cas où on suspecte une défaillance de la mémoire vive, on choisira "Memory Test".
-#### La fin de l'installation
 ### Découverte du bureau Unity
+#### Bienvenue sur le bureau Unity
+#### Nautilus, l'explorateur de fichiers
+#### Gestion des programmes
+#### Résumé personnalisé
+Découverte du gestionnaire de bureau Unity livré avec Ubuntu. Si on a installé autre chose, on peut lancer le paquet **ubuntu-desktop** pour l'installer.
+
+Linux est un OS multiutilisateur, plusieurs personnes peuvent utiliser le même ordinateur de façon simultanée (en le contrôlant à distance par Internet, par exemple). C'est pourquoi il est important de se logger/délogger avec cet OS.
+
+L'explorateur de fichier s'appelle Nautilus, il est du même type que l'explorateur Windows.
+
+Pour ajouter et/ou supprimer un programme, il faut se rendre dans la logitèque Ubuntu (ressemble au Store Windows, ou plutôt l'inverse...).
+
+Lorsqu'une mise à jour d'un programme est disponible, on est immédiatement notifié à l'aide de l'icone en haut à droite de l'écran (ressemble au symbole téléchargement mais dans une étoile). On clique dessus et on se laisse guider. On peut aussi configurer le gestionnaire de mises à jour, afin qu'il installe les nouveautés sans nous le demander. Il faut se rendre dans le menu Applications --> Ajouter & Enlever --> Préférences --> Mises à jour --> Installer les mises à jour de sécurité sans confirmation.
 ### Découverte du bureau KDE
 ### Installez Linux dans une machine virtuelle
 ### Quiz 1
