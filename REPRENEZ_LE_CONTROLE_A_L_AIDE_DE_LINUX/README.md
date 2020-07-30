@@ -178,6 +178,51 @@ Décrire le fonctionnement d'un système d'exploitation Linux
 * Stocker des données quand la mémoire vive est pleine
 ## Partie 2
 ### La console, ça se mange ?
+#### Pourquoi avoir inventé la console ?
+#### La console, la vraie, celle qui fait peur
+#### La console en mode graphique
+#### L'accès à distance en SSH avec PuTTY
+#### Résumé personnalisé
+La console a été inventée d'abord, à la place d'une interface graphique, car on n'avait pas d'autres solutions, à l'époque, au début des années 70, pour communiquer avec l'ordinateur. À l'époque, un écran 2 couleurs était un luxe et la puissance de calcul de ces ordinateurs était insuffisante (en comparaison avec ce que nous connaissons aujourd'hui) pour pouvoir gérer plusieurs composants en même temps, comme la couleur et une souris. La console était donc la seule façon d'utiliser un ordinateur.
+
+Les commandes de la console ont été conçues afin de pouvoir les manipuler souvent, leurs noms sont courts (dans la majorité des cas) les lettres qu'il faut taper sont généralement choisies en fonction de leur proximité les unes par rapport aux autres, sur un clavier QWERTY. Le clavier QWERTY est plus adapté pour accéder aux symbole **\{\]\|\#**.
+
+Il y a des choses que seule la console est en mesure d'accomplir, par exemple savoir combien d'images .jpeg contient un répertoire. On obtient ce résultat en combinant quelques commandes :
+
+    ls -l | grep jpg | wc -l
+    <!-- -->
+    510
+
+La console a donc encore son utilité !
+
+La plupart des commandes de la console de Linux sont des copies d'Unix, les programmes ont été réécrits mais leur mode d'emploi est le même. Quelqu'un qui utilisait Unix dans les années 60 sera capable de se débrouiller avec un Linux d'aujourd'hui. Dans les chapitres suivants, c'est ce qu'on verra : les commandes de types Unix. L'avantage, c'est qu'on pourra s'en servir sur les systèmes Linux, mais également sur tous ceux descendant d'Unix (Hein, Mac OS X...). On ouvre un terminal sous Mac OS X avec le raccourci **Cmd + Shift + U** pour ouvrir les utilitaires et on sélectionne Terminal.
+
+Les raccourcis pour accéder à une console Linux sont
+* **Ctrl + Alt + F1** : terminal 1 (tty1)
+* **Ctrl + Alt + F2** : terminal 2 (tty2)
+* **Ctrl + Alt + F3** : terminal 3 (tty3)
+* **Ctrl + Alt + F4** : terminal 4 (tty4)
+* **Ctrl + Alt + F5** : terminal 5 (tty5)
+* **Ctrl + Alt + F6** : terminal 6 (tty6)
+* **Ctrl + Alt + F7** : retour au mode graphique
+
+La première chose que demande la ligne de commande c'est de se logger grâce à la commande **login** (log qu'on a créé à l'installation d'Ubuntu). On entre ensuite son mot de passe, c'est la commande **passwd** qui le reçoit. Les lettres n'apparaissent pas pour raison de sécurité. Une fois l'étape franchie, la CLI devrait afficher quelque chose dans le style : **username@computer:~$**.
+
+Pour savoir dans quel terminal on se trouve (puisqu'on peut en ouvrir 6) lors du chargement, il faut lire dans la console les informations inscrites au lancement et chercher un terme commençant par **tty[n°]**. Attention, pour relancer X (le serveur graphique), le raccourci est **Alt + Shift + Backspace** ou **Alt + Impr.Écran + K**, la commande précédente étant jugée vraiment très dangereuse,, cela ne redémarre que l'interface graphique, les consoles continuent de tourner mais on perd tout ce qu'on était en train de faire sur le bureau. Il faut donc être vigilant.
+
+La console est très utile lorsqu'on manipule les serveurs tournant sous Linux et ne possédant pas d'écran ou d'interface graphique. C'est juste plus confortable d'utiliser la console en mode graphique.
+
+Une des grandes force de la console, c'est d'ête accessible à distance par Internet. Il suffit que la machine sur laquelle on souhaite se connecter soit connectée au réseau pour pouvoir y pénétrer depuis n'importe quel autre ordinateur. C'est comme cela d'ailleurs que l'on administre un serveur.
+
+Un serveur est, pour faire simple, un ordinateur tout le temps connecté à Internet. Il permet d'offrir des services divers et variés aux internautes. Par exemple, il y a des serveurs web dont le rôle est de distribuer des pages web. La grande majorité des serveurs tournent sous Linux. Il existe des serveurs Windows, mais ils seraient plus rares et on apprécie en général la stabilité de Linux, ainsi que la possibilité de l'administrer à distance en ligne de commande.
+
+Pour communiquer entre un ordinateur et un serveur, on passe par un protocole. Il en existe énormément, mais pour accéder à la ligne de commande à distance, il y en a deux principaux :
+* **Telnet** : le protocole le plus basique, qui présente le gros défaut de ne pas crypter les données échangées.
+* **SSH** : c'est le protocole le plus utilisé car il permet de crypter les données et de sécurise la connexion avec le serveur.
+
+pour accéder à distance à un ordinateur sous Linux connecté au réseau, on a besoin d'un programme spécial capable de restituer la ligne de commande à distance. On n'est pas obligé d'être sous Linux pour ce faire, on peut très bien être sous Windows. Il existe plusieurs programmes capables de se connecter en SSH à serveur Linux, le plus célèbre sous Windows est sûrement PuTTY : il est gratuit, léger et ne nécessite pas d'installation, seulement un exécutable à lancer. On se rend sur le site du logiciel, on le downloade, puis on clique sur **putty.exe**. La fenêtre de configuration s'affiche. Dans la majorité des cas, on n'aura pas besoin d'aller farfouiller dans le volet des options à gauche. La première page est la plus importante, dans le champ **Host Name**, on renseigne le nom d'hôte du serveur (du style : nom.de.domaine.com), ou l'adresse Ip de la machine à laquelle se connecter. Vérifier que la connexion est bien de type SSH, puis cliquer sur le bouton **Open** en bas de la fenêtre. Il est tout à fait possible de se connecter à plusieurs serveurs différents et de conserver le nom d'hôte quelque part, dans la seconde partie de la fenêtre **Saved Sessions** c'est là que ça se passe.
+
+À la première connexion, on nous demander si on veut stocker l'empreinte de ce dernier. C'est une sécurité pour vérifier que le serveur n'a pas changé depuis la dernière connexion et donc pour éviter que quelqu'un se fasse passer pour le serveur auquel on se connecte d'habitude. La fenêtre principale de PuTTY s'affiche alors en nous demandant de nous logger (log du compte administrant le serveur !) et de saisir le mot de passe associé. On alors accès à la console du serveur, comme si on était devant. Dans l'immédiat, on ne devrait pas avoir à se connecter à distance, tout ce qu'on va faire est plutôt situé en local.
 ### Entrer une commande
 ### La structure des dossiers et fichiers
 ### Manipuler les fichiers
