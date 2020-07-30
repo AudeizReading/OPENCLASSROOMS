@@ -190,7 +190,6 @@ Les commandes de la console ont été conçues afin de pouvoir les manipuler sou
 Il y a des choses que seule la console est en mesure d'accomplir, par exemple savoir combien d'images .jpeg contient un répertoire. On obtient ce résultat en combinant quelques commandes :
 
     ls -l | grep jpg | wc -l
-    <!-- -->
     510
 
 La console a donc encore son utilité !
@@ -224,6 +223,11 @@ pour accéder à distance à un ordinateur sous Linux connecté au réseau, on a
 
 À la première connexion, on nous demander si on veut stocker l'empreinte de ce dernier. C'est une sécurité pour vérifier que le serveur n'a pas changé depuis la dernière connexion et donc pour éviter que quelqu'un se fasse passer pour le serveur auquel on se connecte d'habitude. La fenêtre principale de PuTTY s'affiche alors en nous demandant de nous logger (log du compte administrant le serveur !) et de saisir le mot de passe associé. On alors accès à la console du serveur, comme si on était devant. Dans l'immédiat, on ne devrait pas avoir à se connecter à distance, tout ce qu'on va faire est plutôt situé en local.
 ### Entrer une commande
+#### L'invite de commandes
+#### Commandes et paramètres
+#### Retrouver une commande
+#### Quelques raccourcis clavier pratiques
+#### Résumé personnalisé
 ### La structure des dossiers et fichiers
 ### Manipuler les fichiers
 ### Les utilisateurs et les droits
