@@ -228,6 +228,34 @@ pour accéder à distance à un ordinateur sous Linux connecté au réseau, on a
 #### Retrouver une commande
 #### Quelques raccourcis clavier pratiques
 #### Résumé personnalisé
+La première action à entreprendre, c'est d'ouvrir une console en mode graphique. La ligne de type **username@(@=chez)computer:~(dossier dans lequel on se situe, ~=/home)$(niveau d'autorisation sur la machine, $=utilisateur normal,#=superutilisateur)** est ce qu'on appelle une **invite de commande**, c'est un message qui nous invite à entrer une commande. L'invite de commande est paramétrable (-> .bashrc, variable $PS1).
+
+On travaille dans la console en tapant des commandes. Elles sont très nombreuses, tellement qu'on ne peut pas toutes les connaître. Mais c'est plus important de savoir comment s'informer dessus que de toutes les connaître. Pour cela, il suffit de consulter le manuel d'utilisation **man**, ou encore l'aide de la commande **commande --help** ou encore **commande -h** (mais cette dernière n'est pas toujours paramétrée).
+
+La commande **date** donne la date et l'heure.
+La commande **ls** donne la liste des fichiers et dossiers du répertoire actuel. Si on n'obtient pas de réponse à cette commande, c'est qu'on est dans un dossier ne contenant aucun fichier.
+
+Une commande est constituée d'un mot et ne contient aucun espace et dans la majorité des cas d'options qu'on appelle **paramètres** (courts ou longs). Les paramètres (comme tout Linux) sont sensibles à la casse.
+**ls -a** affiche tous les dossiers, même ceux cachés. Le nom d'un fichier caché commence par un **.**
+**ls --all** fait la même chose, sauf qu'on a utilisé son paramètre long.
+
+Parfois, les paramètres nécessitent d'être valorisés (auxquels on affecte une valeur), selon que le paramètre soit long ou court, l'affectation est différente.
+* **commande -a valeur**
+* **commande --version-longue=valeur**
+
+Il arrive d'oublier le nom d'une commande, mais grâce à l'auto-complétion, Linux nous aide à la retrouver: On tape au moins une lettre de la commande, puis 2 fois sur la touche **Tabulation**. S'il n'y a qu'un seul résultat qui ressort, alors la commande se complètera toute seule, il n'y aura qu'à la valider avec **Entrée**. S'il y a plus possibilités et qu'on accepte de les visualiser (**y**), alors pour naviguer, on utilisera **espace** pour passer à la page suivante, **Entrée** pour aller à la ligne suivante et **q** pour arrêter la liste. Pour naviguer dans l'historique des commandes, on utilise la touche **Flèche Haut** ou **Flèche Bas**. La commande **history** affiche l'ensemble de l'historique, ainsi que leur ordre de frappe. Parfois, ces dernières instructions ne sont pas suffisantes pour accéder à ce dont on a besoin, on peut faire une recherche de terme grâce à la combinaison de touche **Ctrl + R + "terme recherché"**. On rappuie sur **Ctrl + R** jusqu'à ce qu'on trouve ce que l'on cherchait. On valide la sélection avec *Entrée*, attention cela lance la commande dans le terminal!
+
+Quelques raccourcis claviers : 
+* **Ctrl + L** : efface le contenu de la console (la commande **clear** fait la même chose)
+* **Ctrl + D** : envoie le message **EOF** (end of file) à la console. Si on tape  le raccourci dans une ligne de commande vide, cela fermera la console (la commande **exit** a le même comportement)
+* **Shift + PgUp** : permet de remonter dans les messages envoyés par la console.
+* **Shift + PgDown** : permet de redescendre dans les messages envoyés par la console.
+* **Ctrl + A** : ramène le curseur au début de la commande. La touche **origin** a le même effet.
+* **Ctrl + E** : ramène le curseur à la fin de la ligne de commande. La touche **fin** a le même affet.
+* **Ctrl + U** : supprime tout ce qui est à gauche du curseur.
+* **Ctrl + K** : supprime tout ce qui est à droite du curseur.
+* **Ctrl + W** : supprime le premier mot situé à gauche du curseur. Un mot est séparé par des espaces; on s'en sert en général pour supprimer le paramètre situé à gauche du curseur.
+* **Ctrl + Y** : si on a supprimé du texte avec un des raccourcis ci-dessus, collera le texte supprimé.
 ### La structure des dossiers et fichiers
 ### Manipuler les fichiers
 ### Les utilisateurs et les droits
