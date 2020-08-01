@@ -257,6 +257,64 @@ Quelques raccourcis claviers :
 * **Ctrl + W** : supprime le premier mot situé à gauche du curseur. Un mot est séparé par des espaces; on s'en sert en général pour supprimer le paramètre situé à gauche du curseur.
 * **Ctrl + Y** : si on a supprimé du texte avec un des raccourcis ci-dessus, collera le texte supprimé.
 ### La structure des dossiers et fichiers
+#### Organisation des dossiers
+#### pwd & which : où... où suis-je ?
+#### ls : lister les fichiers et dossiers
+#### cd : changer de dossier
+#### du : taille occupée par les dossiers
+#### Résumé personnalisé
+Les choses ne fonctionnent pas du tout de la même manière sous Linux et sous Windows. Sous Linux, on ne trouve pas de **C:\**, **D:\** etc. Au lieu de séparer chaque disque dur, lecteur de CD, de disquettes, cartes mémoires, Linux place en gros tout au même endroit.
+
+Pour faire simple, il existe deux types de fichiers sous Linux :
+* Les fichiers classiques : ce sont les fichiers textes (.txt, .doc, .odt ...), les sons, mais aussi les programmes.
+* Les fichiers spéciaux : certains fichiers sont spéciaux car ils représentent quelque chose. Par exemple, le lecteur CD de l'ordinateur est un fichier pour Linux, là où Windows fait la distinction. Pour Linux, **tout** est fichier. C'est une conception très différente.
+
+Dans un système de fichiers, il y a toujours ce qu'on appelle une racine, c'est un *gros dossier de base qui contient tous les autres dossiers et fichiers*. Sous Windows, il y a plusieurs racines. **C:\** est la racine du disque dur, **D:\** celle du lecteur CD (par exemple). Sous Linux, il n'y a qu'une seule racine : **/**. Il n'y a pas de lettre de lecteur car justement, Linux ne donne pas de nom aux lecteurs comme le fait Windows.
+
+Sous Windows, un dossier peut être représenté de la manière suivante : **C:\Program Files\Winzip**. On dit que **Winzip** est un sous-dossier du dossier **Program Files**, lui même situé à la racine. C'est le **backslash (\)** qui sert de séparateur aux noms de dossiers. Sous Linux, c'est le contraire, le **/** sert de séparateur. La racine, le plus haut niveau de dossier, s'appelle juste **/**. Les dossiers sont complètement différents de ceux qu'on peut trouver nativement sur Windows.
+
+Voici la liste des dossiers les plus courants sur Linux:
+* **bin** : contient des programmes exécutables susceptibles d'être utilisés par tous les utilisateurs de la machine.
+* **boot** : fichiers permettant le démarrage de Linux.
+* **dev** : fichiers contenant les périphériques (lecteur de CD par exemple)
+* **etc** : fichiers de configuration
+* **home** : répertoires personnels des utilisateurs. Chaque utilisateur possède son répertoire personnel.
+* **lib** : dossier contenant les bibliothèques partagées (fichiers .so ou .dll) utilisées par les programmes.
+* **media** : contient les périphériques amovibles (clés USB, etc.)
+* **mnt** : un peu comme **media**, mais pour un usage plus temporaire.
+* **opt** : répertoire utilisé pour les *add-ons* de programmes.
+* **proc** : contient des informations système.
+* **root** : contient le dossier personnel du superutilisateur **root**, un espace spécial lui est dédié.
+* **sbin** : contient des programmes systèmes importants.
+* **tmp** : dossier temporaire utilisé par les programmes pour stocker des fichiers.
+* **usr** : c'est un des plus gros dossiers, dans lequel vont s'installer la plupart des programmes demandés par l'utilisateur.
+* **var** : ce dossier contient des données variables, souvent des logs (traces écrites de qui s'est passé récemment sur l'ordinateur).
+
+Cette liste de dossiers est en fait présente sur les OS de type Unix, et pas seulement sous Linux.
+
+Pour connaître le nom du dossier dans lequel on se situe (par exemple, connaître le nom exact que représente ~), on utilise la commande **pwd**. C'est l'abréviation de *Print Working Directory*. Elle ne prend aucun paramètre.
+
+Pour connaître l'emplacement d'une commande on utilise le programme **which**. Elle prend un paramètre, le nom du programme que l'on recherche
+	which pwd
+En général, sous Linux, les programmes ne possèdent pas d'extension.
+**ls** permet de lister les dossiers d'un répertoire donné ou non (celui dans lequl on se trouve si non mentionné). Ubuntu active la coloration des fichiers et dossiers par défaut. Les dossiers apparaissent en bleu foncé, les raccourcis en bleu clairs (le dossier se trouve ailleurs sur le disque). Pour ajouter la coloration automatique, soit on la passe en paramètre, soit on édite le **.bashrc** avec l'instruction suivante **ls --color=auto**. Éditer le **.bashrc** permet de ne pas resaisir à chaque fois l'instruction (cela peut être très pratique !). La commande **ls** accepte un grand nombre de paramètres, les plus utiles sont : 
+* **-a** : affiche tous les dossiers et fichiers cachés. Affiche aussi **.**, le dossier courant et **..** si un dossier parent existe.
+* **-A** : pareil que **-a**, sauf que n'affiche ni **.**, ni **..**.
+* **-F** : indique le type d'élément, utile quand il n'y a pas de coloration syntaxiqye; rajoute un symbole à la fin des éléments pour les spécifier (/ pour un dossier, @ pour un raccourci).
+* **-l** : liste détaillant chaque élément du dossier, un élément par ligne et chaque colonne a sa signification; de gauche à droite : droits sur le fichier, nombre de liens physiques, nom du propriétaire du fichier, nom du groupe auquel appartient le fichier, taille du fichier en octets, date de la dernière modification, nom du fichier (ou dossier). Dans le cas d'un raccourci ou lien symbolique, on nous précise vers où pointe le raccourci.
+* **-h** : affiche la taille en Ko, Mo, Go, h signifie *Human Readable*.
+* **-t** : trier par date de dernière modification.
+* **-r** : renverse l'ordre d'affichage
+
+On peut bien entendu combiner plusieurs options entre elles par exemple **ls -larth** qui liste les fichiers, dont les cachés, avec leurs renseignements respectifs dans l'ordre de modification du plus ancien au plus récent. On peut aussi s'épargner la frappe fastidieuse de tous ces paramètres en créant un alias de la commande dans le fichier de configuration **.bashrc** 
+
+Pour se déplacer au sein des répertoires, on utilise la commande **cd** (Change Directory). Elle ne prend qu'un paramètre, le nom du dossier dans lequel on souhaite se rendre. L'invite de commande change pour noter le nouveau répertoire dans lequel on se situe. Pour revenir dans un répertoire parent on tape **cd ..**, pour revenir dans 2 répertoires parents, on tape **cd ../..**. On peut indiquer un chemin **relatif** ou un chemin **absolu**. Un chemin relatif dépend du dossier dans lequel on est, alors qu'un chemin absolu est le nom complet du dossier, on peut indiquer un chemin absolu depuis n'importe quel endroit, contrairement au chemin relatif. Pour retourne au répertoire **home**, on tape **cd ~** ou encore **cd** sans paramètres. Pour éviter de taper un chemin absolu dans son entier, on se sert de la tabulation.
+
+La commande **du** renseigne sur la taille qu'occupe les dossiers du disque. Il y a des paramètres qui permettent de mieux comprendre ce qui nous est sorti.
+
+* **-h** : comme pour **ls**, donne la taille de façon à mieux la comprendre, sans ça la taille est donnée en octets.
+* **-a** : donne la taille des fichiers et des dossiers. Par défaut **du** ne donne la taille que des dossiers.
+* **-s** : donne la taille totale du dossier dans lequel on lance la commande. Le point donné en sortie indique "le dossier courant".
 ### Manipuler les fichiers
 ### Les utilisateurs et les droits
 ### Nano, l'éditeur de texte du débutant
