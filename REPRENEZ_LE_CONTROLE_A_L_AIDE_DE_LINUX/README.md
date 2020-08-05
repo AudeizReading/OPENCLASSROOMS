@@ -316,32 +316,113 @@ La commande **du** renseigne sur la taille qu'occupe les dossiers du disque. Il 
 * **-a** : donne la taille des fichiers et des dossiers. Par défaut **du** ne donne la taille que des dossiers.
 * **-s** : donne la taille totale du dossier dans lequel on lance la commande. Le point donné en sortie indique "le dossier courant".
 ### Manipuler les fichiers
+#### cat & less : afficher un fichier
+#### head & tail : afficher le début et la fin d'un fichier
+#### touch & mkdir : créer des fichiers et dossiers
+#### cp & mv : copier et déplacer un fichier
+#### rm : supprimer des fichiers et dossiers
+#### Résumé personnalisé
+Pour afficher le contenu d'un fichier, il y a deux commandes principales **cat** et **less**.
+**cat** affiche tout le fichier qu'on lui passe en paramètre. L'option -n permet de numéroter les lignes affichées en sortie.
+**less** affiche le fichier page par page. La commande est très utile sur de gros fichier, car contrairement à **cat** qui affiche le contenu d'un coup, **cat** y va progressivement. Il existe une commande très proche : **more**, à la différence de **less**, elle possède peu de fonctionnalités et est moins puissante et rapide.
+**less** prend le nom du fichier à afficher en paramètres. La commande arrête la lecture du fichier en fonction de la taille de l'écran de la console. Elle fonctionne avec quelques raccourcis indispensables:
+* **Espace** : affiche la suite du fichier. Fait défiler d'un écran de console.
+* **Entrée** : affiche la ligne suivante. Fait défiler ligne par ligne. **Flèche bas** a le même comportement.
+* **d** : affiche les onze lignes suivantes. (une moitié d'écran)
+* **b** : retourne en arrière d'un écran. **PageUp** a le même comportement.
+* **y** : retourne d'une ligne en arrière. **Flèche haut** a le même comportement.
+* **u** : retourne en arrière d'une moitié d'écran.
+* **q** : arrête la lecture du fichier, met fin à la commande **less**.
+* **=** : indique où on est dans le fichier (n° lg + %)
+* **h** : affiche l'aide
+* **/** : lance le mode recherche, après le slash renseigner le terme que l'on cherche dans le fichier avec **less**. On peut indiquer une regexp. On valide avec **Entrée**
+* **n** : après une recherche, va à la prochaine occurrence du terme cherché.
+* **N** : pareil que **n** mais dans le sens inverse.
+(J'ai l'impression que de nombreuses commandes sont les mêmes que celles qu'on utilise dans Vim)
+La casse des caractères est importante.
+
+**head** affiche le début d'un fichier, **tail** affiche la fin. Elles ne permettent pas de se déplacer dans le fichier comme **less** mais juste de récupérer les premières et les dernières lignes.
+Par défaut, **head** affiche les 10 premières lignes, mais on peut spécifier le nombre de lignes avec l'option -n.
+**tail** affiche aussi les 10 premières lignes par défaut et on peut aussi préciser avec -n le nombre de lignes à afficher. La commande **tail** a plus d'options que **head**, en pas hésiter à consulter l'aide des commandes pour s'en rendre compte. L'option -f (pour follow) demande à **tail** de suivre la fin du fichier au fur et à mesure de son évolution. C'est extrêmement utile pour suivre un fichier de log qui évolue souvent, les nouvelles lignes s'affichent au fur et à mesure. On fait **Ctrl + C** pour sortir de la commande (correspond à **Alt + F4** sous Windows. Si on rajoute l'option -s avec une valeur chiffrée à l'instruction **tail -f**, on peut ains définir le nombre de secondes au bout duquel on demande * tail de suivre l'évolution du fichier. Les nombres décimaux sont autorisés à condition d'utiliser **.** à la place de **,**.
+
+Il n'existe aucune commande spécialement conçue pour créer un fichier vide. En général, on ouvre un éditeur de texte, on enregistre et cela crée notre fichier. **touch**, à la base, sert à modifier le *timestamp* d'un fichier, à modifier la date de sa dernière modification. D'où son nom, on "touche" le fichier pour faire croire à l'ordinateur qu'on vient de le modifier alors qu'on n'a rien changé. L'intérêt de **touch** dans ce chapitre, c'est que si le fichier n'existe pas, alors il sera créé. On peut donc aussi utiliiser **touch** pour créer des fichiers, même si la commande n'est pas prévue pour cela à la base. La commande attend un paramètre, le nom du fichier "à créer". On peut créer plusieurs fichiers en une seule ligne, il suffit de séparer par des espaces les noms de fichiers à générer. Si le nom de fichier contient un espace, il suffit de l'encadrer entre une paire de guillemets (double quote).
+
+**mkdir**, elle, est faite pour créer un dossier (make directory). Elle fonctionne de la même manière que **touch**, on peut créer plusieurs dossiers d'un coup en les séparant d'un espace et pour créer des dossiers intermédiaires inexistants, on utilise l'option -p.
+
+Parmi les opérations de base sur les fichiers, il y a la copie et me déplacement de fichiers.
+**cp** permet de copier un ou plusieurs fichiers / dossiers. Il y a plusieurs façons de se servir de la commande (ne pas hésiter à consulter l'aide pour plus de description).
+La première : **cp SOURCE DESTINATION**. Le premier paramètre est le nom du fichier à copier, le second le nom de la copie à créer. **DESTINATION** peut être de nature **DIRECTORY**, dans ce cas-là, on peut utiliser la commande de la sorte : **cp SOURCE SOURCE SOURCE SOURCE DIRECTORY**. On peut copier plusieurs sources vers le répertoire de référence. C'est la deuxième façon de l'employer. La troisième façon ressemble à la seconde, sauf qu'on inverse l'ordre des paramètres **cp -t DIRECTORY SOURCE...**.
+Avec l'option -R, on fait une copie récursive de SOURCE vers DEST, c'est-à-dire qu'on copie dossiers et sous-dossiers composant la SOURCE. Sinon on ne copie que le 1er niveau de SOURCE.
+Le symbole **\*\** est appelé **wildcard** ou **joker**, il permet de remplacer n'importe quel caractère.
+Exemple, on souhaite copier tous les fichiers .jpg d'un répertoire : **cp \*.jpg DIRECTORY/**. Le joket est un outil très puissant.
+
+Pour déplacer ou renommer un fichier, on utilise **mv**. L'utilisation est la même que **cp**, les arguments et options se placent de la même façon. Le joker est bien entendu utilisable. Pour renommer un fichier, il suffit de le déplacer dans son répertoire d'origine sous un autre nom : **mv ancien-nom nouveau-nom**, ainsi le fichier aura été renommé sous "nouveau-nom". On peut déplacer et renommer un fichier en même temps. **mv ancien-nom nouveau-dossier/nouveau-nom** déplacera l'ancien fichier vers le nouveau dossier tout en le renommant par le nouveau nom.
+
+Pour supprimer un fichier, on utilise **rm**. Par défaut, la commande ne supprime pas les dossiers, seulement les fichiers. On lui force la main avec l'option **-r**. Attention toute suppression est définitive (pas de récupération possible en corbeille), donc bien faire attention, ne pas hésiter à utiliser le flag **-i** pour demander la confirmation de la suppression, c'est une sécurité supplémentaire, on doit confirmer la suppression par "y" ou "n". Le paramètre à donner à la commande est le chemin (relatif ou absolu) du fichier à détruire. On peut supprimer plusieurs fichiers d'un coup, en les passant en paramètres à la suite, en les séparant par des espaces. **-f** force la suppression, ne demande pas de confirmation même s'il y a un problème, à ne vraiment utiliser que si on sait ce qu'on fait. **-v** est un paramètre que l'on retrouve dans beaucoup de commandes sous Linux. Il permet de demander à la commande d'expliquer ce qu'elle est en train de faire. Il existe la commande **rmdir** qui supprime les dossiers seulement s'ils sont vides.
+Si on nous demande d'entrer **rm -rf /\*\** en console, ne pas le faire! Cette commande supprime tout notre disque dur depuis la racine ! On est bon pour une réinstallation TOTALE des OS (Linux et Windows compris). C'est la gestion des droits utilisateurs qui nous protégera d'un suppression intempestive. Il faut être loggé en tant que **root** pour pouvoir détruire des racines auxquelles seul **root** peut accéder. Somme toute, on peut légitimement avoir besoin de **rm -rf *\**, pour supprimer un dossier complet par exemple.
+
+La commande **ln** permet de créer des liens entre des fichiers, elle créé des raccourcis. Sous Linux, on appelle ces raccourcis **liens**. On peut créer deux types de liens : les liens **physiques** et les liens **symboliques**. Ces deux types de lien ne fonctionnent pas de la même manière. Pour comprendre ce qui les différencie, il faut savoir comment un OS tel que Linux gère les fichiers sur le disque dur.
+
+En résumant très grossièrement, chaque fichier, sur un disque dur, est séparé en trois parties :
+* Son nom;
+* Ses informations de gestion (droits d'accès);
+* Son contenu.
+
+La liste des noms de fichiers est stockée à un autre endroit que leur contenu et des informations sur les droits d'accès. Cette séparation aide Linux à s'organiser.
+
+Chaque contenu de fichier se voit attribuer un numéro d'identification appelé **inode**. Chaque nom de fichier est associé à un **inode** (son contenu).
+
+Un lien physique est plus rarement utilisé qu'un lien symbolique, mais il peut quand même se révéler pratique. Un lien physique permet d'avoir deux noms de fichiers qui partagent exactement le même contenu, c'est-à-dire le même inode. Ainsi, que nous passions par un fichier ou son lien physique, on modifie exactement le même contenu. En quelque sorte, le fichier est le même. On peut juste y accéder via deux noms de fichiers différents. On ne peut pas créer de liens physiques sur des répertoires, cela ne fonctionne qu'avec les fichiers, pour faire un "raccourci" vers un répertoire on préfèrera un lien symbolique. La commande **ln** créé des liens physiques par défaut. La syntaxe d'utilisation est la suivante **ln CIBLE HARD-LINK**. Pour vérifier que tout s'est bien passé, faire **ls -li** juste après (si dans même répertoire), l'option -i permet de visualiser les n° d'inodes et donc de confirmer que les 2 fichiers pointent bien vers le même inode. L'option -l ne nous permet que de savoir combien de liens physiques pointent vers le même inode, sans nous dire lequel est l'original duquel est le lien. L'inode est supprimé uniquement lorsque plus aucun nom de fichiers ne pointe dessus. Il faut donc supprimer la cible et le lien physique pour supprimer l'inode (le contenu).
+
+Les liens symboliques ressemblent plus aux "raccourcis" dont on peut avoir l'habitude sous Windows. La plupart du temps on crée des liens symboliques sous Linux pour faire un raccourci et non des liens physiques (qui sont un peu particuliers). Le principe est que l'on crée un lien vers un autre nom de fichier. Cette fois, on point vers le nom de fichier et non vers l'inode directement. On utilise la syntaxe suivante **ln -s CIBLE SOFT-LINK**. Ici, la commande **ls -l** est suffisante pour distinguer un lien symbolique : la première colonne, en sortie, donnera un **l** en 1ere position dans la liste des informations des droits d'accès (donne un **d** si c'est un dossier et rien si c'est un fichier) et la dernière colonne pointe vers la cible originale. Les liens symboliques sont plus faciles à repérer que les liens physiques. Qu'on ouvre la cible ou le lien, le contenu édité sera le même. Si on supprime le lien, rien de fâcheux ne se passe. Si on supprime la cible, alors on ne peut plus éditer le contenu depuis le lien, le contenu n'existant plus. Le lien pointera vers un fichier n'existant plus, donc sera inutile, le lien sera cassé. On parle alors de lien mort. L'avantage c'est qu'on peut créer un lien symbolique sur un répertoire contrairement aux liens physiques.
 ### Les utilisateurs et les droits
+#### Résumé personnalisé
 ### Nano, l'éditeur de texte du débutant
+#### Résumé personnalisé
 ### Installer des programmes avec apt-get
+#### Résumé personnalisé
 ### RTFM : lisez le manuel !
+#### Résumé personnalisé
 ### Rechercher des fichiers
+#### Résumé personnalisé
 ### Quiz 2
 ## Partie 3
 ### Extraire, trier et filtrer des données
+#### Résumé personnalisé
 ### Les flux de redirection
+#### Résumé personnalisé
 ### Surveiller l'activité du système
+#### Résumé personnalisé
 ### Exécuter des programmes en arrière-plan
+#### Résumé personnalisé
 ### Exécuter un programme à une heure différée
+#### Résumé personnalisé
 ### Quiz 3
 ## Partie 4
 ### Archiver et compresser
+#### Résumé personnalisé
 ### La connexion sécurisée à distance avec SSH
+#### Résumé personnalisé
 ### Transférer des fichiers
+#### Résumé personnalisé
 ### Analyser le réseau et filtrer le trafic avec un pare-feu
+#### Résumé personnalisé
 ### Compiler un programme depuis les sources
+#### Résumé personnalisé
 ### Quiz 4
 ## Partie 5
 ### Vim l'éditeur de texte du programmeur
+#### Résumé personnalisé
 ### Introduction aux scripts shell
+#### Résumé personnalisé
 ### Afficher et manipuler des variables
+#### Résumé personnalisé
 ### Les conditions
+#### Résumé personnalisé
 ### Les boucles
+#### Résumé personnalisé
 ### Les fonctions
+#### Résumé personnalisé
 ### TP : générateur de galerie d'images
+#### Résumé personnalisé
 ### Quiz 5
