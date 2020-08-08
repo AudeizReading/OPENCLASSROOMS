@@ -376,7 +376,66 @@ Un lien physique est plus rarement utilisé qu'un lien symbolique, mais il peut 
 
 Les liens symboliques ressemblent plus aux "raccourcis" dont on peut avoir l'habitude sous Windows. La plupart du temps on crée des liens symboliques sous Linux pour faire un raccourci et non des liens physiques (qui sont un peu particuliers). Le principe est que l'on crée un lien vers un autre nom de fichier. Cette fois, on point vers le nom de fichier et non vers l'inode directement. On utilise la syntaxe suivante **ln -s CIBLE SOFT-LINK**. Ici, la commande **ls -l** est suffisante pour distinguer un lien symbolique : la première colonne, en sortie, donnera un **l** en 1ere position dans la liste des informations des droits d'accès (donne un **d** si c'est un dossier et rien si c'est un fichier) et la dernière colonne pointe vers la cible originale. Les liens symboliques sont plus faciles à repérer que les liens physiques. Qu'on ouvre la cible ou le lien, le contenu édité sera le même. Si on supprime le lien, rien de fâcheux ne se passe. Si on supprime la cible, alors on ne peut plus éditer le contenu depuis le lien, le contenu n'existant plus. Le lien pointera vers un fichier n'existant plus, donc sera inutile, le lien sera cassé. On parle alors de lien mort. L'avantage c'est qu'on peut créer un lien symbolique sur un répertoire contrairement aux liens physiques.
 ### Les utilisateurs et les droits
+#### sudo : exécuter une commande en root
+#### adduser : gestion des utilisateurs
+#### addgroup : gestion des groupes
+#### chown : gestion des propriétaires d'un fichier
+#### chmod : modifier les droits d'accès
 #### Résumé personnalisé
+Un compte utilisateur a des droits limités dans un environnement Linux. Il s'agit d'une sécurité de ne pas avoir le droit de tout faire par défaut car certaines commandes peuvent être dangereuses pour la stabilité et la sécurité d'un ordinateur. Par exemple, un virus ne peut rien faire si on n'est simplement connecté en utilisateur normal, avec des droits limités.
+On peut créer autant d'utilisateurs que l'on veut, eux-mêmes répartis en groupe. Il y a un utilisateur spécial, **root**, appelé aussi *superutilisateur*. Il a tous les droits sur la machine. On ne se connecte à root que lorsque c'est nécessaire. Certaines commandes ne sont accessibles qu'en **root**. Ubuntu est une des rares distro à interdire de se logger en root (en début de session par exemple). On peut y accéder au besoin, mais "on ne peut pas ouvrir Ubuntu en root".
+
+La commande **sudo** permet de devenir **root** le temps d'une instruction. On nous demandera notre mot de passe. La commande **sudo su** permet de rester **root** indéfiniment. On quitte le mode **root** avec l'instruction **exit** ou le raccourci clavier **Ctrl + D**. Certaines distribution permettent d'accéder au compte root seulement avec **su**. En ajoutant **su -**, cela a pour effet de rendre accessibles certains programmes destinés seulement à root et cela nous déplace dans le répertoire de root.
+
+Pour gérer les utilisateurs, on peut mener plusieurs actions (on n'oublie de se mettre en root) :
+* Ajouter un utilisateur : **adduser** (si Debian) sinon **useradd** (commandes Unix traditionnelles, moins d'options). Un répertoire personnel est automatiquement créé et le compte préconfiguré. Après le **username**, on nous demandera d'entrer un **password** et de le confirmer. Puis on peut rentrer quelques informations personnelles telles que le nom de famille, le numéro de téléphone, etc.
+    adduser USERNAME
+* Modifier un mot de passe : **passwd**. Si on ne précise pas de quel utilisateur, on souhaite modifier le mot de passe, alors on modifie celui du compte sur lequel on est loggé... Faire très attention à ce détail !
+    passwd USERNAME
+* Supprimer un utilisateur : **deluser** (si Debian) sinon **userdel**. Attention, aucune confirmation ne sera demandée! Toutefois, la commande toute seule ne supprime pas le répertoire personnel /home, on utilise le drapeau **--remove-home**. Ne pas supprimer son propre compte, ou le compte sur lequel on est loggé sous peine de ne pouvoir se reconnecter au nouveau démarrage d'Ubuntu (impossible de se connecter en root !).
+    deluser [--remove-home] USERNAME
+Attention, avec **useradd**, il faut appeler la commande **passwd** pour créer le mot de passe du compte, sans quoi le compte ne sera pas activé
+
+Chaque utilisateur appartient à un groupe. Si on ne le définit, à la création de l'utilisateur, alors un groupe du même nom que celui de l'utilisateur se crée. L'intérêt des groupes utilisateurs permet de cloisonner les données que l'on souhaite partager, ou non.
+
+On ajoute un utilisateur à un groupe avec la commande **addgroup** (**groupadd** si non Debian)
+    addgroup GROUPE
+La commande **usermod** permet d'éditer un utilisateur. Elle possède plusieurs paramètres dont :
+* **-l** : renomme l'utilisateur (le répertoire personnel ne sera pas renommé);
+* **-g** : change de groupe
+* **-G** : pour que l'utilisateur appartienne à plusieurs groupes. Noms des groupes à déclarer après l'option en les séparant par des virgules, pas d'espaces entre les virgules, seulement entre les paramètres (les espaces).
+* **-a** : conserve les groupes auxquels appartenait l'utilisateur, à combiner avec -G si on ne souhaite qu'ajouter l'utilisateur à des groupes (sinon on perd les groupes).
+
+Pour supprimer un groupe, on utilise **delgroup** (**groupdel** si non Debian)
+    sudo delgroup GROUPE	
+
+Seul **root** peut changer le propriétaire d'un fichier.
+* **chown** :  change le propriétaire d'un fichier (peut aussi changer le groupe, on ajoute : après le nom du nouveau propriétaire ainsi que le nouveau nom de groupe)
+    sudo chown NEW-PROP[:NEW-GRP] FILE
+* **chgrp** : change le groupe d'un fichier
+    sudo chown NEW-GRP FILE
+L'option -R affecte récursivement les sous-dossiers
+
+Chaque fichier et chaque dossier possède une liste de droits. Cette liste indique qui a le droit de voir, modifier(/supprimer) ou exécuter un fichier/dossier. On peut trouver cette liste de droits avec la commande ls -l par exemple. Il s'agit de la première colonne en sortie de la commande:
+* **d** : indique si l'élément est un dossier
+* **l** : indique si l'élément est un lien
+* **r** : indique si l'élément est lisible
+* **w** : indique si l'élément est modifiable / supprimable
+* **x** : indique si l'élément est exécutable si c'est un fichier; si c'est un dossier, indique que l'on peut le traverser, c-à-d voir les sous-dossiers qu'il contient si on le droit de lecture dessus.
+Si la lettre apparaît, alors on a les droits, sinon il y a un tiret. Les droits sont découpés en fonction des utilisateurs, le premier triplet correspond au propriétaire du fichier, le deuxième au groupe du fichier et le derniers aux autres utilisateurs du fichier. root a tous les droits !
+On n'a pas besoin d'être root pour changer les droits d'un élément.
+On peut attribuer des droits avec des chiffres (**chmod** absolu) ou avec des lettres (**chmod** relatif)
+À chaque droit correspond un chiffre : 1 pour x, 2 pour w et 4 pour r. On les additionne pour donner le droit voulu. On répète l'action de sorte à se retrouver avec un triplet de droits : 777 donne les droits de lecture / écriture / exécution au proprio, au groupe et aux autres utilisateurs. Attention 000 retire tous les droits à tout le monde, sauf à root.
+    chmod 600 file
+Avec les lettres, le principe revient un peu au même, sauf qu'on peut paramétrer plus finement les droits.
+* **u** : user (propriétaire);
+* **g** : group (groupe);
+* **o** : other (autres);
+* **+** : ajouter le droit;
+* **-** : supprimer le droit;
+* **=** : affecter le droit;
+    chmod u+rx file
+L'option **-R** affecte récursivement les modifications.
 ### Nano, l'éditeur de texte du débutant
 #### Résumé personnalisé
 ### Installer des programmes avec apt-get
