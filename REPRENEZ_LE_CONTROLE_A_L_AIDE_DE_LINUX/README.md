@@ -445,7 +445,30 @@ On trouve ces fichiers en deux endroits:
 - Soit dans le répertoire personnel /home/USERNAME/.bashrc (s'il n'existe pas, on peut le créer, ou copier ici celui dans /etc, dans ce cas bien faire attention à être root). Le fichier de config du répertoire utilisateur prend la priorité sur le fichier de /etc/...
 Le **.profile** est lu dans chaque nouvelle console dans laquelle on se logge (login/mdp), c'est le cas des consoles qu'on ouvre avec la combinaison **Ctrl+Alt+Fn°** (tty1 à tty6). Le **.bashrc** est lu lorsqu'on ouvre une console dans laquelle on se ne se logge pas, c'est le cas des console qu'on ouvre en mode graphique (Terminal sous Unity, Konsole sous KDE). La subtilité c'est que .profile appelle .bashrc... DOnc il suffit de modifier .bashrc pour modifier les options de toutes les consoles.
 ### Installer des programmes avec apt-get
+#### Les paquets et leurs dépendances
+#### Les dépôts
+#### Les outils de gestion des paquets
+#### apt-get update : mettre à jour le cache des paquets
+#### apt-cache search : rechercher un paquet
+#### apt-get install : installer un paquet
+#### apt-get autoremove : supprimer un paquet
+#### apt-get upgrade : mettre à jour tous les paquets
 #### Résumé personnalisé
+Sous Linux, on n'installe pas un programme comme sous Windows. Ce dont on parlera ici, ne concerne que les distributions Debian. Chaque distro a sa propre façon d'installer un programme. C'est une différence majeure entre les distributions. Sous Ubuntu, on a des paquets à la place des programmes d'installation. Un paquet est une sorte de dossier zippé contenant touts les fichiers du programme. Son extension est **.deb** (pour Debian).
+Il y a deux différences notables entre un **.exe** et un **.deb** : il y a une gestion des dépendances du programmes et tous les **.deb** sont rassemblés au même endroit sur un même serveur appelé dépôt (repository) contrairement à Windows où il faut chercher son programme par navigateur.
+Un programme sous Linux utilise d'autres programmes ou bout de programmes qu'on appelle bibliothèques. On dit que les programmes dépendent d'autres programmes pour fonctionner : ils ont des dépendances. Sous Debian, chaque paquet indique de quels autres paquets il dépend. Cela permet au système d'aller récupérer les dépendances manquantes automatiquement au besoin.
+En fait, il existe un grand nombre de dépôts disposant tous des mêmes paquets afin de gérer l'afflux des nombreux Linuxiens. C'est donc à nous de choisir le dépôt à utiliser. Il est conseiller de choisir le serveur le plus proche géographiquement (pour un téléchargement plus rapide). En France, par défaut, Ubuntu utilise le dépôt **fr.archive.ubuntu.com**. Mais en cas de nouvelle version d'Ubuntu et de ses logiciels, celui-ci est surchargé et devient très lent. La liste des dépôts utilisés est stockée dans un fichier **/etc/apt/sources.list**. Le fichier contient des lignes avec des instructions commençant par **deb** ou **deb-src**. **deb-src** est utile si on souhaite récupéré le code source d'un programme, sinon on utilise majoritairement **deb**. En premier paramètre, on a l'adresse du dépôt, ensuite vient le nom de la distribution (focal pour WSL), puis la section du dépôt dans laquelle regarder. Pour changer le dépôt, il suffit de remplacer tous les **http://archive.ubuntu.com/ubuntu/** par l'adresse du serveur que l'on souhaite. On trouve un dépôt (des milliers existent) par moteur de recherche. On peut aussi faire la modification par l'outil graphique : Ubuntu -> Système -> Administration -> Sources de logiciels. C'est d'ailleurs plus pratique que d'éditer le fichier sources.list.
+
+Les deux programmes de gestion des paquets les plus connus sont **apt-get** et **aptitude**. **aptitude** est plus efficace pour désinstaller des paquets : il désinstalle les dépendances inutilisées. Cependant **apt-get** a évolué et peut le faire aussi.
+
+En général, il faut suivre 3 étapes pour télécharger un paquet :
+* **apt-get update** : met à jour le cache; Cela correspond à télécharger la nouvelle liste des paquets proposés par le dépôt. Il ne faut pas nécessairement mettre à jour son cache à chaque fois  que l'on veut télécharger un paquet. On le fait quand on change / ajoute un dépôt à sa liste de dépôts et quand ça fait un moment qu'on n'a pas mis à jour le cache. On update en tant que root.
+* **apt-cache search PAQUET** : pour rechercher un paquet dont on ne connait pas exactement le nom; cela évite d'aller chercher sur Internet le nom de son paquet. Pour une plus ample description on fait **apt-get show PAQUET**
+* **apt-get install PAQUET** : pour télécharger et installer un paquet. On installe en tant que root, car peut être que le programme a besoin d'accéder à des dépendances ou répertoires seulement accessibles en tant que root. Pas besoin de dézipper ou quoique ce soit, **apt-get** gère l'installation de A à Z.
+
+**apt-get remove PQT** supprime les paquets, **apt-get autoremove PQT** supprime les paquets et les dépendances. Et pour les gens qui ont WSL, pour un nettoyage en bonne et dûe forme, on fait **apt-get remove --auto-remove PQT** (pas d'autoremove).
+
+**apt-get upgrade** met à jour tous les paquets installés sur son système d'un seul coup. Il faut penser à faire un **apt-get update** avant d'upgrader les paquets. Il est conseillé de le faire souvent afin d'avoir le système le plus à jour possible. Cela permet de bénéficier des dernières fonctionnalités des logiciels, mais cela corrige aussi les failles de sécurité qui auraient pu être découvertes.
 ### RTFM : lisez le manuel !
 #### Résumé personnalisé
 ### Rechercher des fichiers
