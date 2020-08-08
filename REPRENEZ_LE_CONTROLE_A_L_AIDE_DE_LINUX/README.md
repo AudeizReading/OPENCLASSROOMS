@@ -470,7 +470,14 @@ En général, il faut suivre 3 étapes pour télécharger un paquet :
 
 **apt-get upgrade** met à jour tous les paquets installés sur son système d'un seul coup. Il faut penser à faire un **apt-get update** avant d'upgrader les paquets. Il est conseillé de le faire souvent afin d'avoir le système le plus à jour possible. Cela permet de bénéficier des dernières fonctionnalités des logiciels, mais cela corrige aussi les failles de sécurité qui auraient pu être découvertes.
 ### RTFM : lisez le manuel !
+#### man : afficher le manuel d'une commande
+#### Comprendre le SYNOPSIS
+#### apropos : trouver une commande
+#### D'autres façons de lire le manuel
 #### Résumé personnalisé
+Ici, on apprend à lire la documentation au sein de Linux. On utilise man, --help et parfois -h (mais vaut mieux utiliser le paramètre long, car il arrive que le paramètre court soit programmé pour une toute autre action).
+Pour obtenir un version française du manuel : **apt-get install manpages-fr** (attention, la version française n'est pas forcément à jour !).
+La commande **apropos** permet de chercher une commande par mots-clés, c'est un peu l'inverse du **man**. La commande **whatis** permet d'obtenir un court descriptif de la commande qu'on donne en paramètre.
 ### Rechercher des fichiers
 #### Résumé personnalisé
 ### Quiz 2
