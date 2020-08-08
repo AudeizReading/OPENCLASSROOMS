@@ -479,7 +479,24 @@ Ici, on apprend à lire la documentation au sein de Linux. On utilise man, --hel
 Pour obtenir un version française du manuel : **apt-get install manpages-fr** (attention, la version française n'est pas forcément à jour !).
 La commande **apropos** permet de chercher une commande par mots-clés, c'est un peu l'inverse du **man**. La commande **whatis** permet d'obtenir un court descriptif de la commande qu'on donne en paramètre.
 ### Rechercher des fichiers
+#### locate : une recherche rapide
+#### find : une recherche approfondie
 #### Résumé personnalisé
+**locate**, ou slocate ou encore mlocate, localise le(s) fichier(s) donné en paramètre
+    locate linux
+    Localise tous les fichiers dans le système en lien avec le mot Linux
+La commande effectue sa recherche dans la base de données des fichiers et ne parcourt pas tout le disque. Une fois par jour le système met à jour sa base de données, c'est peut-être pour cela qu'il ne donne pas toujours le résultat attendu, notamment dans le cas d'un fichier nouvellement créé mais non encore inclus dans la-dite base de données. Dans ces cas-là, on peut demander à la base de données de se mettre à jour par la commande **sudo updatedb**.
+
+Il y a aussi **find** qui est plus puissant, de par les options possibles et les actions à exécuter. On peut faire des opérations sur des fichiers. C'est une commande complexe.
+On l'utilise de cette façon : find "où" "quoi" "que-faire-avec". Seul le paramètre "quoi" (fichier à rechercher) est obligatoire. Le paramètre "où" nous demande dans quel endroit du disque rechercher, on peut juste lui demander de faire la recherche dans le répertoire /home plutôt que sur tout le disque. Avec "que-faire-avec", on peut demander des actions automatiques, des posts-traitements. L'action la plus courante consiste à afficher la liste des fichiers trouvés.
+Rechercher à partir d'un nom : **find -name FILENAME**
+Rechercher à partir d'un nom dans mon répertoire home : **find /home -name FILENAME**
+Il faut ajouter un wildcard dans le nom (début ou fin ou les deux) si on veut tout les fichiers comportant "FILENAME", sinon ne renvoie qu'exactement FILENAME.
+**find ~ -size +10M** Cherche dans mon /home les fichiers > 10 Mo. On utilisera le - pour des recherches "inférieures à".
+On peut également rechercher à partir de la date de dernier accès, en jour avec **-atime**, ou du type de fichier avec **-type**. On peut également les formater avec **-printf** (lire le man pour la syntaxe à utiliser). On peut aussi supprimer des fichiers avec **-delete**. Mais bien faire attention, car il n'y aura d'avertissement sur la suppression en cours.
+On peut aussi passer une commande à **-exec** :
+    find -name "*.jpg" -exec chmod 600 {} \;
+Et si on souhaite une confirmation de l'action, on remplace -exec par -ok
 ### Quiz 2
 ## Partie 3
 ### Extraire, trier et filtrer des données
