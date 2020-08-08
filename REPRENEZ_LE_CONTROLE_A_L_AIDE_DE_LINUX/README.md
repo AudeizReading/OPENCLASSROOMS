@@ -438,6 +438,12 @@ Avec les lettres, le principe revient un peu au même, sauf qu'on peut paramétr
 L'option **-R** affecte récursivement les modifications.
 ### Nano, l'éditeur de texte du débutant
 #### Résumé personnalisé
+Descriptif de l'utilisation de l'éditeur de texte Nano (perso, je suis sur Vim, donc je ne vais pas particulièrement m'étendre sur le sujet Nano). Nano s'inspire de pico, un éditeur de texte plus ancien. Le nom Nano vient du fait que l'éditeur est un tout petit programme (en comparaison avec emacs ou vim).
+On nous parle également dans ce chapitre des fichiers de configurations **.bashrc** ou encore **.profile**
+On trouve ces fichiers en deux endroits:
+- Soit dans le répertoire /etc/programme/fichier-de-config
+- Soit dans le répertoire personnel /home/USERNAME/.bashrc (s'il n'existe pas, on peut le créer, ou copier ici celui dans /etc, dans ce cas bien faire attention à être root). Le fichier de config du répertoire utilisateur prend la priorité sur le fichier de /etc/...
+Le **.profile** est lu dans chaque nouvelle console dans laquelle on se logge (login/mdp), c'est le cas des consoles qu'on ouvre avec la combinaison **Ctrl+Alt+Fn°** (tty1 à tty6). Le **.bashrc** est lu lorsqu'on ouvre une console dans laquelle on se ne se logge pas, c'est le cas des console qu'on ouvre en mode graphique (Terminal sous Unity, Konsole sous KDE). La subtilité c'est que .profile appelle .bashrc... DOnc il suffit de modifier .bashrc pour modifier les options de toutes les consoles.
 ### Installer des programmes avec apt-get
 #### Résumé personnalisé
 ### RTFM : lisez le manuel !
