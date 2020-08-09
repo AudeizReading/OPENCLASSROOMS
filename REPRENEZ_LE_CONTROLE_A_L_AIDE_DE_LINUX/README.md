@@ -556,41 +556,104 @@ Je ne me souviens plus de la façon dont on utilise la commande chown. Que dois-
 * Taper "help chown"
 ## Partie 3
 ### Extraire, trier et filtrer des données
+#### grep : filtrer des données
+#### sort : trier les lignes
+#### wc : compter le nombre de lignes
+#### uniq : supprimer les doublons
+#### cut : couper une partie du fichier
 #### Résumé personnalisé
 ### Les flux de redirection
+#### > et >> : rediriger le résultat dans un fichier
+#### 2>, 2>> et 2>&1 : rediriger les erreurs
+#### \< et \<\< : lire depuis un fichier ou le clavier
+#### | : chaîner les commandes
 #### Résumé personnalisé
 ### Surveiller l'activité du système
+#### w : qui fait quoi ?
+#### ps & top lister les processus
+#### Ctrl + C & kill : arrêter un processus
+#### halt & reboot : arrêter et redémarrer l'ordinateur
 #### Résumé personnalisé
 ### Exécuter des programmes en arrière-plan
+#### "&" et nohup : lancer un processus en arrière-plan
+#### Ctrl + Z, jobs, bg & fg : passer un processus en arrière-plan
+#### screen : plusieurs consoles en une
 #### Résumé personnalisé
 ### Exécuter un programme à une heure différée
+#### date : régler l'heure
+#### at : exécuter une commande
+#### sleep : faire une pause
+#### crontab : exécuter une commande régulièrement
 #### Résumé personnalisé
 ### Quiz 3
 ## Partie 4
 ### Archiver et compresser
+#### tar : assembler des fichiers dans une archive
+#### gzip & bzip2 : compresser une archive
+#### unzip & unrar : décompresser les .zip et .rar
 #### Résumé personnalisé
 ### La connexion sécurisée à distance avec SSH
+#### Se connecter à une console à distance
+#### De Telnet à SSH
+#### Comment sont chiffrés les échanges avec SSH
+#### Se connecter avec SSH et PuTTY
+#### L'identification automatique par clé
 #### Résumé personnalisé
 ### Transférer des fichiers
+#### wget : téléchargement de fichiers
+#### scp : copier des fichiers sur le réseau
+#### ftp & sftp : transférer des fichiers
+#### rsync : synchroniser des fichiers pour une sauvegarde
 #### Résumé personnalisé
 ### Analyser le réseau et filtrer le trafic avec un pare-feu
+#### host & whois : qui êtes-vous
+#### ifconfig & netstat : gérer et analyser le trafic réseau
+#### iptables : le pare-feu de référence
 #### Résumé personnalisé
 ### Compiler un programme depuis les sources
+#### Essayez d'abord de trouver un paquet .deb
+#### Quand il n'y a pas d'autre solution : la compilation
 #### Résumé personnalisé
 ### Quiz 4
 ## Partie 5
 ### Vim l'éditeur de texte du programmeur
+#### Installer Vim
+#### Les modes d'édition de Vim
+#### Opérations basiques (déplacement, écriture, enregistrement...)
+#### Opérations standard (copier, coller, annuler...)
+#### Opérations avancées (split, fusion, recherche...)
+#### Les options de Vim
 #### Résumé personnalisé
 ### Introduction aux scripts shell
+#### Qu'est-ce qu'un shell ?
+#### Notre premier script
+#### Exécuter le script bash
 #### Résumé personnalisé
 ### Afficher et manipuler des variables
+#### Déclarer une variable
+#### echo : afficher une variable
+#### read : demander une saisie
+#### Effectuer des opérations mathématiques
+#### Les variables d'environnement
+#### Les variables des paramètres
+#### Les tableaux
 #### Résumé personnalisé
 ### Les conditions
+#### if : la condition la plus simple
+#### Les tests
+#### case : tester plusieurs conditions à la fois
 #### Résumé personnalisé
 ### Les boucles
+#### while : boucler "tant que"
+#### for : boucler sur une liste de valeurs
 #### Résumé personnalisé
 ### Les fonctions
+#### Qu'est-ce qu'une fonction ?
+#### Comment déclarer une fonction ?
 #### Résumé personnalisé
 ### TP : générateur de galerie d'images
+#### Objectifs
+#### Solution
+#### Améliorations
 #### Résumé personnalisé
 ### Quiz 5
