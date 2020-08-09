@@ -219,7 +219,7 @@ Pour communiquer entre un ordinateur et un serveur, on passe par un protocole. I
 * **Telnet** : le protocole le plus basique, qui présente le gros défaut de ne pas crypter les données échangées.
 * **SSH** : c'est le protocole le plus utilisé car il permet de crypter les données et de sécurise la connexion avec le serveur.
 
-pour accéder à distance à un ordinateur sous Linux connecté au réseau, on a besoin d'un programme spécial capable de restituer la ligne de commande à distance. On n'est pas obligé d'être sous Linux pour ce faire, on peut très bien être sous Windows. Il existe plusieurs programmes capables de se connecter en SSH à serveur Linux, le plus célèbre sous Windows est sûrement PuTTY : il est gratuit, léger et ne nécessite pas d'installation, seulement un exécutable à lancer. On se rend sur le site du logiciel, on le downloade, puis on clique sur **putty.exe**. La fenêtre de configuration s'affiche. Dans la majorité des cas, on n'aura pas besoin d'aller farfouiller dans le volet des options à gauche. La première page est la plus importante, dans le champ **Host Name**, on renseigne le nom d'hôte du serveur (du style : nom.de.domaine.com), ou l'adresse Ip de la machine à laquelle se connecter. Vérifier que la connexion est bien de type SSH, puis cliquer sur le bouton **Open** en bas de la fenêtre. Il est tout à fait possible de se connecter à plusieurs serveurs différents et de conserver le nom d'hôte quelque part, dans la seconde partie de la fenêtre **Saved Sessions** c'est là que ça se passe.
+Pour accéder à distance à un ordinateur sous Linux connecté au réseau, on a besoin d'un programme spécial capable de restituer la ligne de commande à distance. On n'est pas obligé d'être sous Linux pour ce faire, on peut très bien être sous Windows. Il existe plusieurs programmes capables de se connecter en SSH à serveur Linux, le plus célèbre sous Windows est sûrement PuTTY : il est gratuit, léger et ne nécessite pas d'installation, seulement un exécutable à lancer. On se rend sur le site du logiciel, on le downloade, puis on clique sur **putty.exe**. La fenêtre de configuration s'affiche. Dans la majorité des cas, on n'aura pas besoin d'aller farfouiller dans le volet des options à gauche. La première page est la plus importante, dans le champ **Host Name**, on renseigne le nom d'hôte du serveur (du style : nom.de.domaine.com), ou l'adresse Ip de la machine à laquelle se connecter. Vérifier que la connexion est bien de type SSH, puis cliquer sur le bouton **Open** en bas de la fenêtre. Il est tout à fait possible de se connecter à plusieurs serveurs différents et de conserver le nom d'hôte quelque part, dans la seconde partie de la fenêtre **Saved Sessions** c'est là que ça se passe.
 
 À la première connexion, on nous demander si on veut stocker l'empreinte de ce dernier. C'est une sécurité pour vérifier que le serveur n'a pas changé depuis la dernière connexion et donc pour éviter que quelqu'un se fasse passer pour le serveur auquel on se connecte d'habitude. La fenêtre principale de PuTTY s'affiche alors en nous demandant de nous logger (log du compte administrant le serveur !) et de saisir le mot de passe associé. On alors accès à la console du serveur, comme si on était devant. Dans l'immédiat, on ne devrait pas avoir à se connecter à distance, tout ce qu'on va faire est plutôt situé en local.
 ### Entrer une commande
@@ -498,6 +498,62 @@ On peut aussi passer une commande à **-exec** :
     find -name "*.jpg" -exec chmod 600 {} \;
 Et si on souhaite une confirmation de l'action, on remplace -exec par -ok
 ### Quiz 2
+#### Compétences évaluées
+* Parcourir les répertoires et afficher les dossiers
+* Exécuter des commandes dans la console
+#### Question 1
+Quel est l'effet de la combinaison des touches suivante : Ctrl + Alt + F1
+* Redémarre l'ordinateur
+* Redémarre le serveur X
+* Ouvre une console en plein écran
+* Ouvre une console dans une fenêtre de l'interface graphique
+#### Question 2
+Vrai ou Faux ? Xindows est équipé par défaut d'un logiciel qui permet de se connecter à la console d'une machine Linux en SSH
+* Vrai
+* Faux
+#### Question 3
+Que signifie le symbole $ juste avant l'invite de commande ?
+* Vous n'avez pas acheté votre copie de Linux
+* Vous êtes connecté à Internet
+* Vous êtes connecté en tant qu'utilisateur normal (et non root)
+#### Question 4
+Comment pouvez-vous faire une recherche parmi les commandes déjà tapées dans la console
+* Ctrl + R
+* Ctrl + A
+* Ctrl + ?
+#### Question 5
+Comment lister les fichiers présents dans un répertoire ?
+* ls
+* pwd
+* cd
+#### Question 6
+Si mon nom d'utilisateur est mateo21 et que je tape "cd ~", dans quel répertoire vais-je me retrouver ?
+* /mateo21
+* /~
+* /home/mateo21
+* Une erreur s'affiche car le répertoire ~ n'existe pas
+#### Question 7
+Quel effet a la commande "rm"
+* Elle copie un fichier
+* Elle supprime un fichier
+* Elle envoie un fichier sur Internet
+* Elle met un fichier dans la corbeille
+#### Question 8
+Quelle commande permet d'afficher les premières lignes d'un fichier
+* head
+* tail
+* top
+#### Question 9
+Comment exécuter une commande en tant que root sans avoir à se logger en root ?
+* sudo
+* beroot
+* doitnow
+* Ce n'est pas possible
+#### Question 10
+Je ne me souviens plus de la façon dont on utilise la commande chown. Que dois-je faire ?
+* Crier sur les forums "A L'AIDE !!!"
+* Taper "man chown"
+* Taper "help chown"
 ## Partie 3
 ### Extraire, trier et filtrer des données
 #### Résumé personnalisé
