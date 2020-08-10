@@ -383,23 +383,33 @@ Les liens symboliques ressemblent plus aux "raccourcis" dont on peut avoir l'hab
 #### chmod : modifier les droits d'accès
 #### Résumé personnalisé
 Un compte utilisateur a des droits limités dans un environnement Linux. Il s'agit d'une sécurité de ne pas avoir le droit de tout faire par défaut car certaines commandes peuvent être dangereuses pour la stabilité et la sécurité d'un ordinateur. Par exemple, un virus ne peut rien faire si on n'est simplement connecté en utilisateur normal, avec des droits limités.
+
 On peut créer autant d'utilisateurs que l'on veut, eux-mêmes répartis en groupe. Il y a un utilisateur spécial, **root**, appelé aussi *superutilisateur*. Il a tous les droits sur la machine. On ne se connecte à root que lorsque c'est nécessaire. Certaines commandes ne sont accessibles qu'en **root**. Ubuntu est une des rares distro à interdire de se logger en root (en début de session par exemple). On peut y accéder au besoin, mais "on ne peut pas ouvrir Ubuntu en root".
 
 La commande **sudo** permet de devenir **root** le temps d'une instruction. On nous demandera notre mot de passe. La commande **sudo su** permet de rester **root** indéfiniment. On quitte le mode **root** avec l'instruction **exit** ou le raccourci clavier **Ctrl + D**. Certaines distribution permettent d'accéder au compte root seulement avec **su**. En ajoutant **su -**, cela a pour effet de rendre accessibles certains programmes destinés seulement à root et cela nous déplace dans le répertoire de root.
 
 Pour gérer les utilisateurs, on peut mener plusieurs actions (on n'oublie de se mettre en root) :
+
 * Ajouter un utilisateur : **adduser** (si Debian) sinon **useradd** (commandes Unix traditionnelles, moins d'options). Un répertoire personnel est automatiquement créé et le compte préconfiguré. Après le **username**, on nous demandera d'entrer un **password** et de le confirmer. Puis on peut rentrer quelques informations personnelles telles que le nom de famille, le numéro de téléphone, etc.
+    
     adduser USERNAME
+
 * Modifier un mot de passe : **passwd**. Si on ne précise pas de quel utilisateur, on souhaite modifier le mot de passe, alors on modifie celui du compte sur lequel on est loggé... Faire très attention à ce détail !
+    
     passwd USERNAME
+
 * Supprimer un utilisateur : **deluser** (si Debian) sinon **userdel**. Attention, aucune confirmation ne sera demandée! Toutefois, la commande toute seule ne supprime pas le répertoire personnel /home, on utilise le drapeau **--remove-home**. Ne pas supprimer son propre compte, ou le compte sur lequel on est loggé sous peine de ne pouvoir se reconnecter au nouveau démarrage d'Ubuntu (impossible de se connecter en root !).
+
     deluser [--remove-home] USERNAME
+
 Attention, avec **useradd**, il faut appeler la commande **passwd** pour créer le mot de passe du compte, sans quoi le compte ne sera pas activé
 
 Chaque utilisateur appartient à un groupe. Si on ne le définit, à la création de l'utilisateur, alors un groupe du même nom que celui de l'utilisateur se crée. L'intérêt des groupes utilisateurs permet de cloisonner les données que l'on souhaite partager, ou non.
 
 On ajoute un utilisateur à un groupe avec la commande **addgroup** (**groupadd** si non Debian)
+
     addgroup GROUPE
+
 La commande **usermod** permet d'éditer un utilisateur. Elle possède plusieurs paramètres dont :
 * **-l** : renomme l'utilisateur (le répertoire personnel ne sera pas renommé);
 * **-g** : change de groupe
@@ -407,26 +417,37 @@ La commande **usermod** permet d'éditer un utilisateur. Elle possède plusieurs
 * **-a** : conserve les groupes auxquels appartenait l'utilisateur, à combiner avec -G si on ne souhaite qu'ajouter l'utilisateur à des groupes (sinon on perd les groupes).
 
 Pour supprimer un groupe, on utilise **delgroup** (**groupdel** si non Debian)
+
     sudo delgroup GROUPE	
 
 Seul **root** peut changer le propriétaire d'un fichier.
+
 * **chown** :  change le propriétaire d'un fichier (peut aussi changer le groupe, on ajoute : après le nom du nouveau propriétaire ainsi que le nouveau nom de groupe)
+    
     sudo chown NEW-PROP[:NEW-GRP] FILE
+
 * **chgrp** : change le groupe d'un fichier
+
     sudo chown NEW-GRP FILE
+
 L'option -R affecte récursivement les sous-dossiers
 
 Chaque fichier et chaque dossier possède une liste de droits. Cette liste indique qui a le droit de voir, modifier(/supprimer) ou exécuter un fichier/dossier. On peut trouver cette liste de droits avec la commande ls -l par exemple. Il s'agit de la première colonne en sortie de la commande:
+
 * **d** : indique si l'élément est un dossier
 * **l** : indique si l'élément est un lien
 * **r** : indique si l'élément est lisible
 * **w** : indique si l'élément est modifiable / supprimable
 * **x** : indique si l'élément est exécutable si c'est un fichier; si c'est un dossier, indique que l'on peut le traverser, c-à-d voir les sous-dossiers qu'il contient si on le droit de lecture dessus.
+
 Si la lettre apparaît, alors on a les droits, sinon il y a un tiret. Les droits sont découpés en fonction des utilisateurs, le premier triplet correspond au propriétaire du fichier, le deuxième au groupe du fichier et le derniers aux autres utilisateurs du fichier. root a tous les droits !
 On n'a pas besoin d'être root pour changer les droits d'un élément.
+
 On peut attribuer des droits avec des chiffres (**chmod** absolu) ou avec des lettres (**chmod** relatif)
 À chaque droit correspond un chiffre : 1 pour x, 2 pour w et 4 pour r. On les additionne pour donner le droit voulu. On répète l'action de sorte à se retrouver avec un triplet de droits : 777 donne les droits de lecture / écriture / exécution au proprio, au groupe et aux autres utilisateurs. Attention 000 retire tous les droits à tout le monde, sauf à root.
+
     chmod 600 file
+
 Avec les lettres, le principe revient un peu au même, sauf qu'on peut paramétrer plus finement les droits.
 * **u** : user (propriétaire);
 * **g** : group (groupe);
@@ -439,10 +460,13 @@ L'option **-R** affecte récursivement les modifications.
 ### Nano, l'éditeur de texte du débutant
 #### Résumé personnalisé
 Descriptif de l'utilisation de l'éditeur de texte Nano (perso, je suis sur Vim, donc je ne vais pas particulièrement m'étendre sur le sujet Nano). Nano s'inspire de pico, un éditeur de texte plus ancien. Le nom Nano vient du fait que l'éditeur est un tout petit programme (en comparaison avec emacs ou vim).
+
 On nous parle également dans ce chapitre des fichiers de configurations **.bashrc** ou encore **.profile**
+
 On trouve ces fichiers en deux endroits:
 - Soit dans le répertoire /etc/programme/fichier-de-config
 - Soit dans le répertoire personnel /home/USERNAME/.bashrc (s'il n'existe pas, on peut le créer, ou copier ici celui dans /etc, dans ce cas bien faire attention à être root). Le fichier de config du répertoire utilisateur prend la priorité sur le fichier de /etc/...
+
 Le **.profile** est lu dans chaque nouvelle console dans laquelle on se logge (login/mdp), c'est le cas des consoles qu'on ouvre avec la combinaison **Ctrl+Alt+Fn°** (tty1 à tty6). Le **.bashrc** est lu lorsqu'on ouvre une console dans laquelle on se ne se logge pas, c'est le cas des console qu'on ouvre en mode graphique (Terminal sous Unity, Konsole sous KDE). La subtilité c'est que .profile appelle .bashrc... DOnc il suffit de modifier .bashrc pour modifier les options de toutes les consoles.
 ### Installer des programmes avec apt-get
 #### Les paquets et leurs dépendances
@@ -457,6 +481,7 @@ Le **.profile** est lu dans chaque nouvelle console dans laquelle on se logge (l
 Sous Linux, on n'installe pas un programme comme sous Windows. Ce dont on parlera ici, ne concerne que les distributions Debian. Chaque distro a sa propre façon d'installer un programme. C'est une différence majeure entre les distributions. Sous Ubuntu, on a des paquets à la place des programmes d'installation. Un paquet est une sorte de dossier zippé contenant touts les fichiers du programme. Son extension est **.deb** (pour Debian).
 Il y a deux différences notables entre un **.exe** et un **.deb** : il y a une gestion des dépendances du programmes et tous les **.deb** sont rassemblés au même endroit sur un même serveur appelé dépôt (repository) contrairement à Windows où il faut chercher son programme par navigateur.
 Un programme sous Linux utilise d'autres programmes ou bout de programmes qu'on appelle bibliothèques. On dit que les programmes dépendent d'autres programmes pour fonctionner : ils ont des dépendances. Sous Debian, chaque paquet indique de quels autres paquets il dépend. Cela permet au système d'aller récupérer les dépendances manquantes automatiquement au besoin.
+
 En fait, il existe un grand nombre de dépôts disposant tous des mêmes paquets afin de gérer l'afflux des nombreux Linuxiens. C'est donc à nous de choisir le dépôt à utiliser. Il est conseiller de choisir le serveur le plus proche géographiquement (pour un téléchargement plus rapide). En France, par défaut, Ubuntu utilise le dépôt **fr.archive.ubuntu.com**. Mais en cas de nouvelle version d'Ubuntu et de ses logiciels, celui-ci est surchargé et devient très lent. La liste des dépôts utilisés est stockée dans un fichier **/etc/apt/sources.list**. Le fichier contient des lignes avec des instructions commençant par **deb** ou **deb-src**. **deb-src** est utile si on souhaite récupéré le code source d'un programme, sinon on utilise majoritairement **deb**. En premier paramètre, on a l'adresse du dépôt, ensuite vient le nom de la distribution (focal pour WSL), puis la section du dépôt dans laquelle regarder. Pour changer le dépôt, il suffit de remplacer tous les **http://archive.ubuntu.com/ubuntu/** par l'adresse du serveur que l'on souhaite. On trouve un dépôt (des milliers existent) par moteur de recherche. On peut aussi faire la modification par l'outil graphique : Ubuntu -> Système -> Administration -> Sources de logiciels. C'est d'ailleurs plus pratique que d'éditer le fichier sources.list.
 
 Les deux programmes de gestion des paquets les plus connus sont **apt-get** et **aptitude**. **aptitude** est plus efficace pour désinstaller des paquets : il désinstalle les dépendances inutilisées. Cependant **apt-get** a évolué et peut le faire aussi.
@@ -477,25 +502,37 @@ En général, il faut suivre 3 étapes pour télécharger un paquet :
 #### Résumé personnalisé
 Ici, on apprend à lire la documentation au sein de Linux. On utilise man, --help et parfois -h (mais vaut mieux utiliser le paramètre long, car il arrive que le paramètre court soit programmé pour une toute autre action).
 Pour obtenir un version française du manuel : **apt-get install manpages-fr** (attention, la version française n'est pas forcément à jour !).
+
 La commande **apropos** permet de chercher une commande par mots-clés, c'est un peu l'inverse du **man**. La commande **whatis** permet d'obtenir un court descriptif de la commande qu'on donne en paramètre.
 ### Rechercher des fichiers
 #### locate : une recherche rapide
 #### find : une recherche approfondie
 #### Résumé personnalisé
 **locate**, ou slocate ou encore mlocate, localise le(s) fichier(s) donné en paramètre
+
     locate linux
     Localise tous les fichiers dans le système en lien avec le mot Linux
+
 La commande effectue sa recherche dans la base de données des fichiers et ne parcourt pas tout le disque. Une fois par jour le système met à jour sa base de données, c'est peut-être pour cela qu'il ne donne pas toujours le résultat attendu, notamment dans le cas d'un fichier nouvellement créé mais non encore inclus dans la-dite base de données. Dans ces cas-là, on peut demander à la base de données de se mettre à jour par la commande **sudo updatedb**.
 
 Il y a aussi **find** qui est plus puissant, de par les options possibles et les actions à exécuter. On peut faire des opérations sur des fichiers. C'est une commande complexe.
+
 On l'utilise de cette façon : find "où" "quoi" "que-faire-avec". Seul le paramètre "quoi" (fichier à rechercher) est obligatoire. Le paramètre "où" nous demande dans quel endroit du disque rechercher, on peut juste lui demander de faire la recherche dans le répertoire /home plutôt que sur tout le disque. Avec "que-faire-avec", on peut demander des actions automatiques, des posts-traitements. L'action la plus courante consiste à afficher la liste des fichiers trouvés.
+
 Rechercher à partir d'un nom : **find -name FILENAME**
+
 Rechercher à partir d'un nom dans mon répertoire home : **find /home -name FILENAME**
+
 Il faut ajouter un wildcard dans le nom (début ou fin ou les deux) si on veut tout les fichiers comportant "FILENAME", sinon ne renvoie qu'exactement FILENAME.
+
 **find ~ -size +10M** Cherche dans mon /home les fichiers > 10 Mo. On utilisera le - pour des recherches "inférieures à".
+
 On peut également rechercher à partir de la date de dernier accès, en jour avec **-atime**, ou du type de fichier avec **-type**. On peut également les formater avec **-printf** (lire le man pour la syntaxe à utiliser). On peut aussi supprimer des fichiers avec **-delete**. Mais bien faire attention, car il n'y aura d'avertissement sur la suppression en cours.
+
 On peut aussi passer une commande à **-exec** :
+
     find -name "*.jpg" -exec chmod 600 {} \;
+
 Et si on souhaite une confirmation de l'action, on remplace -exec par -ok
 ### Quiz 2
 #### Compétences évaluées
