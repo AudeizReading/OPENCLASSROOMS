@@ -392,15 +392,15 @@ Pour gérer les utilisateurs, on peut mener plusieurs actions (on n'oublie de se
 
 * Ajouter un utilisateur : **adduser** (si Debian) sinon **useradd** (commandes Unix traditionnelles, moins d'options). Un répertoire personnel est automatiquement créé et le compte préconfiguré. Après le **username**, on nous demandera d'entrer un **password** et de le confirmer. Puis on peut rentrer quelques informations personnelles telles que le nom de famille, le numéro de téléphone, etc.
     
-    adduser USERNAME
+        adduser USERNAME
 
 * Modifier un mot de passe : **passwd**. Si on ne précise pas de quel utilisateur, on souhaite modifier le mot de passe, alors on modifie celui du compte sur lequel on est loggé... Faire très attention à ce détail !
     
-    passwd USERNAME
+        passwd USERNAME
 
 * Supprimer un utilisateur : **deluser** (si Debian) sinon **userdel**. Attention, aucune confirmation ne sera demandée! Toutefois, la commande toute seule ne supprime pas le répertoire personnel /home, on utilise le drapeau **--remove-home**. Ne pas supprimer son propre compte, ou le compte sur lequel on est loggé sous peine de ne pouvoir se reconnecter au nouveau démarrage d'Ubuntu (impossible de se connecter en root !).
 
-    deluser [--remove-home] USERNAME
+        deluser [--remove-home] USERNAME
 
 Attention, avec **useradd**, il faut appeler la commande **passwd** pour créer le mot de passe du compte, sans quoi le compte ne sera pas activé
 
