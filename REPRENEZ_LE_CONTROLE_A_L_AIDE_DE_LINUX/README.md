@@ -607,6 +607,7 @@ Cette commande nous permet de couper du texte au sein d'un fichier. On peut coup
     cut -d , -f 1 FILENAME : le délimiteur séparant les champs est ",", on ne conserve que le 1er champ
     cut -d , -f 1,3 FILENAME : pareil mais on garde les champs 1 et 3
     cut -d , -f 1-3 FILENAME : pareil mais on garde les champs 1 à 3
+
 On peut utiliser les mêmes façons d'indiquer les caractères pour les champs.
 ### Les flux de redirection
 #### > et >> : rediriger le résultat dans un fichier
