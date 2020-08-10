@@ -657,6 +657,9 @@ On peut utiliser les mêmes façons d'indiquer les caractères pour les champs.
 #### \< et \<\< : lire depuis un fichier ou le clavier
 #### | : chaîner les commandes
 #### Résumé personnalisé
+Il est possible de rediriger le résultat d'une commande, que ce soit dans un fichier ou en entrée d'une autre commande. On appelle cela chaîner les flux de redirection.
+
+
 ### Surveiller l'activité du système
 #### w : qui fait quoi ?
 #### ps & top lister les processus
