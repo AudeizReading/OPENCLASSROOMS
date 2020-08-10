@@ -563,6 +563,7 @@ Je ne me souviens plus de la façon dont on utilise la commande chown. Que dois-
 #### cut : couper une partie du fichier
 #### Résumé personnalisé
 **grep** cherche un mot ou une regexp dans un fichier et affiche les lignes dans lesquelles le mot a été trouvé.
+
     grep texte FILENAME
     -i : insensible à la casse
     -n : n° des lignes où le pattern est trouvé
@@ -572,6 +573,7 @@ Je ne me souviens plus de la façon dont on utilise la commande chown. Que dois-
 
 **sort**
 D'abord on crée un fichier de nom afin de pouvoir s'entraîner avec la commande (donc, oui je vais le pusher également, mais c'est dans le but de me remettre à niveau en git/vim/shell).
+
     sort FILENAME
     -o : écrire le résultat dans un fichier 
     sort -o DEST SOURCE
@@ -582,6 +584,7 @@ On crée aussi un fichier de nombres pour les trier...
 
 **wc**
 Commande très utile pour compter les mots, les lignes, les octets ou encore les caractères dans un fichier. Sans option donnée, **wc** affiche le nombre de lignes, le nombre de mots et le nombre d'octets du fichier passé en paramètre.
+
     wc [OPT]... [FILENAME]...
     -l : compter le nombre de lignes
     -w : compter le nombre de mots
@@ -590,6 +593,7 @@ Commande très utile pour compter les mots, les lignes, les octets ou encore les
 
 **uniq**
 Il s'agit d'une commande permettant de détecter et supprimer les lignes en doublons dans un fichier. On peut rediriger la sortie dans un fichier. La commande ne repère que les lignes successives identiques, donc il faut travailler sur un fichier trié avec **sort**. La syntaxe est la suivante : 
+
     uniq [OPT]... [INPUT[OUTPUT]]
     -c : compter le nombre d'occurrences
     -d : afficher uniquement les lignes présentes en double
@@ -597,6 +601,7 @@ Il s'agit d'une commande permettant de détecter et supprimer les lignes en doub
 
 **cut**
 Cette commande nous permet de couper du texte au sein d'un fichier. On peut couper selon un nombre de caractères, selon un délimitateur défini ou encore selon un champ ou un ensemble de champs. Attention, la commande a du mal avec les lettres accentuées car elle se réfère au nombre d'octets et non au nombre de caractères. Une lettre accentuée occupe deux octets.
+
     cut OPTION [FILE]
     -c : couper selon le nombre de caractères
     cut -c 2-5 FILENAME : conserve les caractères 2 à 5
