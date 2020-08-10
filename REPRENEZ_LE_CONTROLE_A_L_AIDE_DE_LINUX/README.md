@@ -562,6 +562,52 @@ Je ne me souviens plus de la façon dont on utilise la commande chown. Que dois-
 #### uniq : supprimer les doublons
 #### cut : couper une partie du fichier
 #### Résumé personnalisé
+**grep** cherche un mot ou une regexp dans un fichier et affiche les lignes dans lesquelles le mot a été trouvé.
+    grep texte FILENAME
+    -i : insensible à la casse
+    -n : n° des lignes où le pattern est trouvé
+    -v : ignorer un mot
+    -r : recherche récursive -> rgrep
+    -E : regexp -> egrep
+
+**sort**
+D'abord on crée un fichier de nom afin de pouvoir s'entraîner avec la commande (donc, oui je vais le pusher également, mais c'est dans le but de me remettre à niveau en git/vim/shell).
+    sort FILENAME
+    -o : écrire le résultat dans un fichier 
+    sort -o DEST SOURCE
+    -r : trier en ordre inverse
+    -R : trier aléatoirement
+    -n : trier les nombres
+On crée aussi un fichier de nombres pour les trier...
+
+**wc**
+Commande très utile pour compter les mots, les lignes, les octets ou encore les caractères dans un fichier. Sans option donnée, **wc** affiche le nombre de lignes, le nombre de mots et le nombre d'octets du fichier passé en paramètre.
+    wc [OPT]... [FILENAME]...
+    -l : compter le nombre de lignes
+    -w : compter le nombre de mots
+    -c : compter le nombre d'octets
+    -m : compter le nombre de caractères
+
+**uniq**
+Il s'agit d'une commande permettant de détecter et supprimer les lignes en doublons dans un fichier. On peut rediriger la sortie dans un fichier. La commande ne repère que les lignes successives identiques, donc il faut travailler sur un fichier trié avec **sort**. La syntaxe est la suivante : 
+    uniq [OPT]... [INPUT[OUTPUT]]
+    -c : compter le nombre d'occurrences
+    -d : afficher uniquement les lignes présentes en double
+    -u : afficher les lignes uniques
+
+**cut**
+Cette commande nous permet de couper du texte au sein d'un fichier. On peut couper selon un nombre de caractères, selon un délimitateur défini ou encore selon un champ ou un ensemble de champs. Attention, la commande a du mal avec les lettres accentuées car elle se réfère au nombre d'octets et non au nombre de caractères. Une lettre accentuée occupe deux octets.
+    cut OPTION [FILE]
+    -c : couper selon le nombre de caractères
+    cut -c 2-5 FILENAME : conserve les caractères 2 à 5
+    cut -c -3 FILENAME : coupe à partir du 3e caractère
+    cut -c 3- FILENAME : conserve à partir du 3e caractère
+    -d : couper selon un délimiteur
+    -f : conserve selon un champ (à spécifier par n° d'index)
+    cut -d , -f 1 FILENAME : le délimiteur séparant les champs est ",", on ne conserve que le 1er champ
+    cut -d , -f 1,3 FILENAME : pareil mais on garde les champs 1 et 3
+    cut -d , -f 1-3 FILENAME : pareil mais on garde les champs 1 à 3
+On peut utiliser les mêmes façons d'indiquer les caractères pour les champs.
 ### Les flux de redirection
 #### > et >> : rediriger le résultat dans un fichier
 #### 2>, 2>> et 2>&1 : rediriger les erreurs
