@@ -805,6 +805,64 @@ Pour arrêter ou redémarrer son ordinateur, on utilise **halt** ou **reboot**, 
 #### Ctrl + Z, jobs, bg & fg : passer un processus en arrière-plan
 #### screen : plusieurs consoles en une
 #### Résumé personnalisé
+On lance un processus en arrière plan quand on a besoin de sa console et que l'opération peut prendre un certain temps et être très "bavarde". Cela a l'avantage d'éviter d'ouvrir une autre console pour faire ce qu'on a besoin.
+
+**&** lance un processus en arrière-plan. On peut aussi rediriger les flux std et err afin d'éviter d'être envahi par les retours. C'est très utile dans les cas où on ne peut qu'ouvrir une seule console.
+
+    $ find / -name "*log" > sortiefind 2>& &
+    [1] 18231  -> n° processus en arrière-plan + n° PID
+
+L'inconvénient de cette technique, c'est qu'elle est liée à la console utilisée. Si on la ferme, on perd le processus qui ne pourra s'exécuter jusqu'à la fin. Pour pallier à ça, on utilise la commande **nohup** qui détache le processus de la console de laquelle il a été lancé.
+
+    $ nohup commande
+    
+    $ nohup cp video.avi copie_video.avi
+    nohup: ajout à la sortie de \`nohup.out\`
+
+Les sorties sont renvoyées vers nohup.out, donc pas besoin de rediriger les flux comme avec &. Cette commande est très utile quand on se connecte à un serveur. En effet, on pourra quitter la ligne de commande et se déconnecter tout en effectuant les tâches nécessaires à la maintenance d'un serveur par exemple.
+
+**Ctrl + Z** permet de mettre en pause l'exécution d'un programme. Celui-ci s'arrête et on peut reprendre la main sur la console. À l'issue de la frappe, s'affiche son n° de processus (entre crochets), son état ainsi que le nom de la commande concernée par la mise en pause. Le programme reste quand même en mémoire, mais ne s'exécute plus. Pour relancer le-dit programme en arrière-plan on tape **bg**
+
+    $ bg
+    [1]+ top &
+
+La console nous répond qu'elle a repris l'exécution de la commande (top pour l'exemple) en arrière-plan (c'est l'ampersand qui nous le confirme).
+
+On peut envoyer autant de processus en arrière-plan que l'on souhaite, soit en les lançant avec **&** en fin de commande, soit en utilisant **Ctrl + Z** sur la dernière tâche lancée au premier plan, suivi de **bg**.
+
+Pour connaître tous les processus tournant en arrière-plan, la commande **jobs** existe. Elle donne la liste des processus en arrière-plan avec leur numéro de processus, leur état et la commande concernée.
+
+On peut reprendre un processus au premier plan avec **fg**. On précise le numéro de job concerné.
+    
+    fg %2 -> renvoie au premier plan le job n°2 lancé en background
+
+**screen** est une commande un peu particulière et qui n'est pas toujours installée sur une machine. C'est un multiplicateur de terminal. Ce programme peut gérer plusieurs consoles en une seule, comme si chaque console était une fenêtre. Le programme permet entre autre de mettre en veille prolongée une console.
+    
+    screen -> Lance l'émulateur de console (peut nécessiter un sudo avant)
+
+
+    Ctrl + D ou exit -> Quitte le programme
+    Ctrl + a puis ? -> Affiche l'aide pour utiliser screen
+    Ctrl + a puis v -> Affiche la version de screen
+    Ctrl + a puis c -> Crée une nouvelle fenêtre
+    Ctrl + a puis w -> Affiche la liste des fenêtres ouvertes
+    Ctrl + a puis A -> Renomme la fenêtre actuel, le nom apparaît après avoir basculé de fenêtre
+    Ctrl + a puis n -> Passer à la fenêtre suivante
+    Ctrl + a puis p -> Passer à la fenêtre précédente
+    Ctrl + a puis Ctrl + A -> Revenir à la dernière fenêtre utilisée
+    Ctrl + a puis un chiffre de 0 à 9 -> Passer à la fenêtre n° X
+    Ctrl + a puis " -> Choisir la fenêtre dans laquelle on veut aller
+    Ctrl + a puis k -> Fermer la fenêtre actuelle
+    Ctrl + a puis S -> Découper screen en plusieurs parties (split) 
+    Ctrl + a puis \<Tab\> -> Passer d'une fenêtre à l'autre en mode split. Si fenêtre de déplacement vide, en créer une nouvelle avec Ctrl + a puis c, en choisir une numérotées
+    Ctrl + a puis X -> Ferme une fenêtre splittée
+    Ctrl + a puis s -> Détache screen de la console (le bascule en bg)
+
+    screen -r [PID] -> Récupère la session détachée n° PID
+    screen -ls -> Liste des screens ouverts
+
+Certaines personnes ont l'habitude de tout faire sur screen, notamment sur les serveurs.  
+Il est possible de personnaliser son screen via un fichier de configuration. Il doit être placé dans son répertoire utilisateur (comme pour .bashrc) et s'appeler .screenrc.
 ### Exécuter un programme à une heure différée
 #### date : régler l'heure
 #### at : exécuter une commande
