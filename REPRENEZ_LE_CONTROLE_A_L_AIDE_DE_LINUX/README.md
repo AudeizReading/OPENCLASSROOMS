@@ -747,6 +747,59 @@ Les espaces avant et après le pipe ne sont pas obligatoires, c'est juste une qu
 #### Ctrl + C & kill : arrêter un processus
 #### halt & reboot : arrêter et redémarrer l'ordinateur
 #### Résumé personnalisé
+Linux est un système multi-tâches : il peut gérer plusieurs programmes tournant en même temps. Mieux encore, comme c'est un systèmes **multi-utilisateurs**, il est en mesure de gérer en même temps les programmes tournant en même temps lancés par différents utilisateurs. Pour gérer tout cela sous Windows, on utilise la combinaison **Ctrl + Alt + Suppr** (donne accès à l'interface permettant d'ouvrir le gestionnaire de tâches), mais sous Linux on utilise d'autres outils.
+
+La commande **w** montre qui est loggé et qu'y fait ce "qui". Cela permet de voir si une machine est surchargée et à quel point. Si on utilise Linux depuis son ordinateur personnel, on devrait normalement être le seul à l'utiliser. Pour que d'autres personnes puissent s'y connecter via Internet, il faut avoir configuré Linux pour.
+(w ne semble pas fonctionner sur WSL comme sur un Linux traditionnel, il considère 0 utilisateur, donc informations vide, alors qu'il indique bien depuis quand la console est ouverte... j'ai testé avec l'émulateur git, c'est encore mieux : il ne reconnaît pas du tout w... et comme il n'y a pas de programmes apt avec git bash... faudra que je me contente de l'illustration du cours).
+
+    $ w
+    16:50:30 up  8:50,  2 users,  load average: 0,08, 0,34, 0,31
+    USER    TTY      FROM            LOGIN@   IDLE   JCPU   PCPU  WHAT
+
+Descriptif de l'affiche :
+* L'heure : **16:50:30** -> **date**
+* L'uptime : **up  8:50** -> **uptime**. C'est la durée de fonctionnement de l'ordianteur. Depuis combien de temps il est allumé. En général, l'uptime des serveurs est élevé, on a rarement besoin de les redémarrer. Linux n'a pas besoin d'être rebooté à l'installation de programmes (sauf MàJ noyau). Cela démontrer la robustesse de ce système.
+* La charge : **load average: 0,08, 0,34, 0,31** -> **uptime** ou **tload**. La charge est un indice de l'activité de l'ordinateur : charge moyenne depuis 1, 5 et 15 minutes. Il s'agit du nombre moyen de processus (programmes) en train de tourner et nécessitant l'utilisation du processeur. Ce nombre dépend du nombre de processeurs de l'ordinateur. Quand la charge est très élevée pendant une longue période, c'est en général qu'il y a un problème. Si trop de programmes tournent en même temps, l'ordinateur aura du mal à répondre en cas de forte charge. On peut obtenir un graphique de l'évolution de la charge en console grâce à la commande **tload**. On la quitte avec **Ctrl + C**.
+* La liste des connectés : **USER    TTY      FROM            LOGIN@   IDLE   JCPU   PCPU  WHAT** -> **who**
+    * **USER** : login utilisateur
+    * **TTY** : le nom de la console utilisée par l'utilisateur
+    * **FROM** : l'adresse IP depuis laquelle l'utilisateur se connecte. Si connexion en local, il n'y a pas vraiment d'adresse IP.
+    * **LOGIN@** : l'heure à laquelle l'utilisateur s'est connecté
+    * **IDLE** : depuis combien de temps l'utilisateur est inactif (combien de temps il n'a pas lancée de commande)
+    * **WHAT** : la commande qui est en train d'être exécutée.
+
+Si on se voit 2 fois dans ce listing, c'est possiblement du au fait qu'on utilise l'interface graphique et une console en même temps.
+Outre les utilisateurs, on peut voir quels sont les processus tournant sur la machine. Un processus est un programme qui tourne en mémoire. La plupart des programmes ne fonct tourner qu'un processus en mémoire (une seule version d'eux-mêmes), tel qu'OpenOffice (le cours est tellement à jour qu'on ne peut pas savoir qu'il s'agit de Libre Office à présent, et si ça fait comme au quiz 2, qu'on te pose une question de fonctionnement sur Windows 7 mais qu'on te donne la réponse concernant Windows 10...Hein Windows fall update et outil ssh installé par défaut...on se demande bien pourquoi il y a un chapitre entier sur l'installation de PuTTY et que les infos ne sont pas mises à jour... bref, ça râle). D'autres programmes lancent des copies d'eux-mêmes, Google Chrome fonctionne ainsi, il y a autat de processus en mémoire que d'onglets ouverts dans le navigateur.  
+Sur un serveur web, on utilise, en général, Apache. Ce logiciel crée beaucoup de processus pour séparer ses activités. Il en va de même pour les système de gestion de base de données, comme MySQL.  
+Dans la liste des processus, il est possible qu'il y ait des programmes que nous n'avons pas lancés, c'est normal c'est l'OS qui s'en est chargé.
+
+**ps** nous donne la liste des processus qui tournent au même moment où on lance la commande. Cette liste n'est pas actualisée en temps réel contrairement à **top**. **ps** sans paramètre nous affiche 4 colonnes : le **PID**, n° d'identification du processus qui sera utile quand on voudra l'arrêter, le **TTY**, le terminal depuis lequel le processus est lancé, le **TIME**, la durée pendant laquelle le processus a occupé le processeur depuis son lancement et le **CMD**, le programme qui a généré le processus. Sans argument, la commande ne retourne que les processus générés par l'utilisateur, dans le terminal ouvert.
+
+    ps -ef -> liste tous les processus
+    ps -ejH -> affiche les processus en arbre
+    ps -u USERNAME -> affiche les processus de USERNAME
+
+**top** affiche dynamiquement les processus, c'est-à-dire que les processus en cours de fonctionnement sont régulièrement mis à jour. En haut, on retrouve l'uptime et la charge mais aussi la quantité de processeur et de mémoire utilisée. Tous les processus ne peuvent être affichés en même temps, car **top** ne conserve que les premiers afin de faire tenir les informations sur une seule page de console. Par défaut, les processus sont triés par taux d'utilisation du processeur. Les plus gourmands sont en haut de pile. On navigue dans ce programme comme on navigue dans le man ou encore less. **q** pour quitter et **h** pour obtenir l'aide de la commande (top --help ne fonctionne pas ! ). Quelques options du programmes : **B** met en gras certains éléments; **f** ajoute ou supprime des colonnes dans la liste; **F** change la colonne depuis laquelle s'opère le tri (%CPU par défaut); **u** filtre en fonction d'un utilisateur donné; **k** tue un processus, on a besoin du PID pour cela; **s** change l'intervalle de temps entre chaque rafraîchissement de la liste (par défaut, 3 secondes). Cette commande est très utile pour surveiller l'évolution de la charge tout en vérifiant les processus trop gourmands pouvant engendrer des problèmes.
+
+**Ctrl + C**, dans une console, arrête un processus. On demande l'arrêt de la commande lancée. En mode graphique, c'est comme pour Windows, cela copie dans le presse-papier. En console pour copier/coller on sélectionne avec le clic gauche ce qui nous intéresse, on copie en appuyant sur la molette et on colle avec un clic droit. Cela correspond à l'action de fermer une fenêtre en cliquant sur la croix en haut à droite.
+
+**Ctrl + C** ne fonctionne pas toujours pour arrêter une commande, notamment sur les programmes tournant en arrière-plan.**kill** tue un processus, même en arrière plan. Pour cela, il faut récupérer le PID du processus à killer.
+
+    kill PID
+    kill -9 PID -> force le processus à s'arrêter
+
+Pour éviter d'avoir un récupérer tous les PID d'un processus, comme quand on utilise Google Chrome qui duplique ses onglets, on peut passer par **killall**:
+
+    killall nom_commande
+
+Si la commande ne renvoie rien, tous s'est bien passé. Sinon c'est soit qu'il n'y avait pas de processus, soit qu'on l'a mal orthographié. Dans ce cas, relancer un **ps** pour obtenir la liste des processus.
+
+Pour arrêter ou redémarrer son ordinateur, on utilise **halt** ou **reboot**, en root. Les commandes utilisent **shutdown** pour procéder avec des paramètres spécifiques.
+
+    sudo halt
+    sudo halt --reboot
+    sudo reboot
+
 ### Exécuter des programmes en arrière-plan
 #### "&" et nohup : lancer un processus en arrière-plan
 #### Ctrl + Z, jobs, bg & fg : passer un processus en arrière-plan
