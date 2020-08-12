@@ -659,7 +659,88 @@ On peut utiliser les mêmes façons d'indiquer les caractères pour les champs.
 #### Résumé personnalisé
 Il est possible de rediriger le résultat d'une commande, que ce soit dans un fichier ou en entrée d'une autre commande. On appelle cela chaîner les flux de redirection.
 
+\> permet de redifiger un flux au début d'un fichier
 
+    cut -d , -f 1 02-03-notes.csv > 02-03-eleves
+
+On vient de rediriger le 1er champ de chaque ligne, champs délimités par une virgule, depuis le fichier 02-03-notes.csv vers le fichier 02-03-eleves. Un fichier n'est pas obligé, sous Linux, d'avoir une extension. Si le fichier n'existait pas, il sera créé, sinon il sera écraser.
+
+On peut aussi vouloir ne pas récupérer la sortie d'une commande, ni la lire. Dans ces cas-là on la redirige dans le trou noir de linux **/dev/null**
+
+    cut -d , -f 1 02-03-notes.csv > /dev/null
+
+\>\> permet de rediriger un flux à la fin d'un fichier. L'avantage c'est que ça n'écrase pas le fichier s'il existe déjà
+
+    cut -d , -f 1 02-03-notes.csv >> 02-03-eleves
+
+Toutes les commandes produisent deux  flux de données différents : 
+
+* la sortie standard
+* la sortie d'erreurs
+
+Si tout va bien à la suite du commande, le contenu s'affiche sur la sortie standard, sinon le contenu s'affiche sur la sortie d'erreurs. Par défaut tout s'affiche dans la console.
+
+Pour rediriger la sortie d'erreurs dans un fichier, on utilise 2>
+
+    cut -d , -f 1 fichier_inexistant.csv > 02-03-eleves 2> erreurs.log
+
+Ici, on redirige 2 flux : le standard vers le fichier 02-03-eleves, la sortie d'erreurs vers le fichier erreurs.log. Pour cumuler les erreurs, ne pas oublier d'utiliser 2>>.
+
+Parfois, on ne veut pas séparer les informations dans 2 fichiers. On peut fusionner les sorties en un seul même fichier :
+
+    cut -d , -f 1 fichier_inexistant.csv > 02-03-eleves 2>&1
+    
+Cela a pour effet de rediriger la sortie d'erreurs sur la sortie standard, elle-même redirigée vers un fichier : tout va donc dans le même fichier. Ne marche pas avec 2>>&1. 2>&1 renvoie les erreurs de la même façon que la sortie standard, donc pour ne pas écraser un fichier, on écrira :
+
+    cut -d , -f 1 fichier_inexistant.csv >> 02-03-eleves 2>&1
+
+À l'inverse, il y a l'entrée. On peut décider d'où vient l'entrée d'une commande.
+
+< permet de lire depuis un fichier
+
+    cat < 02-03-notes.csv
+
+La commande **cat** reçoit le contenu du fichier qu'elle se contente d'afficher dans la console, c'est le shell qui se charge d'y envoyer le contenu. Si on avait utilisé **cat** comme on l'a utilisé jusqu'à présent, donc sans redirection de flux d'entrée, alors **cat** ne reçoit que le nom du fichier en entrée. Elle doit ensuite se charger d'ouvrir le fichier pour renvoyer le contenu. La différence est subtile mais présente.
+
+<< permet de lire depuis le clavier
+
+On peut envoyer le contenu tapé au clavier grâce au double chevron ouvrant. Cela fonctionne avec un mot-clé qu'on indique en début et fin de saisie.
+    
+    sort -n << FIN
+    > 13
+    > 132
+    > 10
+    > 121
+    > FIN
+    10
+    13
+    121
+    132
+
+    wc -m << FIN
+    > Combien de caractères dans cette phrase ?
+    > FIN
+    42
+
+FIN peut-être remplacé par n'importe quel mot-clé. Ce qui compte, c'est que ce soit le même mot en début et fin de saisie.
+
+Bien entendu, on peut rediriger l'entrée standard depuis un clavier ou un fichier pour rediriger la sortie standard et/ou d'erreurs vers un fichier.
+
+| le pipe chaîne les commandes. C'est-à-dire qu'avec ce symbole, on peut passer la sortie d'une commande vers l'entrée d'une autre. C'est une des plus importantes fonctionnalités de la console.
+
+Comme ce ne serait pas marrant, je ne peux pas réutiliser l'exemple du cours pour m'exercer, à savoir afficher la taille des répertoires liés à Firefox dans mon home. C'est parce que j'utilise la WSL, et que Firefox serait plutôt situé dans /mnt que dans ~ (dans mon cas de figure), et que malgré un sudo en bonne et dûe forme, la permission m'est denied... J'obtiens bien un résultat avec la commande suivante, mais elle arrive dans un laps de temps assez conséquent :
+
+   sudo du / | grep Firefox | sort -nr | head -n 25
+
+J'ai choisi de faire l'exercice avec le terme "perl" à rechercher dans le dossier /usr et d'en lister la taille des 25 plus gros dossiers. La commande que j'ai utilisée est la suivante : 
+
+    du /usr | grep perl | sort -nr | head -n 25
+
+Le dernier exercice consiste à rendre un peu moins verbeux le résultat obtenu avec un pipe. On va combiner la commande cut pour ne garder que le nom du fichier, ainsi que la commande uniq pour ne pas récupérer deux fois le même fichier, donc il faut trier avec sort avant. On doit chercher les fichiers contenant le mot log en leur sein dans le répertoire /var/log. Les informations sont séparées par ":", on va s'en servir comme délimiteur. Le nom du fichier se trouve dans le 1er champ.
+
+    sudo grep -rI log /var/log | cut -d : -f 1 | sort | uniq
+
+Les espaces avant et après le pipe ne sont pas obligatoires, c'est juste une question de lisibilité.
 ### Surveiller l'activité du système
 #### w : qui fait quoi ?
 #### ps & top lister les processus
