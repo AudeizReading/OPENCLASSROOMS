@@ -730,7 +730,7 @@ Bien entendu, on peut rediriger l'entrée standard depuis un clavier ou un fichi
 
 Comme ce ne serait pas marrant, je ne peux pas réutiliser l'exemple du cours pour m'exercer, à savoir afficher la taille des répertoires liés à Firefox dans mon home. C'est parce que j'utilise la WSL, et que Firefox serait plutôt situé dans /mnt que dans ~ (dans mon cas de figure), et que malgré un sudo en bonne et dûe forme, la permission m'est denied... J'obtiens bien un résultat avec la commande suivante, mais elle arrive dans un laps de temps assez conséquent :
 
-   sudo du / | grep Firefox | sort -nr | head -n 25
+    sudo du / | grep Firefox | sort -nr | head -n 25
 
 J'ai choisi de faire l'exercice avec le terme "perl" à rechercher dans le dossier /usr et d'en lister la taille des 25 plus gros dossiers. La commande que j'ai utilisée est la suivante : 
 
