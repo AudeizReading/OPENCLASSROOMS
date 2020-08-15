@@ -956,7 +956,7 @@ Avec **cron**, on ne peut pas planifier en secondes.
 
 Pour chaque champ, on a plusieurs notations possibles :
 * 5 (un nombre) : exécuté lorsque le champ prend la valeur 5
-* * :  exécuté tout le temps
+* \* :  exécuté tout le temps
 * 3,5,10 : exécuté lorsque le champ prend la valeur 3, 5, ou 10. Ne pas mettre d'espace après la virgule.
 * 3-7 : exécuté pour les valeurs 3 à 7
 * */3 : exécuté tous les multiples de 3
@@ -973,6 +973,61 @@ Ensuite, les noms de scripts ne doivent pas contenir de **.** dans leur nom (mai
 Enfin, chaque commande doit se finir par le symbole nouvelle ligne **\n** sinon la commande n'est pas prise en compte.  
 Pour terminer, s'assurer que cron tourne avec un `ps -elf | grep cron` sinon on lance `sudo service cron start`.
 ### Quiz 3
+Compétences évaluées :
+* Lire et modifier l'état des processus ouverts
+* Transférer des informations via des flux de commandes
+#### Question 1
+Qu'est-ce que **wc** ne permet pas de faire ?
+* Compter le nombre de mots
+* Compter le nombre de lignes
+* Trier un fichier
+#### Question 2
+Dans quel cas est-il nécessaire de placer des guillemets autour de l'élément recherché avec **grep** ?
+* Lorsque l'élément recherché dépasse 10 caractères
+* Lorsque l'élément recherché est une expression régulière
+* Lorsque l'élément recherché contient des espaces
+#### Question 3
+Le symbole **>>** crée-t-il le fichier s'il n'existe pas ?
+* Oui
+* Non
+#### Question 4
+Que signifie la redirection **2>&1** ?
+* Redirige les erreurs au même endroit que la sortie standard
+* Redirige les erreurs dans un fichier
+* Ignore les erreurs
+#### Question 5
+Où sont envoyées les commandes renvoyées par cette commande ? `commande > /dev/null`
+* Dans le fichier null situé dans le répertoire /dev
+* Dans la corbeille
+* Dans le néant absolu, nulle part, rien n'est conservé
+#### Question 6
+À quoi correspondent les 3 valeurs de charge, comme par exempke 0,08, 0,34, 0,31 ?
+* À des moyennes de charges sur des périodes plus ou moins longues
+* À la plus haute, la plus basse et la valeur moyenne de la charge
+* À la charge de chacun des processeurs
+#### Question 7
+Comment puis-je avoir la liste de tous les processus lancés par l'utilisateur root qui contienne gnome dans leur nom ?
+* ps -ef
+* ps -u root
+* ps -u root | grep gnome
+* ps -U root -p gnome
+#### Question 8
+Quelle commande met en pause un processus ?
+* Ctrl + Z
+* Ctrl + C
+* halt
+* nohup
+#### Question 9
+Comment renvoyer un processus à l'avant-plan
+* fg
+* bc
+* bg
+* top
+#### Question 10
+Je souhaite exécuter une commande toutes les 5 minutes le week-end, quelle est la bonne planification d'un cron de ce type ?
+* /5 * * * 0-1 commande
+* */5 * * * 0,6 commande
+* */5 * * * 5-6 commande
 ## Partie 4
 ### Archiver et compresser
 #### tar : assembler des fichiers dans une archive
