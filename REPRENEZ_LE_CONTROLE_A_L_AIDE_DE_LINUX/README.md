@@ -869,6 +869,109 @@ Il est possible de personnaliser son screen via un fichier de configuration. Il 
 #### sleep : faire une pause
 #### crontab : exécuter une commande régulièrement
 #### Résumé personnalisé
+Il est possible de programmer l'exécution d'une ou plusieurs tâches à l'avance. C'est l'objet de ce chapitre. Mais tout d'abord, il faut appréhender la commande **date**, car toute programmation temporelle nécessite de s'appuyer sur son fonctionnement.
+
+Sans paramètre, **date** renvoie la date actuelle, l'heure et le décalage horaire. On peut paramétrer la commande :
+
+    $ date "+%H:%M:%S" -> Affiche 12:36:15
+
+On ajoute **+** pour définir un format et **%** suivi de la variable correspondant au format recherché (**date --help** pour une liste des variables).
+
+    $ date "+Bienvenue en %Y" -> Affiche Bienvenue en 2020
+
+Pour modifier la date du système, il faut penser à se mettre en root. On précise les informations selon les informations suivantes : **MMDDhhmmYYYY** (M -> mois; D -> jour; h -> heure; m -> minutes; Y -> année). Il n'est pas obligatoire de préciser l'année.
+
+    $ sudo date 11101250 -> configure la date système au mercredi 10 novembre (2010, année du cours) 12:50:50
+
+Afin de planifier l'exécution d'une tâche, on utilise **at**. Attention, le programme ne sera exécuté qu'une fois. Pour une planification chronique,  on utilisera **crontab**. La commande s'utilise en deux temps : 
+* On indique à quel moment on désire exécuter la commande
+* On tape la ou les commande(s) à exécuter à l'heure indiquée, on valide avec **Ctrl +D**
+
+    $ at 14:17
+    warning: commands will be executed using /bin/sh
+    at> echo "Hello"
+    at> date
+    at> <EOT> -> Réponse de at quand on tape Ctrl + D
+    job 5 at Sat Aug 15 14:17:00 2015
+
+Il y a plusieurs façon d'indiquer la temporalité :
+
+    at 14:17 tomorrow
+    at 14:17 08/15/20 -> Date au format US, le mois est mis d'abord
+    at now +5 minutes -> Exécution dans 5 minutes à partir de maintenant (minutes, hours, days, weeks, months, years)
+
+À chaque fois, **at** nous donnera un numéro de job. **atq** nous donnera la liste de ces jobs en attente et **atrm** nous laissera suprrimer un des ces jobs en précisant son numéro.
+
+    $ atq
+    $ atrm 13 -> sur le job n°13 programmé via at
+
+On peut enchaîner les commandes en les séparant par **;**
+
+    $ touche file; sleep 10; rm -vi file
+
+La commande **sleep** permet de faire une pause entre deux commandes. Par défaut, le chiffre donné en paramètre est évalué en secondes, il faut préciser **m** pour des minutes, **h** pour des heures et **d** pour des jours.
+Il est parfois pratique d'être certain qu'une commande s'est bien exécutée avant de lancer la suivant, d'où l'intérêt de marquer une pause. On pourrait tout aussi bien chaîner les commandes avec un opérateur ET
+
+
+    $ touche file &&  sleep 10 && rm -vi file
+
+De la sorte, on sait que sleep s'exécutera seulement si le code retour de la précédente commande renvoie VRAI ou 0, pareil pour l'exécution de rm, sleep devra renvoyer 0 ou VRAI pour poursuivre la suite de l'enchaînement.
+
+Pour la suite, on va indiquer dans notre .bashrc notre éditeur de fichier par défaut, afin que **crontab** le prenne en compte par la suite. **crontab** gère la liste des programmes régulièrement exécutés, cron les exécute.
+
+    $ echo "export EDITOR=vim" >> ~/.bashrc
+    $ crontab -l -> affiche la crontab actuelle (une crontab par user)
+    $ crontab -e -> modifie la crontab
+    $ crontab -r -> supprime la crontab
+
+Si on a bien configuré son .bashrc alors `crontab -e` devrait s'ouvrir dans son éditeur par défaut (j'ai mis vim, pas nano comme indiqué dans le cours).
+
+Mon fichier crontab m'explique un peu comment m'en servir mais il est tout à fait possible de ne se retrouver qu'avec une seule ligne commentée:
+
+    # m h  dom mon dow   command
+
+Il s'agit de la syntaxe à employer :
+* **m** : minutes (0-59)
+* **h** : heures (0-23)
+* **dom** : *day of month*, jour du mois (1-31)
+* **mon** : *month*, mois (0-12)
+* **dow** : *day of week*, jour de la semaine (0-6, 0 = dimanche)
+
+Chaque ligne du fichier correspond à une commande, chaque champ est séparé par un espace. Chaque champ est remplacé soit par un chiffre soit par une étoile qui signifie "tous les nombres sont valables". Par exemple pour lancer une commande tous les jours à la même heure, on écrira :
+
+    47 15 * * * touch /home/mateo21/fichier
+
+Chaque jour, quand il sera 15:47, le timestamp du fichier /home/mateo21/fichier sera modifie. On note le path de façon absolu, car on ne peut pas être surs que **cron** s'exécutera dans le répertoire désiré. On ne peut modifier sa crontab qu'en passant par `crontab -e`, d'où l'intérêt d'indiquer un éditeur par défaut. On ne peut pas faire `vim .crontab`, ça ne fonctionne pas. L'avantage c'est que le programme vérifie si le fichier est correctement écrit avant de mettre à jour la crontab. Si il y a une erreur de syntaxe aucun changement ne sera pris en compte. D'ailleurs on le constate en enregistrant et quittant la crontab : un message s'affiche pour nous dire que les changements sont en passe d'être installés (sont pris en compte).
+
+| **crontab** | **signification** |
+|:-----------:|:-----------------:|
+| `47 * * * * cmd` | Toutes les heures à la 47e mintute, la cmd est lancée |
+| `0 0 * * 1 cmd` | Tous les lundis à minuit, la commande est lancée |
+| `0 4 1 * * cmd` | Tous les 1er de chaque mois, à 4h du matin, la commande est lancée |
+| `0 4 * 12 * cmd` | Tous les jours du mois de décembre à 4h du matin |
+| `0 * 4 12 * cmd` | Toutes les heures des 4 décembre |
+| `* * * * * cmd` | Toutes les minutes |
+
+Avec **cron**, on ne peut pas planifier en secondes.
+
+Pour chaque champ, on a plusieurs notations possibles :
+* 5 (un nombre) : exécuté lorsque le champ prend la valeur 5
+* * :  exécuté tout le temps
+* 3,5,10 : exécuté lorsque le champ prend la valeur 3, 5, ou 10. Ne pas mettre d'espace après la virgule.
+* 3-7 : exécuté pour les valeurs 3 à 7
+* */3 : exécuté tous les multiples de 3
+
+Pour renvoyer le retour de **cron** on peut faire :
+
+    47 15 * * * touch /home/mateo21/fichier >> /home/mateo/cron.log 2>&1
+    47 15 * * * touch /home/mateo21/fichier > /dev/null 2>&1
+
+J'ai eu quelques petits soucis à lancer **cron** et **atd** et il semblerait que cela vienne de mon installation WSL. Dans le manuel, **atd** précise qu'il n'est pas compatible avec les systèmes montés en NFS.Comme c'est la cas de WSL, qui est montée sur Windows, qui est monté en NFS, cqfd... Pas de solution à ce jour pour faire fonctionner la commande.  
+Pour **cron** et **crontab** et pouvoir utiliser `crontab -e`, plusieurs petites règles à opérer :
+Au début de la crontab, placer : `PATH=/usr/sbin:/usr/bin:/sbin:/bin`. **cron** peut rencontrer des soucis à lire la variable $PATH, le mieux c'est de lui préciser ici.  
+Ensuite, les noms de scripts ne doivent pas contenir de **.** dans leur nom (mais ça je crois que ça concerne plus cron.d et suivants, ce qui n'est pas l'objet du paragraphe).  
+Enfin, chaque commande doit se finir par le symbole nouvelle ligne **\n** sinon la commande n'est pas prise en compte.  
+Pour terminer, s'assurer que cron tourne avec un `ps -elf | grep cron` sinon on lance `sudo service cron start`.
 ### Quiz 3
 ## Partie 4
 ### Archiver et compresser
