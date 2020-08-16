@@ -1079,6 +1079,124 @@ On se retrouver dans le cas où on reçoit des fichiers compressés .zip et .rar
 #### Se connecter avec SSH et PuTTY
 #### L'identification automatique par clé
 #### Résumé personnalisé
+Ce chapitre sera très utile à tous ceux qui ont besoin d'apprendre à gérer un serveur dédié. Personnellement, la lecture de ce chapitre m'a permis de comprendre comment configurer mon compte GitHub pour échanger des repository via le protocole SSH, car j'en avais marre d'indiquer mon username/password que le protocole HTTPS demande à chaque interaction avec le serveur GitHub (En tout cas, c'est bien de connaître les deux façons de travailler). On le répète encore une fois, l'administration de serveur sous Linux se fait quasiment exclusivement à distance, et à l'aide de SSH.
+
+Une des grandes forces de Linux est de pouvoir s'en servir même si on est à des centaines de kilomètres de la machine. C'est un fonctionnement Unix et c'est rendu possible grâce à Internet. Les personnes gérant des serveurs sont appelés administrateurs système, et c'est un métier très recherché.
+
+Un serveur est un ordinateur devant resté allumé 7j/7 et 24h/24 et connecté à Internet, car il offre des services. Un de ces services est de servir des pages d'un site web à un "client" (ordinateur d'où la demande d'accès à la page Internet provient).
+
+En théorie, le PC de la maison n'est pas considéré comme serveur, mais on peut facilement le transformer, à condition de le configurer correctement et d'avoir installé les programmes qui conviennent.
+
+Pour communiquer entre eux en réseau, deux ordinateurs dooivent utiliser le même protocole. Il y en a de nombreux, les plus connus sont : HTTP(S), FTP, IMAP, SSH, TELNET...
+
+Telnet a été concç dans les années 80, il sert à échanger des messages d'une machine à une autre. Le problème de ce protocole, c'est qu'aucune donnée n'est chiffré et par conséquent peut être interceptée par n'importe qui (sachant le faire...) qui écouterait notre réseau. Wireshark est un logiciel Open Source permettant d'écouter ces données.
+
+Pour parer à cela, il suffit de chiffrer les données échangées. On ne peut pas complètement empêcher quelqu'un  d'intercepter nos données, mais si elles sont chiffrées, normalement il ne saurait pas quoi en faire. C'est là qu'intervient le protocole SSH.
+
+Le protocole est assez complexe, somme toute, on peut comprendre simplement son fonctionnement. SSH chiffre les données, mais il existe moults algorithmes de chiffrement. On ne va pas du tout les expliquer ici (il faut de solides connaissances en mathématiques -> programme de terminale S), par contre il faut savoir qu'on classe ces algorithmes en deux catégories : les chiffrements **symétriques** et les chiffrements **asymétriques**.
+
+La méthode la plus simple est le chiffrement symétrique : on utilise une clé (un mot de passe) pour chiffrer et déchiffrer une donnée transférée. Il est nécessaire que la personne qui chiffre et celle qui déchiffre possède la clé. Un message chiffré intercepté ne peut être décodé sans cette clé. Mais à un moment donné, il faut bien donner la clé au réceptionnaire des données avant de les lui transmettre, sinon il ne pourra pas les décoder. Il est hors de question de l'envoyer "en clair" sur le réseau, sous peine de la donner à un pirate... C'est le gros défaut du chiffrement asymétrique : il faut transmettre discrètement la clé... Pour ne pas l'envoyer en clair, il faut la chiffrer et si on réutilise un chiffrement symétrique on va se retrouver confronté au même souci de sécurité. C'est là qu'intervient la méthode de chiffrement asymétrique.
+
+Le chiffrement asymétrique utilise une clé pour chiffrer et une autre pour déchiffrer. Il y a donc **deux clés** :
+* Une clé dite **publique**, qui sert à chiffrer
+* Une clé dite **privée**, qui sert à déchiffrer
+
+On demande à l'ordinateur de générer une paire de clés : une publique et une privée. La méthode pour chiffrer est différente de celle pour déchiffrer d'où le nom de chiffrement asymétrique : On chiffre avec la clé publique et on déchiffre avec la clé privée. La clé publique peut être transmise par le réseau, c'est pour cela qu'on l'appelle **publique**. Par contre, la clé privée doit absolument rester secrète. L'algorithme de chiffrement le plus connu s'appelle RSA (c'est celui qu'utilise GitHub).
+
+SSH combine chiffrement symétrique et asymétrique :
+1. On utilise d'abord le chiffrement asymétrique pour s'échanger discrètement une clé secrète de chiffrement symétrique.
+2. Ensuite, on utilise tout le temps la clé de chiffrement symétrique pour chiffrer les échanges.
+
+On n'utilise pas le chiffrement symétrique durant toute la communication des données pour la bonne et simple raison que le chiffrement asymétrique est très groumand en ressources processeurs. Il est 100 à 1000 fois plus lent que le chiffrement symétrique. Le chiffrement asymétrique n'est donc utilisé qu'au début de la communication.
+
+Le serveur envoie la clé publique, en clair, au client, pour que ce dernier puisse chiffrer ses données. Le client génère une clé de chiffrement symétrique qu'il crypte grâce à la clé publique reçue du serveur. Le client envoie alors la clé symétrique chiffréer au serveur. Un pirate peut l'intercepter mais ne peut la déchiffrer car il manque la clé privée connue seulement du serveur. Le serveur déchiffre la clé reçue du client via la clé privée qu'il a conservée. Le client et le serveur connaissent tous deux la clé symétrique et pourtant à aucun moment elle n'a transité en clair sur le réseau. Ils peuvent donc désormais s'envoyer des messages chiffrés de manière symétrique en toute tranquilité. Ce chiffrement est plus rapide et tout aussi sûr que le chiffrement  asymétrique. Le client peut se connecté au serveur avec son identifiant et son mot de passe de façon sécurisée grâce cette technique. C'est ainsi que fonctionne SSH.
+
+Partons du principe que nous n'avons pas de serveur dédié et qu'il faille transformer notre PC en serveur. Pour accéder à son ordinateur depuis un autre lieu, il est indispensable de le configurer pour être serveur. Pour cela, il faut juste installer le paquet **openssh-server**.
+
+    sudo apt-get install openssh-serveur
+
+Normalement, le programme de serveur SSH se lance et se lancera à chaque démarrage. Dans le cas contraire, lancer la commande suivante :
+
+    sudo /etc/init.d/ssh start
+
+Pour l'arrêter
+
+    sudo /etc/init.d/ssh start
+
+On ne devrait pas avoir besoin de le configurer et de toucher au fichier de configuration mais dans le doute :
+    
+    vim /etc/ssh/ssh_config
+    sudo /etc/init.d/ssh reload  -> On relance le serveur après chaque modification de configuration
+
+L'ordinateur est, dorénavant, un serveur SSH. On peut s'y connecter depuis n'importe quel ordinateur sous Linux ou Windows (pour peu que nous ne soyons pas derrière un pare-feu).
+
+Toutes les machines équipées de Linux proposent la commande **ssh** qui permet de se connecter à distance à une autre machine. Sur un second PC (équipé de Linux), ouvrir la console et taper :
+
+    $ ssh login@ip
+
+Où **login** est son login Linux et **ip** l'adresse ip de la machine à laquelle on souhaite accéder. On peut obtenir son ip en allant sur le site www.whatismyip.com ou en tapant `ifconfig` dans la console de son PC pour obtenir son ip (attention sur WSL, `ifconfig` n'est pas installé par défaut, il faut installer `net-tools` pour utiliser la commande). On peut également simuler une connexion réseau en se connectant à son PC depuis son PC, on passe alors par localhost ou l'adresse 127.0.0.1 à la place de **ip**.
+
+Au bout d'un moment, le serveur répond en nous communiquant son empreinte de serveur *(RSA key fingerprint)*. Il s'agit d'un numéro unique identifiant le serveur. Si quelqu'un essaie de se faire passer pour le serveur, ce numéro changer et **ssh** nous préviendra. Si on n'a aucune réponse, vérifier qu'on a bien donné la bonne ip ou que le port 22 n'est pas bloqué.
+
+Une fois l'empreinte reçue, il faut confirmer par **y** qu'elle correspond bien à celle du serveur auquel on veut se connecter. Le serveur devrait nous demander notre mot de passe. On est enfin connecté à son serveur, de façon sécurisée. On peut effectuer toutes les opérations dont on a besoin, exactement comme si on était présent physiquement devant la machine concernée. Penser, alors, à exécuter les commandes avec **nohup** afin de les désolidariser de la console où on se trouve pour qu'elles ne s'arrêtent pas quand on éteindra l'ordinateur, pour que le serveur continue à recevoir les instructions à exécuter. On se déconnecte comme à l'accoûtumée : `logout` ou `CTRL + D`.
+
+Il est possible qu'on n'ait pas d'environnement Linux à disposition, l'alternative est de se connecter depuis Windows à PuTTY... Oh, et c'est ici qu'on nous informe que depuis Windows 10, on peut se connecter en SSH sans installer PuTTY...Ils pouvaient pas le dire dans le chapitre dédié à PuTTY ? Ça m'aurait éviter une réponse fausse au quiz... ayant bêtement suivi le cours, n'ayant pas cherché sur Internet... grrrr
+
+Si dans les chapitres précédents, on avait installé PuTTY via putty.exe, on nous apprend que bah non, il faut le package complet, avec le programme d'installation... Que ce cours est à jour... C'est fou... On ajoute quelques chapitres, pour faire bien, mais on ne corrige absolument pas les conneries restantes... Je n'aime pas, je n'aime pas, je n'aime pas !
+
+Dans le volet Session, on remplit **Host Name**, ou l'adresse ip, connection type : SSH port 22 (à modifier si le port 22 n'est pas disponible) et Save dans la partie Saved Session, pour ne pas avoir à retaper les informations, puis OPen, pour ouvrir la connection. Comme en ligne de console, on nous répond en nous fournissant l'empreinte du serveur, seulement pour la 1ere connexion, et il faut confirmer (ou non). Le serveur nous demande alors notre login et notre mot de passe. Nous voilà connecté à la machine. Pour se déconnecter : **logout** ou **CTRL + D**.
+
+Il y a plusieurs façons de s'authentifier sur un serveur :
+- Par mot de passe
+- Par clés publique et privée du client
+
+L'authentification par clé permet d'éviter qu'on nous demande à chaque connexion son mot de passe. Cette authentification est plus complexe à mettre en place, mais elle est plus pratique que de s'authentifier à chaque fois avec son mot de passe.
+
+Sur Linux, pour s'authentifier en SSH, il faut d'abord mener une série d'actions sur le client et après sur le serveur, on enverra le résultat.
+
+    # Machine client
+    $ ssh-keygen -t rsa -> Génération d'une clé publique et d'une clé privée
+
+Plusieurs messages s'afficheront et il nous sera demandé quelques précisions. Le client génère une paire de clés, qu'il faut ensuite sauvegarder dans des fichiers, un pour la clé publique, un pour la clé privée. On nous propose une valeur par défaut, on peut la changer mais ce n'est pas conseillé. Ensuite, on nous demande une **passphrase**. C'est une phrase de passe qui servira à chiffrer la clé privée pour une meilleure sécurité. Soit on tape **Entrée** sans rien écrire et la clé ne sera pas chiffrée, soit on tape une phrase de son choix pour chiffrer la clé.
+
+Il faut maintenant envoyer la clé publique au serveur. La clé publique, si on n'a rien modifié, devrait se trouver dans `~/.ssh/id_rsa.pub`. La clé privée, quant à elle, se situe dans `~/.ssh/id_rsa`. Elle est normalement chiffrée si on a utilisé une phrase de passe. On se rend dans le dossier .ssh : `cd /.ssh`. Il y a 3 fichiers :
+* **id_rsa** : qui contient la clée privée
+* **id_rsa.pub** : qui contient la clé publique qu'il faut envoyer au serveur
+* **known_hosts** : c'est la liste des fingerprint que le PC client tient à jour. Ça lui permet de se souvenir de l'identité des serveurs et de nous avertir si un jour un serveur est remplacé par un autre.
+
+L'opération consiste à envoyer la clé publique au serveur et à l'ajouter à son fichier **authorized_keys**. Le serveur y garde une liste des clés qu'il autorise à se connecter.
+
+Pour ce faire on utilise la commande suivante, où login est le login linux et l'ip l'ip du serveur :
+
+    ssh-copy-id -i id_rsa.pub login@ip
+
+On rentre son mot de passe Linux, puis la clé est ajoutée à **~/.ssh/authorized_keys**. On nous invite à ouvrir le fichier **authorized_keys** pour vérifier que l'opération s'est bien déroulée. On peut maintenant se connecter au serveur :
+
+    ssh login@ip
+
+Alors, on nous demande la phrase de passe pour déchiffrer la clé privée. Il existe une solution pour ne pas avoir à entrer sa phrase de passe à chaque fois : l'agent SSH. C'est un programme qui tourne en arrière-plan en mémoire, il retient les clés privées pendant toute la durée de notre session. Il suffit de lancer **ssh-add** : 
+
+    ssh-add
+
+On nous demandera d'entrer une fois la phrase de passe pour déchiffrer la clé publique. Et on pourra se connecter au serveur en ssh, sans mot de passe ni phrase de passe.
+
+On peut également s'authentifier avec PuTTY. Avec le programme d'installation, on devrait avoir le programme **PuTTYgen** (se trouve dans le gestionnaire d'installation PuTTY), c'est avec lui que l'on va générer notre pare de clés publique/privée. On le lance. En bas de fenêtre on peut choisir ses paramètres : algorithme et puissance de chiffrement. Les valeurs par défaut semblent convenir (à vérifier, vu le niveau de mise à jour du cours) RSA 1024 bits (GitHub conseille 4096 bits, d'où mon doute). Cliquer sur le bouton **Generate**. Il faut bouger la souris dans la fenêtre pour l'aider à générer la paire. Une fois que c'est fait, la clé publique s'affiche et on peut entrer une phrase de passe à ce moment. On enregistre la clé publique avec **Save private key**, et on lui donne l'extension **.pub**. On enregistre ensuite la clé privée et on lui donnera **.ppk** pour extension.
+
+Comme avec Linux, il faut envoyer la clé publique au servir pour qu'il nous autorise à nous connecter par clé. Il n'y a pas de commande pour le faire automatiquement par Windows, il faut ajouter la clé à la main dans le fichier **authorized_keys**.
+
+On ouvre PuTTY, tout en ayant encore PuTTYgen ouvert, et on se connecte au serveur comme auparavant avec son mot de passe. On se rend dans le dossier du serveur  **~/.ssh** (s'il n'est pas créé, on le crée) et on rajoute notre clé à la fin du fichier **authorized_keys** (si inexistant, il sera crée) :
+
+    echo "n° de ma clé publique" >> authorized_keys
+
+La clé publique est encore affichée dans PuTTYgen, pour la récupérer, on la copie depuis et on la colle dans la console en faisant **Shift + Inser**.  
+On se déconnecte et on relance PuTTY. On peut fermer PuTTYgen. On va configurer PuTTY pour qu'il se connecte avec la clé. Dans le volet, aller à la section **Window > Translation**. Régler la valeur de la liste déroulante à **UTF-8**. Cela va régler les problèmes d'accent en console. Ensuite, on se rend dans la section **Connection > SSH > Auth**. Il faut indiquer le fichier de la clé privée, on le recherche avec **Browse**. Ensuite, on va dans la section **Connection > Data** et on entre son login dans le champ *Auto-login username*. On retourne à l'accueil via la section **Session**, on entre l'ip du serveur dans le champ **Host Name**, puis on donne un nom à son serveur et enfin on sauvegarde les paramètres avec **Save**. Il n'y aura plus qu'à cliquer sur le nom du serveur et **Open** pour se connecter à partir de ce moment. On devrait voir PuTTY utiliser automatiquement notre pseudo, puis nous demander notre phrase de passe. Pour ne pas la rentrer à chaque fois, il faudra passer par un agent SSH. Celui installé avec PuTTY s'appelle **Pageant**. Il est recommandé de le lancer automatiquement au démarrage de l'ordinateur. Normalement lorsque Pageant est lancé, il a son icône qui s'affiche dans la barre des tâches (comme avec Winamp), on clique droit sur l'icône, et on choisit **Add key**, il faudra renseigner l'endroit où se trouve la clé privée (.ppk). On refait un clic droit sur l'icône pour se connecter avec **Saved Sessions**.
+
+Si l'agent SSH Pageant est pratique, il vaut mieux l'arrêter si on doit s'absenter un long moment de son ordinateur et que quelqu'un puisse potentiellement s'en servir, afin d'éviter de la laisser pénétrer dans ses serveurs.
+
+On peut modifier le raccourci qui lance Pageant pour que celui-ci charge notre clé privée automatiquement. Clic droit sur l'icône > Propriétés. Dans le champ cible, rajouter à la fin en paramètre le chemin de la clé privée à charger, par exemple :
+
+    "C:\Program Files\PuTTY\pageant.exe" c:\cle.ppk
+
 ### Transférer des fichiers
 #### wget : téléchargement de fichiers
 #### scp : copier des fichiers sur le réseau
