@@ -1034,6 +1034,44 @@ Je souhaite exécuter une commande toutes les 5 minutes le week-end, quelle est 
 #### gzip & bzip2 : compresser une archive
 #### unzip & unrar : décompresser les .zip et .rar
 #### Résumé personnalisé
+Les commandes **gzip** et **bzip** ne permettent de compresser qu'un seul fichier à la fois. C'est pour cela que nous devons créer une archive avec **tar** afin de ne former qu'un seul et même fichier. C'est ce gros fichier que nous compresserons par la suite.
+
+Avant de commencer, il faut réunir tous les fichiers à compresser dans un seul et même dossier. Ceci pour éviter tout éparpillement de fichier à la décompression. Ce n'est pas obligatoire, mais c'est une convention.  
+C'est ce dossier que l'on va **tar**er. Certains formats, comme jpeg ou png, sont déjà compressés. Il n'y aura pas de problèmes pour les re-compresser, mais on ne les rendra pas plus petits pour autant : ils ont déjà atteint leur taille minimale.
+
+    $ tar -cvf archive.tar source -> Créer une archive dans un fichier (.tar) tout en disant ce qu'il se passe
+    $ tar -tf archive.tar -> Affiche le contenu de l'archive sans l'extraire.
+    $ tar -rvf archive.tar oubli -> Ajoute un fichier à l'archive
+    $ tar -xvf archive.tar -> Extrait les fichiers de l'archives 
+
+Nos fichiers rassemblés dans une archive .tar, on peut maintenant les compresser. **bzip2** est plus efficace niveau compression mais est plus lent que **gzip**, ce qui fait que cet un outil moins utilisé.
+
+    $ gzip archive.tar -> Compresse archive.tar, donne archive.tar.gz
+    $ gunzip archive.tar.gz -> Décompresse archive.tar.gz
+
+    $ bzip2 archive.tar -> Compresse archive.tar, donne archive.tar.bz2
+    $ bunzip2 archive.tar.bz2 -> Décompresse archive.tar.bz2
+
+Mais le plus beau, c'est que maintenant **tar** est capable d'appeler lui-même **gzip** ou **bzip2**.
+
+    $ tar -zcvf archive.tar source -> Comme -cvf, puis compresse en gzip
+    $ tar -jcvf archive.tar source -> Comme -cvf, puis compresse en bzip2
+    $ tar -ztf archive.tar.gz -> Affiche le contenu d'un dossier zippé avec gzip
+    $ tar -jtf archive.tar.gz -> Affiche le contenu d'un dossier zippé avec bzip2
+    $ tar -zxvf archive.tar.gz -> Décompresse puis extrait un dossier zippé avec gzip
+    $ tar -jxvf archive.tar.bz2 -> Décompresse puis extrait un dossier zippé avec bzip2
+
+Il est tout à fait possible de compresser un seul fichier, dans ce cas-là, pas besoin de générer un archive, on le compresser directement. On peut afficher le contenu de ce fichier sans le décompresser grâce aux commandes `zcat`, `zmore`, `zless`, équivalents respectifs de `cat`, `less`, `more`, leur emploi est identique, sauf qu'on leur passe un fichier compressé en paramètre.
+
+On se retrouver dans le cas où on reçoit des fichiers compressés .zip et .rar. Bien que ce ne soit pas le plus courant, il faut savoir gérer ces formats. Les programmes utilisés pour ne sont pas installés par défaut sur les distros Linux, il faut alors s'en charger. Il n'y a pas besoin de gérer des archives car ces commandes peuvent compresser plusieurs fichiers à la fois.
+
+    $ unzip archive.zip -> Décompresse le format .zip
+    $ unzip -l archive.zip -> Lit le contenu de l'archive (noms des fichiers la composant) sans extraire
+    $ zip -r archive.zip source -> Compresse tous les fichiers du dossier "source", sans cela compresse un dossier vide
+
+    $ unrar e archive.tar -> Décompresse .tar Attention les options ne prennent pas de tiret !
+    $ unrar l archive.tar -> Liste le contenu de l'archive sans l'extraire
+
 ### La connexion sécurisée à distance avec SSH
 #### Se connecter à une console à distance
 #### De Telnet à SSH
