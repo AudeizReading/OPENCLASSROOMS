@@ -1198,17 +1198,97 @@ On peut modifier le raccourci qui lance Pageant pour que celui-ci charge notre c
     "C:\Program Files\PuTTY\pageant.exe" c:\cle.ppk
 
 ### Transférer des fichiers
-
 #### wget : téléchargement de fichiers
 #### scp : copier des fichiers sur le réseau
 #### ftp & sftp : transférer des fichiers
 #### rsync : synchroniser des fichiers pour une sauvegarde
 #### Résumé personnalisé
+On télécharge des fichiers avec la commande **wget**.
+
+    $ wget [OPTION]... [URL]...
+
+En bas de l'écran, après avoir lancé la commande, nous avons les informations suivantes :
+* Une barre de progression qui se met à jour
+* Le nombre d'octets téléchargés
+* La vitesse de téléchargement
+* Le temps restant de téléchargement `eta`
+
+    $ wget -c URL -> Reprend le téléchargement si suspendu
+    $ wget -b URL -> Effectue la tache en bagckground (même effet que & ou nohup, sauf que ne se détache pas de la console) La sortie se fait dans le fichier wget-log
+
+Il y a beaucoup d'option pour cette commande. Ne pas hésiter à consulter `man wget`.
+
+`scp` permet de copier des fichiers d'i=un ordinateur à un autre. La commande se sert de `ssh` pour fonctionner.
+
+    $ scp [OPT] SOURCE... DEST
+    $ scp FILE LOGIN@IP:DESTINATION -> Copie un fichier depuis son ordinateur vers un autre.
+
+Login = login Linux, ip ou nom d'hôte de la machine à atteindre séparé par : pour la destination de la copie. Login et ip non obligatoire, dans ce cas copie locale. `scp` essaiera de se connecter au serveur dont l'ip est fournie, il faudra s'authentifier par mot de passe ou clé privée. `scp` l'utilisera si elle existe.
+
+    $ scp LOGIN@IP:SOURCE DEST -> Copie depuis un ordi extérieur vers le sien
+    $ scp LOGIN@IP:SOURCE . -> Même copie mais sans changer le nom. le nom source sera conservé.
+    $ scp -P ### SOURCE DEST -> # est un chiffre. Pour changer le port si 22 non dispo.
+
+Le FTP est un protocole permettant d'échanger des fichiers sur le réseau. On l'utilise dans 2 cas, en général :
+
+1. Pour télécharger un fichier depuis un serveur FTP public. En général, les navigateurs web font cela de manière automatique et transparente lorsqu'on clique sur un lien de téléchargement. La connexion se fait alors en mode **anonyme**.
+2. Pour transférer des fichiers vers un serveur FTP privé (et éventuellement en télécharger). Lorsque l'on prend un hébergement pour son site web, l'hébergeur nous donne en général des accès FTP pour aller y déposer les fichiers du site. La connexion se fera en mode **authentifié**.
+
+Tout le monde n'ayant pas accès à un serveur privé, les exemples suivants seront axés sur l'utilisation d'un serveur FTP public. Pour se connecter à un serveur privé, la méthode est identique. Il existe des logiciels graphique (comme FileZilla) qui font exactement la même chose que ce qui est proposé ici en console.
+
+Pour illustrer la connexion à un serveur public, on peut en établir une auprès du serveur ftp debian, accessible à l'adresse suivante : ftp://ftp.debian.org.
+
+    $ ftp ftp.debian.org
+
+Dans le cours, on nous indique devoir indiquer pour login **anonymous** (fonctionne pour tout les serveurs publics) et pour mot de passe, ce que l'on souhaite, car tout est accepté. En 2020, l'adresse n'est plus bonne. La connexion ne s'établit donc pas (perte de temps...). Il faut utiliser **ftp.fr.debian.org**
+
+Dans le prompt ftp, on peut entrer pas mal de commandes (**man ftp**). Certaines sont inspirées de l'univers Unix, d'autres des verbes HTTP et encore d'autres sont propres à ftp. Voici un florilège :
+
+* `ls` : affiche le contenu du répertoire actuel (celui du serveur ftp)
+* `!ls` : affiche le contenu de mon répertoire personnel
+* `cd` : change de répertoire au sein du serveur. On met **!** devant cd si on veut se déplacer dans son ordinateur.
+* `pwd` : affiche le chemin du répertoire actuel. Même fonctionnement que ci-dessus avec **!** devant la commande.
+
+Il y a plusieurs répertoires contrairement à ce que nous montre le cours. Mon Parefeu Windows vient de tirer la gueule d'ailleurs... Il n'a pas aimé la connexion au serveur ftp. À chaque commande, on obtient un code expliquant ce qu'il se passe, un peu comme le 200 OK de HTTP.
+
+Pour transférer des fichiers, les commandes ftp principales sont :
+
+* `put` : envoie un fichier vers un serveur
+* `get` : télécharge un fichier depuis un serveur
+
+    ftp> get README -> Télecharge le fichier README. Attention, il le télécharge à l'endroit où se situe sur son ordinateur.
+    ftp> !cd PATH -> POur se déplacer au sein de son PC
+
+Pour sortir de la console et de ftp on tape `bye`, `exit`, `quit` ou encore `CTRL + D`.
+
+Ne pas hésiter à consulter l'aide sur cette commande, car certaines commandes ne sont pas les mêmes, pour supprimer un fichier on utilise `delete` et non `rm`.
+
+`sftp` est une commande ftp qui repose sur **ssh**. La connexion est sécurisée. L'utilisation est similaire à celle de `scp`.
+
+    $ sftp login@ip
+
+On nous demandera un mot de passe, à moins qu'il y ait une clé publique à utiliser. On passe aussi par le port 22 pour établir la connexion, au besoin on peut le changer avec l'option `-oPort=###`. Les ### sont à remplacer par le numéro de port à utiliser.
+
+On effectue des sauvegardes synchronisées incrémentielle avec `rsync`. C'est un programme qui permet de synchroniser deux dossiers sur le même PC ou entre deux ordinateurs reliés en réseau. La première fois il copie entièrement le 1er répertoire vers le 2e, puis les fois suivantes, il compare et analyse les différences entre les deux dossiers et copie uniquement les changements. On l'utilise surtout pour sauvegarder entre deux ordinateurs différents.
+
+    $ rsync -arc SOURCE DEST
+    -a : conserve les informations sur les fichiers (droits, date de modif...)
+    -r : sauvegarde récursive (sous-dossiers du dossier)
+    -v : mode verbeux
+    --delete : supprime les fichiers existants dans DEST mais plus dans SOURCE
+    --backup : conserve les fichiers supprimés avec --delete dans un dossier archive
+    --backup-dir=PATH : chemin absolu vers lequel envoyer les fichiers supprimés avec --delete mais gardés avec --backup
+    --exclude : exclut un dossier de la sauvegarde (préciser le dossier)
+
+    $rsync [OPT]... SOURCE LOGIN@IP:DEST
+            Sauvegarde ssh sur serveur externe
+    -e "ssh -p ###" : utilise la commande shell **ssh** pour modifier le port si celui par défaut (22) n'est pas disponible. ### correspond au numéro de port à renseigner.
 ### Analyser le réseau et filtrer le trafic avec un pare-feu
 #### host & whois : qui êtes-vous
 #### ifconfig & netstat : gérer et analyser le trafic réseau
 #### iptables : le pare-feu de référence
 #### Résumé personnalisé
+
 ### Compiler un programme depuis les sources
 #### Essayez d'abord de trouver un paquet .deb
 #### Quand il n'y a pas d'autre solution : la compilation
