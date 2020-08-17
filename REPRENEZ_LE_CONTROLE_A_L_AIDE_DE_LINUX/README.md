@@ -1198,6 +1198,7 @@ On peut modifier le raccourci qui lance Pageant pour que celui-ci charge notre c
     "C:\Program Files\PuTTY\pageant.exe" c:\cle.ppk
 
 ### Transférer des fichiers
+
 #### wget : téléchargement de fichiers
 #### scp : copier des fichiers sur le réseau
 #### ftp & sftp : transférer des fichiers
