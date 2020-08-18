@@ -1422,13 +1422,64 @@ Avant de lancer le programme, on va créer un lien symbolique vers `/usr/bin` po
 
     sudo ln -s ~/hisham.hm/htop/releases/2.2.0/htop.2.2.0/ /usr/bin/
 
-Pour supprimer le paquet, si on générer le paquet .deb, on fait :
+Pour supprimer le paquet, si on a généré le paquet .deb, on fait :
 
     $ sudo dpkg -r htop -> Supprime le paquet 1ere méthode
     $ sudo apt-get purge --autoremove htop -> 2e méthode
+    $ sudo make uninstall -> 3e méthode, celle du cours
 
 Pour être honnête, j'ai bien réussi la compilation, le téléchargement de dépendances etc, sauf que je n'ai pas réussi à faire tourner le programme... Je me suis retrouvée face à un écran tout noir qui me bloquait la console. Impossible de sortir de l'écran noir même avec `Ctrl + D`, il a fallu que je `kill` le PID de htop. Par contre, j'ai bien réussi la désinstallation avec la 2e méthode... J'avais la flemme de chercher pourquoi, alors que c'est sans doute fortement du au fait que j'utilise WSL1, qui n'a pas tout le noyau Linux complet... Par contre, je suis quasiment sûre et certaine de la méthode à employer, elle n'est pas en cause. J'ai peut-être fait une faute de frappe aussi... Va savoir... Le besoin de passer à autre chose que ce fichu cours se fait sentir...
 ### Quiz 4
+#### Question 1
+Une archive .tar est-elle compressée ?
+* Oui
+* Non
+#### Question 2
+Quel est l'avantage de la compression bzip2 sur la compression gzip
+* Elle compresse mieux
+* Elle compresse plus vite
+* Le programme bzip2 est installé par défaut, contrairement à gzip
+#### Question 3
+Quel est le défaut du protocole Telnet ?
+* Il ne nécessite pas de rentrer de mot de passe
+* Les données ne sont pas cryptées
+* Il ne fonctionne pas très vite
+#### Question 4
+À quoi cela sert-il de rentrer une passephrase lorsqu'on a généré une paire de clés ?
+* Cela permet de crypter la clé privée
+* Cela permet de crypter la clé privée et la clé publique
+* Cela permet de crypter la clé publique
+#### Question 5
+Qu'est-ce que l'agent SSH ?
+* Un outil qui surveille l'activité réseau à la recherche de pirates
+* Un outil qui retient et analyse les fingerprints des serveurs et les compare entre eux
+* Un outil qui charge en mémoire la clé privée décryptée pour éviter d'avoir à rentrer la passphrase plusieurs fois
+#### Question 6
+* Pour copier avec scp un fichier photo.jpg qui se trouve sur mon ordinateur vers un autre ordinateur sur le port 18007, que dois-je faire ?
+* scp -p 18007 photo.jpg login@ip:copie_photo.jpg
+* scp -P 18007 login@ip:copie_photo.jpg photo.jpg
+* scp -P 18007 photo.jpg login@ip:copie_photo.jpg
+* scp -oPort=18007 login@ip:copie_photo.jpg photo.jpg
+#### Question 7
+Une connexion réseau à l'état LISTEN est-elle actuellement en train d'échanger des données ?
+* Oui
+* Non
+#### Question 8
+À quoi correspond l'ordinateur "source" dans la section OUTPUT d'iptables ?
+* Au fournisseur d'accès
+* À notre ordinateur
+* À l'ordinateur distant
+#### Question 9
+Je souhaite créer une règle qui accepte pour le trafic sortant le port 21 (ftp) en TCP. Comment faire ?
+* iptables -A OUTPUT -p tcp --dport 21 -j ACCEPT
+* iptables -A INPUT -p tcp --dport ftp -j ACCEPT
+* iptables -A OUTPUT -p tcp --dport ftp -j DROP
+* iptables -A INPUT -p icmp --dport 21 -j ACCEPT
+#### Question 10
+Quelles sont les commandes que l'on exécute en général pour compiler un programme depuis ses sources ?
+* ./configure puis make puis make install
+* ./prepare puis compile puis install
+* make configure puis make puis make install
 ## Partie 5
 ### Vim l'éditeur de texte du programmeur
 #### Installer Vim
