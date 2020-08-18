@@ -1288,7 +1288,100 @@ On effectue des sauvegardes synchronisées incrémentielle avec `rsync`. C'est u
 #### ifconfig & netstat : gérer et analyser le trafic réseau
 #### iptables : le pare-feu de référence
 #### Résumé personnalisé
+Voici un chapitre assez compliqué et que je n'ai pas vraiment pu expérimenter à cause de ma configuration WSL. En effet, tout ce qui est réseau passe par Windows et pas par Linux. Les commandes fonctionnent sous Linux mais ne renvoient quasiment aucune donnée (notamment les infos sur les transmissions de connexion...) et les données sont renvoyées via Windows mais quasiment aucune commande Linux ne fonctionnent sur git bash (et comme il n'ya pas de commande **sudo** et encore moins **apt-get**), donc à moins de connaître les commandes MS-DOS ou Powershell...
 
+Chaque ordinateur relié à Internet est identifié par une adresse IP(en chiffres). Et à chaque IP est associé un nom d'hôte (en toutes lettres). Par exemple le nom d'hôte lisa.simple-it.com (serveur OC) est asscié à l'IP 173.249.21.230.
+
+Une commande en particulier nous permet d'établir ces liaisons :
+
+    host ip -> retourne le nom d'hôte associé
+    host hostname -> retourne l'adresse ip associée
+
+Parfois, l'hostname nous retourne une ip, et quand on tape cette ip via `host`, on nous répond par un autre nom d'hôte. Pas d'affolement, c'est juste qu'un alias a été crée vers le serveur, un peu comme un lien symbolique. Les deux noms d'hôtes pointent sur la même IP.
+
+Chaque fournisseur d'accès Internet met en place des serveurs DNS. Ce sont des sortes d'annuaires qui fournissent la correspondance entre ip et hostname. On ne peut pas modifier cette liste, mais on peut établir une liste de correspondance personnalisée sur son ordinateur. Ce n'est pas franchement recommandé, l'avantage c'est que si un DNS ne fonctionne pas, on peut accéder à un site enregistré dans notre liste : on dit qu'on force l'association. Par contre, si l'IP du serveur qu'on cherche à joindre change entre temps, notre ordinateur ne sera pas averti. On procède de la sorte : on ouvre en **root** le fichier **/etc/hosts** via un éditeur de texte. Sur la gauche, on renseigne l'IP et sur la droite, on renseigne le nom d'hôte. Dans ce fichier, on devrait déjà avoir l'association 127.0.0.1 localhost. Se baser sur cette mise en forme pour ajouter d'autres associations.
+
+Chaque nom de domaine doit indiquer quelques informations obligatoires comme qui se trouve derrière le site. L'outil `whois` permet d'obtenir ces informations. Attention, c'est un outil, dont si on en abuse, on peut se voir refuser l'accès par Verisign et ne plus pouvoir utiliser la commande.
+
+Un ordinateur possède en général plusieurs interfaces réseau. `ifconfig` permet de les configurer et d'afficher des informations les concernant. Les différentes interfaces peuvent être :
+
+* `eth0` : ou `eth1` ou encore `eth2`. Il s'agit de l'interface **ethernet**, la connexion résea filaire, connectée avec un câble **RJ45** de la box à l'ordinateur.
+* `lo` : **loopback**, cela correspond à une connexion locale, à `localhost`. On se connecte à soi-même. On l'utilise dans certains cas précis, comme avec un serveur connecté en local (quand on fait du PHP et du MySQL avec wamp et apache). Tout le monde doit avoir cette interface.
+* `wlan0` : ou `wlan1` ou encore `wlan2`. C'est l'interface de connexion sans fil, **wireless**. C'est la connexion wifi.
+
+Tout dépend de l'ordinateur, toutes ces interfaces peuvent ne pas apparaître. Avec WSL, je n'ai pas d'interface `wlan` et mon interface `eth0` indique aucune transmission ou réception de paquets alors que normalement, avec `ifconfig` on doit pouvoir voir quelle est l'interface connectée au réseau avec les informations concernant les débits de flux.
+
+La commande donne des informations avec l'instruction simple `ifconfig` mais permet aussi de faire des réglages réseaux :
+
+    $ ifconfig interface etat
+    $ ifconfig eth0 up -> active l'interface ethernet 0
+    $ ifconfig eth0 down -> désactive l'interface ethernet 0
+
+On peut avoir besoin de connaître ces commandes si un jour on a besoin d'activer / désactiver une interface pour prendre en compte des changements dans la configuration d'un réseau.
+
+La commande `netstat` nous indique ce que notre machine fait sur le réseau. Elle peut afficher beaucoup d'informations. Sur WSL, elle n'en affiche aucune...
+
+    $ netstat -i -> Donne des statistiques d'utilisation du réseau par les interfaces
+    $ netstat -uta -> Liste toutes les connexions ouvertes
+    -u : affiche les connexions UDP
+    -t : affiche les connexions TCP
+    -a : affiche toutes les connexions quel que soit leur état.
+
+TCP et UDP sont deux protocoles pour envoyer et recevoir des données sur le réseau, mais ce ne sont pas les seuls. Le tableau indique depuis l'adresse locale qui est connecté à l'adresse distante. Chaque connexion a un état, en voici quelques uns :
+
+* **ESTABLISHED** : la connexion est établie avec l'adresse distante
+* **TIME WAIT** : la connexion attend le traitement de tous les paquets encore sur le réseau avant de commencer la fermeture
+* **CLOSE WAIT** : le serveur distant a  arrêté la connexion de lui-même
+* **CLOSED** : la connexion n'est pas utilisée
+* **CLOSING** : la fermeture de la connexion est entamée mais toutes les données n'ont pas encore été envoyées
+* **LISTEN** : à l'écoute des connexions entrantes.
+
+Il y en a d'autres, il suffit de lire la documentation pour en avoir un aperçu. Il faut juste retenir que les connexions avec pour état **LISTEN**ne sont pas utilisées actuellement mais qu'elles écoutent le résau dans le cas où des paquets seraient envoyés pour établir une connexion.  
+Une des informations les plus intéressantes est le port sur laquelle la connexion est faite. Le porte est séparé par : des adresses (locales ou distantes). Chaque service utilise un port différent. Si on a activé un serveur ssh sur notre machine, on devrait trouver la connexion avec un port ssh et un état **LISTENING**, c'est assez logique car ce type de serveur est activé afin de pouvoir s'y connecté à distance. POur voir les numéros de port, on utilisera `netstat -n`.
+
+    $ netstat -lt -> liste des connexions en état d'écoute, permet de connaître les ports suceptibles d'être utilisés.
+    $ netstat -s -> Donne les statistiques résumées des connexions existantes.
+
+L'intérêt de connaître tout ceci est de pouvoir analyser le trafic réseau afin de paramétrer son pare-feu (firewall). Le plus utilisé sous Linux est `iptables`. Il permet d'établir certaines règles qui détermineront depuis quels ports on peut créer une connexion et vers laquelle on a le droit d'envoyer des paquets. On peut aussi filtrer par IP mais ce ne sera pas vu ici.
+
+Par exemple, si on considère les connexions FTP dangereuses, on peut bloquer le port 21. En général, la technique consiste à ne pas bloquer certains ports mais plutôt à tous les bloquer par défaut et à en autoriser quelques uns. C'est une question de sécurité, le but d'un parefeu est d'empêcher que des programmes puissent communiquer sur le réseau sans notre accord. Cela ne prémunit pas des virus, mais cela rend la tâche plus dure à des pirates qui essaieraient d'accéder à notre machine. En gros, on bloque par défaut toutes les porttes d'entrée et de sortie et on n'autorise que celle dont on a besoin, comme le port 80 ou 443 pour HTTP ou HTTPS.
+
+`iptables` s'utilise en **root**.
+
+    iptables -F -> Réinitialise toutes les règles, à n'utiliser que si on sait ce qu'on fait !
+    iptables -L -> Affiche les règles régissant le pare-feu
+        policy ACCEPT -> Tout le trafic est accepté
+        policy DROP -> Tout le trafic est refusé
+        chain INPUT -> règles du trafic entrant
+        chain OUTPUT -> règles du trafic sortant
+        chain FORWARD -> règles du trafic redirigé
+    iptables -L --line-numbers -> Donne le numéro des regles
+
+Normalement, à la premièere utilisation le tableau de règles devrait être vide pour les 3 catégories (chain) ci-dessus. Tout le trafic est donc accepté, par défaut. On peut réinitialiser les règles, mais ne le faire que si on est sûr de ce qu'on fait.
+
+L'ordre des règles est très important. Elles sont de haut en bas et la position influe sur le résultat final. Chaque ligne correspond à une règle. **target** indique ce que fait la règle (port autorisé ou non), **prot** est le protocole utilisé, **source** L'IP de source (pour INPUT, la source est l'ordinateur distant), **destination** est l'ip de destination (pour OUTPUT, c'est l'ordinateur distant). La dernière colonne indique le port après les deux points. Il est affiché en toutes lettres par défaut.
+
+Voici les principales commandes pour ajouter ou supprimer des règles :
+
+    # iptables -A CHAIN -p PROTOCOLE --dport PORT -j DECISION -> PORT en toutes lettres ! si omis règle valable pour tous les ports
+        -A CHAIN : ajoute une règle en fin de liste pour la CHAIN indiquée
+        -I CHAIN [RULENUM]: ajoute une règle en début de liste pour la CHAIN indiquée. On peut ajouter une position RULENUM pour la positionner à une place bien précise
+        -D CHAIN RULENUM : supprime la règle n° RULENUM pour la CHAIN
+        -R CHAIN RULENUM : remplace la règle n° RULENUM pour la CHAIN
+        -F CHAIN : vide toutes les règles de CHAIN
+        -P CHAIN RULE : modifie la règle par défaut pour CHAIN (policy RULE en haut de liste de CHAIN...)
+
+On remplace CHAIN par la section qui nous intéresse (INPUT, OUTPUT), PROTOCOLE par le nom du protocole à filtrer (TCP, UDP, ICMP) et enfin la décision à prendre : ACCEPT pour accepter le paquet, REJECT pour le rejeter ou DROP pour l'ignorer complètement. Ex :
+
+    # iptables -A INPUT -p tcp --dport www -j ACCEPT -> autorise web entrant
+    # iptables -A INPUT -p tcp --dport imap2 -j ACCEPT -> autorise mails entrant
+    # iptables -A INPUT -p tcp --dport ssh -j ACCEPT -> autorise les connections à distances entrantes
+    # iptables -A INPUT -p icmp -j ACCEPT -> autorise les ping entrants, le port n'est pas précisé donc tous    
+    # iptables -A INPUT -i lo -j ACCEPT -> autorise tout le trafic sur interface localhost
+    # iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT -> autorise toutes les connexions qui sont déjà à l'état ESTABLISHED ou RELATED. Autorise toutes les connexions demandées par notre PC.
+    # iptables -P INPUT DROP -> Ignore toutes les connexions entrantes par défaut.
+
+La configuration des règles est à affiner en fonction de nos besoins, il se pourrait avec cette configuration que certaines applis ne puissent plus interagir avec nous (par exemple HTTPS n'est pas autorisé et ça pourrait bloquer des pages internet entrantes que l'on consulterait). Il faut ajuster à ses besoins. Attention, les règles ne seront pas conservée à l'extinction de l'ordinateur. Pour les appliquer au redémarrage, il faut créer un script qui sera exécuté au démarrage. POur un parfeu moins compliqué d'utilisation se tourner vers `ufw` (Uncomplicated FireWall).
 ### Compiler un programme depuis les sources
 #### Essayez d'abord de trouver un paquet .deb
 #### Quand il n'y a pas d'autre solution : la compilation
