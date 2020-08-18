@@ -1381,11 +1381,53 @@ On remplace CHAIN par la section qui nous intéresse (INPUT, OUTPUT), PROTOCOLE 
     # iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT -> autorise toutes les connexions qui sont déjà à l'état ESTABLISHED ou RELATED. Autorise toutes les connexions demandées par notre PC.
     # iptables -P INPUT DROP -> Ignore toutes les connexions entrantes par défaut.
 
-La configuration des règles est à affiner en fonction de nos besoins, il se pourrait avec cette configuration que certaines applis ne puissent plus interagir avec nous (par exemple HTTPS n'est pas autorisé et ça pourrait bloquer des pages internet entrantes que l'on consulterait). Il faut ajuster à ses besoins. Attention, les règles ne seront pas conservée à l'extinction de l'ordinateur. Pour les appliquer au redémarrage, il faut créer un script qui sera exécuté au démarrage. POur un parfeu moins compliqué d'utilisation se tourner vers `ufw` (Uncomplicated FireWall).
+La configuration des règles est à affiner en fonction de nos besoins, il se pourrait avec cette configuration que certaines applis ne puissent plus interagir avec nous (par exemple HTTPS n'est pas autorisé et ça pourrait bloquer des pages internet entrantes que l'on consulterait). Il faut ajuster à ses besoins. Attention, les règles ne seront pas conservée à l'extinction de l'ordinateur. Pour les appliquer au redémarrage, il faut créer un script qui sera exécuté au démarrage. Pour un pare-feu moins compliqué d'utilisation se tourner vers `ufw` (Uncomplicated FireWall).
 ### Compiler un programme depuis les sources
 #### Essayez d'abord de trouver un paquet .deb
 #### Quand il n'y a pas d'autre solution : la compilation
 #### Résumé personnalisé
+Il peut parfois arriver que l'on ait besoin de programmes qui ne soient pas accessibles avec `apt-get`. C'est le cas, par exemple, des programmes dont on souhaite la toute dernière version mise à jour et qui n'est pas encore transférée à un dépôt **Debian**. Il n'existe pas pour les programmes Linux des gestionnaires d'installation, comme sous Windows. Il va falloir, alors l'installer manuellement.
+
+Parfois, dans les cas les plus simples, on peut trouver le paquetage **.deb** du programme recherché, que ce soit sur le site web du logiciel ou ailleurs. Par contre, ce paquet ne sera utilisable que pour les distributions Debian et ses dérivées. Red Hat utilise des paquets **.rpm**. Il existe un programme `alien` qui est capable de convertir un `.rpm` en `.deb`, si besoin.
+
+Le cours nous propose une installation d'un paquet .deb par le serveur graphique (What is ze intérêt ?) en double-cliquant sur l'icône dans Téléchargement que l'on aura préalablement téléchargé. Une fenêtre apparaîtra pour nous proposer de l'installer. Soit tout se passe bien et on pourra utiliser le programme, soit on a un message d'erreur : au choix, soit on n'a pas la bonne version pour notre bécane (un 32 bits alors qu'il fallait un 64 bits), soit il nous manque des dépendances qu'il faudra installer si on veut poursuivre l'installation et utiliser le programme.
+
+Si le paquet **.deb** n'existe pas, alors il nous restera à mettre les mains dans le cambouis. Il faudra récupérer le **code source** et le compiler soi-même.
+
+La compilation est un procédé qui permet de transformer le code source d'un programme en un exécutable que l'on pourra utiliser par la suite. Les étapes de compilation peuvent varier d'un programme à un autre. Certains sont assez complexes et nécessitent plusieurs préparatifs. Dans ce cas, suivre les instructions données à la source (site web, README, INSTALL.txt...) pour savoir comment compiler. On va illustrer tout ceci en installant **htop** depuis l'URL www.hisam.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz.
+
+Avant tout, nous avons besoin d'installer les paquets suivants pour la bonne poursuite des choses (`sudo apt-get install`) : `build-essential` qui contient les outils de compilation, `checkinstall` même fonctionnement que `make install` la différence c'est la création d'un paquet **.deb** qui nous permettra de désinstaller proprement le programme si besoin, `libncurses5-dev`, `libncursesw5-dev` qui sont des bibliothèques nécessaires à `htop` et `python` (il n'a pas voulu de **python 3**).
+
+Depuis son répertoire personnel, on télécharge le code source, on peut créer un répertoire intermédiaire où ranger le programme, mais par simplification je ne vais pas le faire ici. On se rend ensuite dans le répertoire du programme.
+    
+    $ wget -rV hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz
+    $ cd ~/hisham.hm/htop/releases/2.2.0/
+
+On décompresse et on extrait d'un coup, puis on se rend dans le répertoire nouvellement créé :
+
+    $ tar -zxvf hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz
+    $ cd htop-2.2.0
+
+On va pouvoir passer à la compilation à proprement parlé. J'ai choisi d'exposer une autre façon de compiler que celle montrée dans le cours, je la trouve incomplète par rapport à la méthode proposée par Ubuntu, qui elle même ne parle pas de la dernière étape (permettant de télécharger le dossier dans son répertoire perso sans se soucier de comment va s'exécuter le programme).
+
+    $ test -f configure || sh autogen.sh -> Vérifie que le répertoire contient le fichier configure, sinon lance le fichier `autogen.sh` pour le générer
+    $ ./configure --enable-optimizations -> Génère le makefile. Si ./configure s'arrête, c'est certainement car il manque des dépendances. Il faut donc les rechercher, les installer et relance la commande ./configure.
+    $ make -> Compile le programme
+
+    Et là deux possibilités :
+    $ sudo makefile -> Installe le programme sans générer un paquet .deb ou
+    $ sudo checkfile -> Installe le programme tout en générant un paquet .deb
+
+Avant de lancer le programme, on va créer un lien symbolique vers `/usr/bin` pour pouvoir lancer le programme partout depuis son PC et pas que dans le répertoire du programme. C'est la partie qui manquait dans la méthode Ubuntu. En effet, ce n'est pas très safe, d'aller installer un code source directement dans son /usr/bin/. Il faut mieux y placer un lien du programme. Suffit que le programme contienne un virus et il aura accès à toute partie de la structure dont seul l'accès **root* aurait pu emêcher la prolifération.
+
+    sudo ln -s ~/hisham.hm/htop/releases/2.2.0/htop.2.2.0/ /usr/bin/
+
+Pour supprimer le paquet, si on générer le paquet .deb, on fait :
+
+    $ sudo dpkg -r htop -> Supprime le paquet 1ere méthode
+    $ sudo apt-get purge --autoremove htop -> 2e méthode
+
+Pour être honnête, j'ai bien réussi la compilation, le téléchargement de dépendances etc, sauf que je n'ai pas réussi à faire tourner le programme... Je me suis retrouvée face à un écran tout noir qui me bloquait la console. Impossible de sortir de l'écran noir même avec `Ctrl + D`, il a fallu que je `kill` le PID de htop. Par contre, j'ai bien réussi la désinstallation avec la 2e méthode... J'avais la flemme de chercher pourquoi, alors que c'est sans doute fortement du au fait que j'utilise WSL1, qui n'a pas tout le noyau Linux complet... Par contre, je suis quasiment sûre et certaine de la méthode à employer, elle n'est pas en cause. J'ai peut-être fait une faute de frappe aussi... Va savoir... Le besoin de passer à autre chose que ce fichu cours se fait sentir...
 ### Quiz 4
 ## Partie 5
 ### Vim l'éditeur de texte du programmeur
