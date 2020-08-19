@@ -1498,6 +1498,37 @@ Vim, ça ne se raconte pas, vim (dire viiii aïe ème) ça se vit... Le meilleur
 #### Notre premier script
 #### Exécuter le script bash
 #### Résumé personnalisé
+**shell** est un langage de programmation intégré à Linux. Il n'est pas aussi complet que **C**, **C++** ou encore **Java** mais il permet d'automatiser la plupart de nos tâches : sauvegarder des données, surveiller la charge de la machine etc...  
+On pourrait très bien faire tout cela en **C**, néanmoins l'avantage de le faire en **shell** c'est que le langage est automatiquement interprété, il n'y a pas de compilation de code source, comme en **C**. Toutes les commandes utilisées en **shell** sont des commandes système que l'on connaît déjà.
+
+Il existe plusieurs environnements console : "les" shells. Voici les noms de quelques uns des principaux shells qui existent :
+
+* **sh** : *Bourne Shell*. L'ancêtre de tous les shells.
+* **bash** : *Bourne Again Shell*. Une amélioration du *Bourne Shell*, disponible par défaut sous Linux et Mac OS X.
+* **ksh** : *Korn Shell*. Un shell puissant assez présent sur les Unix propriétaires mais aussi disponible en version libre compatible avec bash.
+* **csh** : *C Shell*. Un shell utilisant une syntaxe proche du langage C.
+* **tcsh** : *Tenex C Shell*. Amélioration du *C Shell*.
+* **zsh** : *Z Shell*. Shell assez récent reprenant les meilleures idées de bash, ksh et tcsh.
+
+Il y en a d'autres...
+
+sh reste toujours plus répandu que bash. En fait tous les OS basés sur Unix possèdent sh, mais ils n'ont pas tous forcément bash. AIX, Solaris..., des OS propriétaires basés sur Unix, utilisent d'autres types de shells : le ksh y est par exemple très répandu.
+
+Le shell fournit toutes les fonctionnalités de base pour pouvoir lancer des commandes.
+
+On peut tout à fait installer un autre shell :
+
+    $ sudo apt-get install ksh
+
+Une fois installé, il faut demander à l'utiliser pour notre compte utilisateur :
+
+    $ chsh
+
+Quand le prompt le demandera, renseigner le path du shell à utiliser, par exemple `/bin/ksh`. Si on ne sait pas où se trouve `ksh`: `which ksh` donnera le chemin absolu où se trouve la commande.
+
+C'est important dans le sens où un script shell dépend d'un shell précis. Le langage n'est pas tout à fait le même selon que l'on utilise sh, bash, ksh, etc. Il semblerait qu'il s'agisse surtout d'une question de norme **POSIX**.
+
+
 ### Afficher et manipuler des variables
 #### Déclarer une variable
 #### echo : afficher une variable
