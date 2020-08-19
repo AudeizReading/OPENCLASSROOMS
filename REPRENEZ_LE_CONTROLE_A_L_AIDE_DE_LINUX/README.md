@@ -1489,6 +1489,10 @@ Quelles sont les commandes que l'on exécute en général pour compiler un progr
 #### Opérations avancées (split, fusion, recherche...)
 #### Les options de Vim
 #### Résumé personnalisé
+Vim, ça ne se raconte pas, vim (dire viiii aïe ème) ça se vit... Le meilleur des résumés à mon sens est :
+
+    vimtutor
+
 ### Introduction aux scripts shell
 #### Qu'est-ce qu'un shell ?
 #### Notre premier script
