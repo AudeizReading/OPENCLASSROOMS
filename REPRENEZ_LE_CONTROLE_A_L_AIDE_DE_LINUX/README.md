@@ -1528,16 +1528,18 @@ Quand le prompt le demandera, renseigner le path du shell à utiliser, par exemp
 
 C'est important dans le sens où un script shell dépend d'un shell précis. Le langage n'est pas tout à fait le même selon que l'on utilise sh, bash, ksh, etc. Il semblerait qu'il s'agisse surtout d'une question de norme **POSIX**.
 
-Il s'agit maintenant de créer son premier script, je l'ai nommé "essai-script-shell-01-05-01.sh". On nous fait mettre dedans une commande pwd et une commande ls (tout ce qu'il ne faut pas faire...).
+Il s'agit maintenant de créer son premier script, je l'ai nommé "05-02-01-essai-script-shell.sh". On nous fait mettre dedans une commande pwd et une commande ls (tout ce qu'il ne faut pas faire...).
 
 Ensuite, on nous fait enregistrer et sortir du cript pour l'exécuter. Avant, cela, il faut modifier les droits utilisateurs, car le script n'a pas le droit d'exécution configuré : le script ne s'exécutera pas. Donc on fait, dans le répertoire où est enregistré le script :
 
-    chmod +x essai-script-shell-01-05-01.sh
+    chmod +x 05-02-01-essai-script-shell.sh
 
-Puis on lance le script `./essai-script-shell-01-05-01.sh`.  
-Pour déboguer un script : `bash -x ./essai-script-shell-01-05-01.sh`
+Puis on lance le script `./05-02-01-essai-script-shell.sh`.  
+Pour déboguer un script : `bash -x ./05-02-01-essai-script-shell.sh`
 
-Pour lancer le script via ./essai-script-shell-01-05-01.sh, il faut être dans le bon répertoire, ou taper son chemin absolu depuis n'importe quel autre endroit. Pour exécuter un script sans taper **./** devant son nom, on le place dans un répertoire du PATH, ou on ajoute le répertoire du script au PATH.
+Pour lancer le script via ./05-02-01-essai-script-shell.sh, il faut être dans le bon répertoire, ou taper son chemin absolu depuis n'importe quel autre endroit. Pour exécuter un script sans taper **./** devant son nom, on le place dans un répertoire du PATH, ou on ajoute le répertoire du script au PATH.
+
+On peut faire un lien symbolique du script vers un des répertoires du PATH. Si on choisit de modifier son PATH, via son .bashrc (PATH="$PATH:/nv-rep"), penser à relancer la console (sous WSL!, et donc de kill ssh-agent et de redémarrer la procédure de connexion à GitHub via ssh). Mais ça, le cours ne te dis pas comment faire... Et alors si tu émules une console via Windows avec git bash par exemple, bah bon courage pour trouver ton $PATH - de souvenance j'avais bien galérer dans ma feignassitude à ne pas vouloir installer une machine virtuelle, WSL n'existait pas encore, quand j'ai suivi la première fois ce cours).
 ### Afficher et manipuler des variables
 #### Déclarer une variable
 #### echo : afficher une variable
