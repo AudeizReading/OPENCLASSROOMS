@@ -1528,7 +1528,16 @@ Quand le prompt le demandera, renseigner le path du shell à utiliser, par exemp
 
 C'est important dans le sens où un script shell dépend d'un shell précis. Le langage n'est pas tout à fait le même selon que l'on utilise sh, bash, ksh, etc. Il semblerait qu'il s'agisse surtout d'une question de norme **POSIX**.
 
+Il s'agit maintenant de créer son premier script, je l'ai nommé "essai-script-shell-01-05-01.sh". On nous fait mettre dedans une commande pwd et une commande ls (tout ce qu'il ne faut pas faire...).
 
+Ensuite, on nous fait enregistrer et sortir du cript pour l'exécuter. Avant, cela, il faut modifier les droits utilisateurs, car le script n'a pas le droit d'exécution configuré : le script ne s'exécutera pas. Donc on fait, dans le répertoire où est enregistré le script :
+
+    chmod +x essai-script-shell-01-05-01.sh
+
+Puis on lance le script `./essai-script-shell-01-05-01.sh`.  
+Pour déboguer un script : `bash -x ./essai-script-shell-01-05-01.sh`
+
+Pour lancer le script via ./essai-script-shell-01-05-01.sh, il faut être dans le bon répertoire, ou taper son chemin absolu depuis n'importe quel autre endroit. Pour exécuter un script sans taper **./** devant son nom, on le place dans un répertoire du PATH, ou on ajoute le répertoire du script au PATH.
 ### Afficher et manipuler des variables
 #### Déclarer une variable
 #### echo : afficher une variable
