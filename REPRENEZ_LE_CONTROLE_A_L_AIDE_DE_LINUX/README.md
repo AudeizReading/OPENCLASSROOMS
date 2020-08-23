@@ -1589,6 +1589,10 @@ Dans ce chapitre, on voit également (de façon très succinte) comment faire fo
 #### Les tests
 #### case : tester plusieurs conditions à la fois
 #### Résumé personnalisé
+Nous voyons ici les branchements conditionnels `if`, les tests `[[ ]]` et `case`. Travail sur le script `05-04-01-conditions-shell.sh`.
+
+Pour des raisons évidentes d'économie de mon douleur (et de la douleur engendrée par la frappe), je vais éviter les doublons, noter les notions ne pouvant pas être abordées dans un script et coder au max dans le script associé au chapitre.
+
 ### Les boucles
 #### while : boucler "tant que"
 #### for : boucler sur une liste de valeurs
