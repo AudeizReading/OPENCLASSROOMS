@@ -1537,9 +1537,9 @@ Ensuite, on nous fait enregistrer et sortir du cript pour l'exécuter. Avant, ce
 Puis on lance le script `./05-02-01-essai-script-shell.sh`.  
 Pour déboguer un script : `bash -x ./05-02-01-essai-script-shell.sh`
 
-Pour lancer le script via ./05-02-01-essai-script-shell.sh, il faut être dans le bon répertoire, ou taper son chemin absolu depuis n'importe quel autre endroit. Pour exécuter un script sans taper **./** devant son nom, on le place dans un répertoire du PATH, ou on ajoute le répertoire du script au PATH.
+Pour lancer le script via `./05-02-01-essai-script-shell.sh`, il faut être dans le bon répertoire, ou taper son chemin absolu depuis n'importe quel autre endroit. Pour exécuter un script sans taper **./** devant son nom, on le place dans un répertoire du PATH, ou on ajoute le répertoire du script au PATH.
 
-On peut faire un lien symbolique du script vers un des répertoires du PATH. Si on choisit de modifier son PATH, via son .bashrc (PATH="$PATH:/nv-rep"), penser à relancer la console (sous WSL!, et donc de kill ssh-agent et de redémarrer la procédure de connexion à GitHub via ssh). Mais ça, le cours ne te dis pas comment faire... Et alors si tu émules une console via Windows avec git bash par exemple, bah bon courage pour trouver ton $PATH - de souvenance j'avais bien galérer dans ma feignassitude à ne pas vouloir installer une machine virtuelle, WSL n'existait pas encore, quand j'ai suivi la première fois ce cours).
+On peut faire un lien symbolique du script vers un des répertoires du PATH. Si on choisit de modifier son PATH, via son .bashrc (PATH="$PATH:/nv-rep"), penser à relancer la console (sous WSL!, et donc de kill ssh-agent et de redémarrer la procédure de connexion à GitHub via ssh). Mais ça, le cours ne te dis pas comment faire... Et alors si tu émules une console via Windows avec git bash par exemple, bah bon courage pour trouver ton $PATH - de souvenance j'avais bien galéré dans ma feignassitude à ne pas vouloir installer une machine virtuelle, WSL n'existait pas encore, quand j'ai suivi la première fois ce cours).
 ### Afficher et manipuler des variables
 #### Déclarer une variable
 #### echo : afficher une variable
@@ -1549,6 +1549,41 @@ On peut faire un lien symbolique du script vers un des répertoires du PATH. Si 
 #### Les variables des paramètres
 #### Les tableaux
 #### Résumé personnalisé
+Création d'un script `05-03-01-variables.sh`. Une variable possède un nom et une valeur. Le prof utilise des apostrophes pour setter une variable avec du texte, pour des raisons que nous verrons certainement plus loin, j'utilise directement des guillements. Si j'avais besoin de réutiliser des guillements dans mon texte, il faudrait que je les échappe de cette façon : `\"`. Il nous fait exécuter le script avec seulement la variable déclarée, et forcément, il ne se passe rien...
+
+Nous allons donc utiliser la commande `echo`. Elle affiche en console tous les paramètres qu'elle reçoit. Si on met des guillemets autour d'un texte, elle le considèrera comme un seul argument, sans quoi chaque mot sera considéré comme un paramètre. Pour insérer des retours à la ligne, il faut utiliser l'optien `-e` :
+
+    echo -e "1ere ligne\n2e ligne\n3e ligne"
+
+Donc, nous y voilà, il veut nous faire affiche $message avec des apostrophes... Ce n'est pas possible, on ne le peut qu'avec des guillemets (d'où mon entêtement à n'en faire qu'à ma tête). $message n'est pas interprêtée et c'est $message qui est renvoyé et non le message en lui-même.
+
+Avec de simples quotes, la variable n'est pas analysée, avec des doubles quotes, elle l'est et avec des back quotes \`\` elle est exécutée (si elle a été affectée par le retour d'une commande).
+
+Je me plie au jeu, et exécute le script de m----.
+
+On peut demander à l'utilisateur de saisir du texte avec la commande `read`.
+
+    read nomVariableReponseUtilisateur
+    echo "Vous avez saisi $nomVariableReponseUtilisateur"
+
+On peut demander à saisir autant de variables d'affilée que l'on souhaite.
+
+    read var1 var2 var3 [...]
+    read -p "Message invite de commande :" var1 var2 [...]
+
+L'option `-p` permet d'afficher un message de prompt. Le message est double-quoté, sinon la commande read aurait considéré chaque mot comme une variable.
+
+Avec l'option `-n`, on peut limiter la valeur que peut prendre maximum la variable : `-n 5` -> la variable ne pourra pas avoir plus de 5 caractères dans sa valeur. `-t` définit un timeout, c'est-à-dire un délai en secondes maximum pour saisir un message dans le prompt. `-s` cache le message saisi, très utile pour faire saisir un mot de passe.
+
+On peut effectuer des opérations mathématiques même si les variables sont toutes considérées comme des chaînes de caractères. On passe par `let` pour effectuer ces opérations.
+
+*Aujourd'hui, j'ai très mal au doigt, donc il va falloir que je fasse un choix : soit je raconte ma vie et celle d'OPENCLASSROOMS ici dans ce fichier, soit je code les exemples dans le script associé à ce chapitre `05-03-01-variables.sh`... Et je vais prendre l'option 2... De toute façon, le fichier de script sera pushé avec le README.md !*
+
+On utilise `bc` pour faire des calculs sur des décimaux, `let` ne gère que des nombres entiers.
+
+Variables d'environnement, appelées aussi variables globales -> `env`.
+
+Dans ce chapitre, on voit également (de façon très succinte) comment faire fonctionner un array.
 ### Les conditions
 #### if : la condition la plus simple
 #### Les tests
