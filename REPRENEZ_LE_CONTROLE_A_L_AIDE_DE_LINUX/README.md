@@ -1592,11 +1592,11 @@ Dans ce chapitre, on voit également (de façon très succinte) comment faire fo
 Nous voyons ici les branchements conditionnels `if`, les tests `[[ ]]` et `case`. Travail sur le script `05-04-01-conditions-shell.sh`.
 
 Pour des raisons évidentes d'économie de mon douleur (et de la douleur engendrée par la frappe), je vais éviter les doublons, noter les notions ne pouvant pas être abordées dans un script et coder au max dans le script associé au chapitre.
-
 ### Les boucles
 #### while : boucler "tant que"
 #### for : boucler sur une liste de valeurs
 #### Résumé personnalisé
+Ce chapitre aborde les boucles `while` et `for`, et la commande `seq debut [pas] fin`. Travail sur le script 05-05-01-boucles-shell.sh, 05-05-02-multirenommage.sh.
 ### Les fonctions
 #### Qu'est-ce qu'une fonction ?
 #### Comment déclarer une fonction ?
