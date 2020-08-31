@@ -1601,6 +1601,45 @@ Ce chapitre aborde les boucles `while` et `for`, et la commande `seq debut [pas]
 #### Qu'est-ce qu'une fonction ?
 #### Comment déclarer une fonction ?
 #### Résumé personnalisé
+Une fonction, c'est un ensemble d'instructions, permettant d'effectuer plusieurs tâches avec des paramètres d'entrée différents. Cela permet d'avoir un programme plus lisible et structuré.
+
+- On n'est pas limité dans le nombre de fonction que l'on peut créer. Par contre, elles ne doivent pas avoir le même nom.
+- On peut réutiliser les variables globales initialisées dans son script, à l'intérieur ou à l'extérieur de notre fonction.
+- On peut déclarer des variables locales à une fonction.
+- Une bonne fonction, c'est une fonction qui traite d'un élément spécifique et récurrent dans son script.
+
+Il y a deux façons de déclarer une fonction :
+
+    \# Méthode 1
+    maFonction ()
+    \{
+        bloc d'instruction
+    \}
+    
+    \# Appel de la fonction
+    maFonction
+
+    \# Méthode 2
+    function maFonction
+    \{
+        bloc d'instructions
+    \}
+
+    \# Appel de la fonction
+    maFonction
+
+Passons à la pratique et sauvegardons notre répertoire personnel... Cf script `05-06-01-fonctions-shell.sh` pour la pratique.
+
+Il y a quelques questions à se poser avant :
+
+- Comment sauvegarder le répertoire ? (tar, cp, sync...)
+- Que faut-t'il sauvegarder ? (tout ? les fichiers cachés aussi ?...)
+- Où sauvegarder le répertoire ? (dans un répertoire, sur un serveur distant, sur le cloud ?...)
+- Comment être averti et enregistrer un historique du bon ou du mauvais fonctionnement du script ? (par MAIL, fax, téléphone, dans un fichier, sur un site web, les deux ?)
+- À quelle fréquence ?
+-...
+
+Ce script sera écrit dans 05-06-02-backup-home-in.
 ### TP : générateur de galerie d'images
 #### Objectifs
 #### Solution
