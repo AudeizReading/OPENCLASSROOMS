@@ -1639,10 +1639,22 @@ Il y a quelques questions à se poser avant :
 - À quelle fréquence ?
 -...
 
-Ce script sera écrit dans 05-06-02-backup-home-in.
+Ce script sera écrit dans 05-06-02-backup-home-in.sh
 ### TP : générateur de galerie d'images
 #### Objectifs
 #### Solution
 #### Améliorations
 #### Résumé personnalisé
+Grosse flemme de faire le TP, surtout que j'ai passé un moment sur le script de sauvegarde de fichiers 05-06-02-02-backup-home-in.sh. Il me semblait plus intéressant d'avoir à ma dispo un script de sauvegarde de données perso plutôt qu'un générateur de page HTML avec galerie d'image. D'autant plus qu'une solution (parmi tant d'autres) est donnée sur le site, contrairement au script de sauvegarde.
+
+Il suffit de consulter l'URL suivante : [TP : générateur de galerie d'images](https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/43536-tp-generateur-de-galerie-dimages).
+
 ### Quiz 5
+
+Bon là aussi, c'est la grosse flemme... Besoin de passer à autre chose.
+
+Les questions du quiz sont disponibles ici : [Quiz 5](https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/exercises/144).
+
+Voilà, voilà, c'est tout pour le maintenant...
+
+Je vais pouvoir me lancer sur du C...parce que j'ai piscine !
