@@ -1,6 +1,15 @@
 # Apprenez à programmer en C !
 ## Partie 1 - Les bases de la programmation en C
 ### 1. Vous avez dit programmer ?
+C est un langage dit de **"haut niveau"**, facile à utiliser, proche du langage courant.
+
+Le **code source** est le code du programme écrit dans un langage de haut niveau.
+
+Pour traduire notre *code source* écrit en langage de *haut niveau*, on utilise un **compilateur**. La traduction s'appelle la **compilation**. Il existe un compilateur différent pour chaque langage de haut niveau.
+
+Le programme **binaire** crée par le *compilateur* (donc le code source *traduit*) est appelé **l'exécutable**. C'est pour cela que sous Windows, on les retrouve sous l'extension **.exe**.
+
+Certains langages de **très haut niveau** doivent être accompagnés d'un interpréteur, ou d'autres fichiers pour qu'ils peuissent s'exécuter (Python, VB, Ruby, JS, PHP...) Ce n'est pas le cas de **C** qui est un peu plus bas niveau que ces langages.
 ### 2. Ayez les bons outils !
 ### 3. Votre premier programme
 ### 4. Un monde de variables
