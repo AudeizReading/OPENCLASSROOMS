@@ -11,6 +11,13 @@ Le programme **binaire** crée par le *compilateur* (donc le code source *tradui
 
 Certains langages de **très haut niveau** doivent être accompagnés d'un interpréteur, ou d'autres fichiers pour qu'ils peuissent s'exécuter (Python, VB, Ruby, JS, PHP...) Ce n'est pas le cas de **C** qui est un peu plus bas niveau que ces langages.
 ### 2. Ayez les bons outils !
+La très mauvaise surprise du cours, c'est qu'on n'apprend pas du tout à coder du C en ligne de commande... On doit passer par un IDE qui fait compilateur du style **Code::Blocks**...
+
+Les bons outils en CLI :
+
+- vim
+- gcc
+- make
 ### 3. Votre premier programme
 ### 4. Un monde de variables
 ### 5. Une bête de calcul
