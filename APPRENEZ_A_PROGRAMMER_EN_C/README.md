@@ -15,9 +15,44 @@ La très mauvaise surprise du cours, c'est qu'on n'apprend pas du tout à coder 
 
 Les bons outils en CLI :
 
-- vim
-- gcc
-- make
+- l'éditeur de texte **vim** (emacs fait tout aussi bien l'affaire, c'est juste que
+  je connais mieux vim et pas du tout emacs)
+- le compilateur **gcc**
+- le débogueur **gdb**
+- l'utilitaire **make**
+- et un fichier **Makefile** par projet à compiler
+
+gcc et make sont accessibles par le paquet **build-essential**, gdb par le
+paquet gdb. Le Makefile s'écrit dans un éditeur de texte.
+
+La notion de compilation en ligne de commande est assez complexe, je ne
+l'aborderai pas dans ce README.md. En revanche, après m'être plongée dans les
+documentations de référence, j'ai écrit un mémo à ce sujet que j'ai converti en
+PDF, pour une plus grande protabilité (tout le monde n'a pas forcément une
+licence Microsoft Office). Je le pousse donc dans ce repository, à toutes fins
+utiles pour ceux que ça intéresse de mettre les mains dans le cambouis. Sinon,
+il faut se procurer un IDE doté d'un compilateur et d'un débogueur, tel que
+**Code::Blocks** (Windows, Mac & Linux), **Visual Studio Express** version gratuite
+de l'éditeur Microsoft Visual C++ (Windows seulement), ou encore **Xcode** (Mac
+seulement)...
+
+Petite aparté : je le sens bien ce cours (ironie...), je sens que la
+structuration des notions abordées et les blagues potaches de l'auteur vont plus
+que m'énerver... J'ai sauté quelques pages, avant de revenir par ici, et j'ai
+failli m'étouffer lorsque j'ai lu que la gestion de la mémoire ce n'était pas si
+grave que ça puisqu'on en avait plein... ça commence bien, si déjà, on ne
+sensibilise pas sur les bases... La mémoire, c'est la base, peu importe que les
+ordinateurs modernes en aient plus qu'auparavant. C'est d'ailleurs, je trouve,
+toute la force d'un langage comme C, de pouvoir gérer la mémoire afin d'en
+consommer le moins possible... Mais, si tu n'expliques pas ceci, comment tu veux
+que les gens se sentent concernés ?
+
+Je viens de retrouver la ligne en question : "à l'origine les types ont été
+créés pour économiser de la mémoire [...] Toutefois, c'était utile surtout à
+l'époque où la mémoire était limitée. Aujourd'hui, nos ordinateurs ont largement
+assez de mémoire vive pour que ça ne soit plus vraiment un problème. Il ne sera
+donc pas utile de se prendre la tête pendant des heures sur le choix d'un type."
+Mais où va-t-on ? ai-je envie de demander...
 ### 3. Votre premier programme
 ### 4. Un monde de variables
 ### 5. Une bête de calcul
