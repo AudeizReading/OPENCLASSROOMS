@@ -147,6 +147,164 @@ lignes :
     lignes */
 
 ### 4. Un monde de variables
+Le principe d'une variable est de faire retenir des nombres à l'ordinateur. On
+va apprendre à stocker des nombres dans la mémoire.
+
+Un ordinateur a plusieurs types de mémoires. C'est du au fait qu'on a, à la
+fois, besoin de mémoire rapide et de mémoire importante pouvoir y recevoir
+beaucoup de données. Le souci, c'est qu'on n'est pas encore capable de mettre
+toutes ces particularités dans une seule et même mémoire, dans un ordinateur.
+Soit la mémoire est rapide mais ne contient pas beaucoup d'espace de stockage,
+doit elle a une grande capacité de stockage mais n'est pas rapide.
+Entendons-nous, on parle à l'échelle de l'ordinateur, sa mémoire sera toujours
+plus rapide que celle de n'importe quel humain.
+
+Ce qui nous donne 4 types de mémoires existant dans un ordinateur, de la plus
+rapide à la plus lente :
+1. Les **registres** : une mémoire ultra rapide située directement dans le
+   processeur. Ils sont à peine capables de retenir quelques nombres.
+2. La **mémoire cache** : elle fait le lien entre les registres et la mémoire
+   vive.
+3. La **mémoire vive** : c'est la mémoire avec laquelle nous allons travailler
+   le plus souvent.
+4. Le **disque dur** : c'est là qu'on enregistre les fichiers.
+
+On va surtout travailler avec la mémoire vive, un peu avec le disque dur pour
+lire et créer des fichiers et jamais avec la mémoire cache et les registres.
+Un langage comme l'assembleur (ASM pour les intimes) manipule plutôt les
+registres. Par conséquent, ce n'est pas très évident de faire des calculs avec.
+
+Seule le disque dur retient tout le temps les informations qu'il contient, les
+autres mémoires sont des mémoires temporaires, elles se vident de leur contenu
+lorsque l'on éteint l'ordinateur.
+
+La mémoire vive est située dans les barrettes de RAM (elles sont rattachées à la
+carte mère de l'unité centrale).
+
+La mémoire vive se distingue en deux catégories:
+- D'un côté, nous avons les adresses : c'est un nombre qui permet à l'ordinateur de se repérer dans la mémoire vive. On commence à l'adresse 0 et on finit à une adresse avec un nombre très très élevé, que l'on peut retrouver sous forme de puissance de 2. Plus on a de RAM, plus on a d'adresses, plus on peut stocker de choses.
+- De l'autre, on a les valeurs qui sont stockées dans chaque adresse. Une valeur
+  est un nombre, et on a un seul nombre par adresse. La RAM ne peut stocker que
+  des nombres.
+
+Pour pouvoir faire la correspondance entre les lettres et les nombres les
+représentants, il existe un tableau recensant ces données. On aura l'occasion
+d'en reparler plus loin dans le cours (Youhouh..., genre quand on abordera les
+pointeurs de chaînes de caractères ?).
+
+Une variable, c'est une information temporaire que l'on stocke dans la RAM. Une
+variable a un nom et une valeur. Le nom aura une correspondance avec l'adresse
+mémoire qu'occupe la variable, cela évite d'avoir à retenir son adresse. Le
+compilateur se chargera de faire la conversion entre le nom et l'adresse.
+
+Un nom de variable ne peut avoir que des minuscules, des capitales et des
+chiffres. Le nom doit commencer par une lettre. Les espaces sont interdits ainsi
+que les accents en tout genre. C fait la différence entre une casse haute et une
+casse basse. Il existe plusieurs conventions pour nommer ses variables : camel
+case, pascal case, snake case pour ne citer qu'elles. On choisit celle avec
+laquelle on se sent le plus à l'aise, et on s'y tient : On ne mélange pas les
+casses, au risque de ne plus rien comprendre de ce qu'on a écrit.
+
+En C, tout est est typé, à commencer par les variables. Il n'y a pas tant que ça
+de types différents, dans la mesure ou C considère que tout est nombre. Pour
+tout ce qui est caractère, il se sert de la table ASCII pour établir les
+conversions : à chaque lettre correspond un nombre. Les types peuvent être signés ou
+non signés, c'est-à-dire que les valeurs contenues dans les variables peuvent
+être précédées d'un signe -, ou non. Cela a une incidence sur les différentes
+valeurs que l'on peut donner à une variable typée.
+
+Voici les différents types que l'on retrouve en C : 
+
+| Types           | Description                             | Taille        | Valeur minimum | Valeur maximum |
+|-----------------|-----------------------------------------|---------------|---------------:|---------------:|
+| char            | caractère                               | 1 octet       | -127           | 127            |
+| int             | entier                                  | 2 ou 4 octets | -32 767        | 32 767         |
+| short           | entier                                  | 2 octets      | -32 767        | 32 767         |
+| long            | entier                                  | 4 octets      | -2 147 483 647 | 2 147 483 647  |
+| float           | nombre à virgule, 1 chiffre ap virgule  | 4 octets      | 1E-37          | 1E+37          |
+| double          | nombre à virgule, 2 chiffres ap virgule | 8 octets      | 1E-37          | 1E+37          |
+| unsigned char   | caractère non signé                     | 1 octet       | 0              | 255            |
+| unsigned int    | entier non signé                        | 2 ou 4 octets | 0              | 65 535         |
+| unsigned short  | entier non signé                        | 4 octets      | 0              | 65 535         |
+| unsigned long   | entier non signé                        | 4 octets      | 0              | 4 294 967 295  |
+
+Les valeurs maximales correspondent au minimum de ce que la norme impose à
+l'ordinateur de laisser à disposition du programmeur pour un type donné. Il se
+peut que l'ordinateur offre plus d'espaces que ce qui est mentionné dans ce
+tableau. Pour les types float et double, la virgule est représentée par un
+point. Le nombre d'octets de chaque type dépend du compilateur, de ses options
+et de l'architecture de la machine.
+
+L'opérateur **sizeof** retourne la taille en bytes de son paramètre. Cette
+taille est de type **size_t**, le type char est l'unité de mesure.
+
+Une règle importante, qui rentre en ligne de compte lors des conversions de type
+implicites : **sizeof(char) <= sizeof(short) <= sizeof(int) <= sizeof(long) [ <=
+sizeof(long long) ]**. Le type long long existe dans le C99, le compilateur peut
+émettre une erreur si on lui précise que le C est ANSI. Ces différents types
+existent dans le but de mieux gérer les allocations mémoire. C'est pour cela
+qu'il y a plusieurs types d'entiers : ils n'occupent pas tous le même espace
+mémoire selon leur valeur.
+
+La valeur minimale et maximale des types est définie dans les fichiers d'en-tête
+<limits.h> et <float.h>.
+
+Concernant le type char, il est préférable de lui attribuer signed ou unsigned
+selon l'utilité que l'on veut en faire. En effet, selon la machine qu'on
+utilise, le type peut être signé ou non.
+
+Pour déclarer une variable :
+
+    type nom_variable;
+    
+    int compteur;
+    unsigned int compteur_positif;
+
+Les variables se déclarent au début des fonctions. Lors de la déclaration,
+l'ordinateur réserve à la variable un emplacement en mémoire. Si on n'initialise pas
+d'emblée une variable, celle-ci a une valeur indéfinie, c'est-à-dire qu'elle
+prend la valeur qui était présente en mémoire avant sa déclaration. Si l'adresse
+mémoire a été vidée correctement ou n'a jamais été utilisée, la valeur sera 0, sinon ce sera la valeur
+précendente, qui peut être 512 ou 4096 ou 67 encore. On ne peut pas être certain
+de ce qui se trouve à l'adresse mémoire que prendra notre variable à sa
+déclaration. Pour pallier à ce souci, on définit notre variable à sa
+déclaration.
+
+    int compteur=0;
+
+C'est d'autant plus valable pour les variables dont la valeur ne devra jamais
+changer. Ces variables sont appelées constantes. Si on ne définit pas leur
+valeur à la déclaration, on ne pourra pas le faire plus loin dans le code. Le
+compilateur affichera une erreur, si on tente de modifier la valeur d'une
+constante au cours du programme.
+
+    const int MAXIMUM=100;
+
+Par convention, le nom des variables constantes est écrit en lettres capitales.
+On les introduit avec le mot-clé const. Il faut savoir qu'en C, on peut définir
+des constantes de 3 façons :
+* En passant par une macro `#define CONSTANTE valeur`. Ce n'est pas
+  particulièrement recommandé, car de cette façon, c'est au préprocesseur qu'on
+  s'adresse.
+* En passant par une énumération, on verra sans doute cette façon de faire plus
+  loin. C'est préférable à la macro #define, de plus que l'on peut incrémenter
+  automatiquement les constantes d'une énumération.
+* En passant par le mot-clé **const**, ce que l'auteur du cours a choisi de nous
+  présenter.
+
+Pour afficher une variable, en général on utilise la fonction printf définie
+dans <stdio.h>. Le fonctionnement est quasiment identique à la fonction printf
+de shell.
+
+Pour récupérer une saisie, on utilise, communément, la fonction scanf. Elle
+attend un pointeur d'entier, en plus du format vers lequel convertir les
+données, le résultat est placé dans la variable pointée :
+
+    int age=0;
+    scanf("%d", &age);
+
+`&age`correspond à l'adresse de la variable age. scanf attend une saisie depuis
+l'entrée standard, cela permet d'interagir avec l'utilisateur.
 ### 5. Une bête de calcul
 ### 6. Les conditions
 ### 7. Les boucles
