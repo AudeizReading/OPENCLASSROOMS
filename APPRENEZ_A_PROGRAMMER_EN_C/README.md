@@ -205,8 +205,8 @@ case, pascal case, snake case pour ne citer qu'elles. On choisit celle avec
 laquelle on se sent le plus à l'aise, et on s'y tient : On ne mélange pas les
 casses, au risque de ne plus rien comprendre de ce qu'on a écrit.
 
-En C, tout est est typé, à commencer par les variables. Il n'y a pas tant que ça
-de types différents, dans la mesure ou C considère que tout est nombre. Pour
+En C, tout est typé, à commencer par les variables. Il n'y a pas tant que ça
+de types différents, dans la mesure où C considère que tout est nombre. Pour
 tout ce qui est caractère, il se sert de la table ASCII pour établir les
 conversions : à chaque lettre correspond un nombre. Les types peuvent être signés ou
 non signés, c'est-à-dire que les valeurs contenues dans les variables peuvent
@@ -265,7 +265,7 @@ l'ordinateur réserve à la variable un emplacement en mémoire. Si on n'initial
 d'emblée une variable, celle-ci a une valeur indéfinie, c'est-à-dire qu'elle
 prend la valeur qui était présente en mémoire avant sa déclaration. Si l'adresse
 mémoire a été vidée correctement ou n'a jamais été utilisée, la valeur sera 0, sinon ce sera la valeur
-précendente, qui peut être 512 ou 4096 ou 67 encore. On ne peut pas être certain
+précédente, qui peut être 512 ou 4096 ou 67 encore. On ne peut pas être certain
 de ce qui se trouve à l'adresse mémoire que prendra notre variable à sa
 déclaration. Pour pallier à ce souci, on définit notre variable à sa
 déclaration.
@@ -306,6 +306,37 @@ données, le résultat est placé dans la variable pointée :
 `&age`correspond à l'adresse de la variable age. scanf attend une saisie depuis
 l'entrée standard, cela permet d'interagir avec l'utilisateur.
 ### 5. Une bête de calcul
+Un ordinateur n'est en fait qu'une calculatrice géante. Les opérations qui lui
+sont connues sont très basiques : l'addition +, la soustraction -, la
+multiplication *, la division / et le modulo %. Le modulo est l'opération
+consistant à récupérer le reste d'une division euclidienne (de deux entiers),
+ainsi le modulo n'est pas applicable sur les types float et double.
+
+Il est possible d'effectuer des calculs entre les variables. Il faudra bien
+faire attention aux types des variables, en effet, une opération entre deux
+types de variables différents aura pour conséquence une conversion implicite des
+données vers le type le plus grand. Additionner un int avec un long convertit
+l'opérande int en long. Les conversions s'effectuent aussi lors des affectations
+: la valeur de la partie droite de l'affectation est convertie dans le type de
+la valeur de la partie gauche.
+
+L'incrémentation est l'opération qui consiste à ajouter 1 à une variable. On
+écrit `variable++`. La décrémentation est l'opération contraire, on enlève 1 à
+une variable : `variable--`. Il existe également des raccourcis pour effectuer
+des opérations sur une opérande tout en lui affectant le résultat :
+
+    int nombre = 2;
+    nombre += 4; // nombre + 4 = nombre
+    nombre -= 3; // nombre - 3 = nombre
+    nombre *= 5; // nombre * 5 = nombre
+    nombre /= 3; // nombre / 3 = nombre
+    nombre %= 3; // nombre % 3 = nombre
+
+Pour avoir accès à des opérations plus élaborées, il suffit de charger en
+mémoire la bibliothèque <math.h>. Cette bibliothèque contient les fonctions
+suivantes : fabs (abs est accessible depuis la bibliothèque <stdlib.h>, ceil,
+floor, pow, sqrt, sin, cos, tan, asin, acos, atan, exp, log et log10 entre
+autres.
 ### 6. Les conditions
 ### 7. Les boucles
 ### 8. TP : Plus ou moins, votre premier jeu
