@@ -391,6 +391,7 @@ Un booléen est une variables qui peut avoir deux états :
 Toute valeur différente de 0 est en fait considérée comme vraie. On utilise des
 **int** pour stocker des booléens, car ce ne sont rien d'autre que des nombres.
 
+    
     if (1)
     \{
         printf("C'est vrai");
