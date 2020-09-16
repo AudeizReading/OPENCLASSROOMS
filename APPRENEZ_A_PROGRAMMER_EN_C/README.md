@@ -392,13 +392,13 @@ Toute valeur différente de 0 est en fait considérée comme vraie. On utilise d
 **int** pour stocker des booléens, car ce ne sont rien d'autre que des nombres.
 
     if (1)
-    {
+    \{
         printf("C'est vrai");
-    }
+    \}
     else
-    {
+    \{
         printf("C'est faux");
-    }
+    \}
 
 Lorsque l'on fait un test comme `if (age >= 18)`, l'ordinateur remplace la
 condition par 1 si elle est vérifiée. C'est comme si l'on écrivait `if (1)`. Si
