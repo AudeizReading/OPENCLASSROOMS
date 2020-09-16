@@ -338,6 +338,134 @@ suivantes : fabs (abs est accessible depuis la bibliothèque <stdlib.h>, ceil,
 floor, pow, sqrt, sin, cos, tan, asin, acos, atan, exp, log et log10 entre
 autres.
 ### 6. Les conditions
+Les conditions sont à la base de tous les programmes. C'est un moyen pour
+l'ordinateur de prendre une décision en fonction de la valeur d'une variable.
+
+    if (condition)
+    {
+        // Instructions si condition vraie
+    }
+    else if (autre condition)
+    {
+        // Instruction si condition fausse mais autre condition vraie
+    }
+    else
+    {
+        // Instruction si toutes les conditions sont fausses
+    }
+
+Lorsqu'il y a une seule instruction, on peut omettre les accolades {}. On évite
+de tout placer sur une même ligne pour une question de lisibilité.  
+Il est courant de combiner plusieurs conditions grâce aux opérateurs de
+comparaison.
+
+| Symbole | Signification |
+|---------|---------------|
+| ==      | est égal à    |
+| >       | supérieur à   |
+| <       | inférieur à   |
+| >=      | supérieur ou égal à |
+| <=      | inférieur ou égal à |
+| !=      | n'est pas égal à |
+| !       | négation |
+| &&      | ET logique |
+| \|\|    | OU logique |
+
+Les opérateurs de comparaison sont moins prioritaires que les opérateurs
+arithmétiques. C'est-à-dire qu'une multiplication ou une addition s'effectuera
+avant n'importe quelle comparaison, si elles sont décrites sur la même ligne,
+sauf si la comparaison est placée entre parenthèses. Les opérateurs >, >=, < et
+<= sont prioritaires sur les opérateurs == et !=. Les opérateurs logiques && (ET
+LOGIQUE) et || (OU LOGIQUE) sont moins prioritaires que les opérateurs de
+comparaison. && est prioritaire sur ||. Les opérateurs de comparaison ont la
+priorité sur les opérateurs d'affectation. Ainsi, si on veut qu'une affectation,
+dans un test, se produise en premier, il faut écrire :
+
+    (c = getchar() ) != '\n'
+
+Un opérateur arithmétique, de comparaison ou logique vaut 1 si la relation est
+vraie et 0 si elle est fausse.  
+Un booléen est une variables qui peut avoir deux états :
+- vrai, équivalent au chiffre 1;
+- faux, équivalent au chiffre 0.
+Toute valeur différente de 0 est en fait considérée comme vraie. On utilise des
+**int** pour stocker des booléens, car ce ne sont rien d'autre que des nombres.
+
+    if (1)
+    {
+        printf("C'est vrai");
+    }
+    else
+    {
+        printf("C'est faux");
+    }
+
+Lorsque l'on fait un test comme `if (age >= 18)`, l'ordinateur remplace la
+condition par 1 si elle est vérifiée. C'est comme si l'on écrivait `if (1)`. Si
+elle est fausse, l'ordinateur remplacera la condiotion par 0 et lira les
+instructions données dans la partie else du test. C'est comme si, on écrivait
+`if (0)`, la conséquence étant la lecture du else, ou la sortie de la condition
+si pas de partie else. Pour s'en rendre compte, on peut faire :
+
+    int majeur = 0;
+    majeur = age >= 18;
+    printf("Majeur vaut :%d\n", majeur);
+
+La variable majeur aura pris la valeur de 1. Pour obtenir une valeur 0 dans
+cette variable, on peut faire :
+
+    majeur = age == 10;
+
+On dit que la variable majeur est un booléen. Pour être tout à fait exact, 0
+représente la valeur faux et toutes les autres valeurs numériques différentes de
+0 valent vrai. En C, il n'existe pas de type booléen, comme dans d'autres
+langages. On passe donc par des int pour simuler cet état.
+
+Cela permet de s'épargner une longueur de frappe. Ainsi 
+
+    if (variable == 1)
+
+est équivalent à 
+
+    if(variable)
+
+On aura tendance à privilégier la dernière syntaxe.
+
+Le switch est une alternative au `if...else if...else` quand il s'agit
+d'analyser la valeur d'une variable. Il permet de rendre un code source plus
+lisible lorsque l'on a besoin de tester plusieurs cas de figure. Si on utilise
+beaucoup de `else if`, c'est souvent le signe qu'une condition `switch` serait plus adaptée
+pour rendre le code source plus clair.
+
+    switch (condition)
+    {
+        case valeur1:
+            // Instructions
+            break;
+        case valeur2:
+            // Instructions
+            break;
+        case valeur3:
+            // Instructions
+            break;
+        ...
+        default:
+            // Instructions si aucune valeur ne correspond
+            break;
+    }
+
+Si l'instruction break est omise, l'ordinateur lira les instructions suivantes
+sans s'arrêter et sortir de la condition. Le cas `default`correspond au `else`
+d'une condition. On utilise souvent le switch pour générer un menu de choix.
+
+Les ternaires sont des conditions très concises, un peu comme les conditions SI
+utilisées dans Excel, permettant d'affecter rapidement une valeur à une variable
+en fonction du résultat d'un test. On les utilise avec parcimonie car le code
+source a tendance à devenir moins lisible avec elles.
+Le raisonnement est le même que pour une condition si...else, sauf que tout
+tient sur une ligne :
+
+    condition ? valeur si vraie : valeur si faux ;
 ### 7. Les boucles
 ### 8. TP : Plus ou moins, votre premier jeu
 ### 9. Les fonctions
