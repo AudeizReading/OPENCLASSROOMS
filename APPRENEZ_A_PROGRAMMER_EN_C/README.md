@@ -401,6 +401,7 @@ Toute valeur différente de 0 est en fait considérée comme vraie. On utilise d
         printf("C'est faux");
     \}
 
+
 Lorsque l'on fait un test comme `if (age >= 18)`, l'ordinateur remplace la
 condition par 1 si elle est vérifiée. C'est comme si l'on écrivait `if (1)`. Si
 elle est fausse, l'ordinateur remplacera la condiotion par 0 et lira les
