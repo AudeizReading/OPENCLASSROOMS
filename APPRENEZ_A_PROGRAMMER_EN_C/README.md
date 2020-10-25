@@ -385,14 +385,15 @@ dans un test, se produise en premier, il faut écrire :
 
 Un opérateur arithmétique, de comparaison ou logique vaut 1 si la relation est
 vraie et 0 si elle est fausse.  
-Un booléen est une variables qui peut avoir deux états :
+Un booléen est une variable qui peut avoir deux états :
 - vrai, équivalent au chiffre 1;
 - faux, équivalent au chiffre 0.
 Toute valeur différente de 0 est en fait considérée comme vraie. On utilise des
 **int** pour stocker des booléens, car ce ne sont rien d'autre que des nombres.
     
 *Le monsieur du markdown me cherche des noises, pourquoi ça ne se met pas en
-code préformaté ci-dessous ?* :
+code préformaté ci-dessous ? (Ah bah si, fallait juste mettre une ligne entre la
+liste à puce et le code verbatim... sinon ça fait conflit)* :
     
     if (1)
     {
@@ -405,7 +406,7 @@ code préformaté ci-dessous ?* :
 
 Lorsque l'on fait un test comme `if (age >= 18)`, l'ordinateur remplace la
 condition par 1 si elle est vérifiée. C'est comme si l'on écrivait `if (1)`. Si
-elle est fausse, l'ordinateur remplacera la condiotion par 0 et lira les
+elle est fausse, l'ordinateur remplacera la condition par 0 et lira les
 instructions données dans la partie else du test. C'est comme si, on écrivait
 `if (0)`, la conséquence étant la lecture du else, ou la sortie de la condition
 si pas de partie else. Pour s'en rendre compte, on peut faire :
@@ -458,7 +459,7 @@ pour rendre le code source plus clair.
     }
 
 Si l'instruction break est omise, l'ordinateur lira les instructions suivantes
-sans s'arrêter et sortir de la condition. Le cas `default`correspond au `else`
+sans s'arrêter et sortir de la condition. Le cas `default` correspond au `else`
 d'une condition. On utilise souvent le switch pour générer un menu de choix.
 
 Les ternaires sont des conditions très concises, un peu comme les conditions SI
@@ -469,7 +470,9 @@ Le raisonnement est le même que pour une condition si...else, sauf que tout
 tient sur une ligne :
 
     condition ? valeur si vraie : valeur si faux ;
+
 ### 7. Les boucles
+
 ### 8. TP : Plus ou moins, votre premier jeu
 ### 9. Les fonctions
 ### 10. Entraînez-vous à améliorer le jeu du "plus ou moins"
