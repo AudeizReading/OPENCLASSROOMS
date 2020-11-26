@@ -17,7 +17,6 @@ int	main(void)
 	/* Ne faire l'amorce qu'une seule fois par script ! */
 	mystery_number = (rand() % MAX) + MIN;
 	response = cpt = 0;
-	printf("%d\n",mystery_number);
 	while (response != mystery_number)
 	{
 		printf("Entrez un nombre entre 1 et 100 : \n");
