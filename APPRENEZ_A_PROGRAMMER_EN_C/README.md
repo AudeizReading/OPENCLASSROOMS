@@ -472,7 +472,7 @@ tient sur une ligne :
     condition ? valeur si vraie : valeur si faux ;
 
 ### 7. Les boucles
-
+Franchement, big flemme de faire le résumé à partir de là...
 ### 8. TP : Plus ou moins, votre premier jeu
 ### 9. Les fonctions
 ### 10. Entraînez-vous à améliorer le jeu du "plus ou moins"
